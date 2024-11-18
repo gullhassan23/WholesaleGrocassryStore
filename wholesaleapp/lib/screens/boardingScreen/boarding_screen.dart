@@ -60,7 +60,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => SignIn(),
+          builder: (context) => const SignIn(),
         ),
       );
     }
