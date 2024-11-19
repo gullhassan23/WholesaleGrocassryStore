@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -14,7 +16,52 @@ class SignUP extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUP> {
+  final TextEditingController name = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController passcode = TextEditingController();
+  bool visiblePassword = false;
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoad = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    name.dispose();
+    email.dispose();
+    passcode.dispose();
+  }
+
+  void signUp() async {
+    setState(() {
+      isLoad = true; // Show loading indicator
+    });
+
+    String output = await Authenticationclass().signUpDistributor(
+      name: name.text,
+      email: email.text,
+      password: passcode.text,
+    );
+
+    setState(() {
+      isLoad = false; // Hide loading indicator
+    });
+
+    if (output == "success") {
+      print("User signup successful!");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => SignIn()));
+    } else {
+      Get.snackbar(
+        "Signup Error", // Title
+        output, // Message
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,22 +117,43 @@ class _SignUpState extends State<SignUP> {
                 const SizedBox(
                   height: 40,
                 ),
-                const CustomTextFormField(
+                CustomTextFormField(
+                  obscureText: false,
+                  controller: name,
                   text: 'Name',
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 24,
                 ),
-                const CustomTextFormField(
+                CustomTextFormField(
+                  controller: email,
                   text: 'Email',
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                const CustomTextFormField(
-                  text: 'Password',
-                  suffixIcon: Icon(Icons.remove_red_eye),
-                  obscureText: true,
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter password";
+                    }
+                    return null;
+                  },
+                  controller: passcode,
+                  text: 'Passcode',
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          visiblePassword = !visiblePassword;
+                        });
+                      },
+                      icon: Icon(
+                        visiblePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                      )),
+                  obscureText: !visiblePassword,
                 ),
                 const SizedBox(
                   height: 40,
@@ -103,9 +171,7 @@ class _SignUpState extends State<SignUP> {
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
                             ColorsResource.PRIMARY_COLOR)),
-                    onPressed: () {
-                      /// TODO
-                    },
+                    onPressed: signUp,
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(
@@ -137,8 +203,7 @@ class _SignUpState extends State<SignUP> {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignIn()),
+                          MaterialPageRoute(builder: (context) => SignIn()),
                         );
                       },
                       child: const Text(
