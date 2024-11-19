@@ -65,6 +65,7 @@ class _SignInState extends State<SignIn> {
                   height: 40,
                 ),
                 const CustomTextFormField(
+                  
                   text: 'Email',
                 ),
                 const SizedBox(
