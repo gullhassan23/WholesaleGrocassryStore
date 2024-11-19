@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +50,7 @@ class UserController extends GetxController {
       print("Fetching data for distributor with UID: $uid");
 
       DocumentSnapshot userSnap = await FirebaseFirestore.instance
-          .collection('Distributor')
+          .collection('Distributors')
           .doc(uid)
           .get();
 
@@ -144,7 +142,7 @@ class UserController extends GetxController {
       print("Fetching profile for user with UID: $uid");
 
       DocumentSnapshot userSnap = await FirebaseFirestore.instance
-          .collection('Distributor')
+          .collection('Distributors')
           .doc(uid)
           .get();
 

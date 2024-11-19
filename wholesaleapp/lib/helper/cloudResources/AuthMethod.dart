@@ -8,7 +8,6 @@ import 'package:wholesaleapp/MODELS/PicModel.dart';
 import 'package:wholesaleapp/MODELS/distributModel.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 
-
 class Authenticationclass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -17,14 +16,11 @@ class Authenticationclass {
   final String adminName = "HASSAN";
   final String adminPhone = "+923351764911";
 
-
-
-
   Future<Distributor> getUsersDetails() async {
     User currentUser = auth.currentUser!;
 
     DocumentSnapshot snap =
-        await _firestore.collection('users').doc(currentUser.uid).get();
+        await _firestore.collection('Distributors').doc(currentUser.uid).get();
 
     return Distributor.fromMap(snap as Map<String, dynamic>);
   }
@@ -32,15 +28,13 @@ class Authenticationclass {
   Future<String> signUpDistributor(
       {required String name,
       required String email,
-      required String address,
       required String password}) async {
     name.trim();
 
-    address.trim();
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (name != "" && email != "" && address != "" && password != "") {
+    if (name != "" && email != "" && password != "") {
       try {
         UserCredential cred = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -52,14 +46,13 @@ class Authenticationclass {
         Distributor users = Distributor(
           lastActive: DateTime.now(),
           email: email,
-          address: address,
           password: hashedPassword,
           name: name,
           uid: cred.user!.uid,
         );
 
         await _firestore
-            .collection('users')
+            .collection('Distributors')
             .doc(cred.user!.uid)
             .set(users.toMap());
         // await cloud().uploadUserDataToFireStore(user: user);
@@ -179,16 +172,11 @@ class Authenticationclass {
 
     Pic pic = Pic(id: currentUser.uid, photoUrl: url);
     await _firestore
-        .collection("users")
+        .collection("Distributors")
         .doc(currentUser.uid)
         .update(pic.toJson());
     print(url);
 
     return url;
   }
-
-  
-
-  
-
 }
