@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
@@ -32,40 +32,29 @@ class _SplashScreenState extends State<SplashScreen> {
     height = size.height;
     width = size.width;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        color: ColorsResource.PRIMARY_COLOR,
-        child: Stack(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: height * 1,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    child: SvgPicture.asset(ImagesResource.SPLASH),
-                  ),
-                ],
-              ),
+            Lottie.asset(
+              ImagesResource.SPLASH,
+              height: 300,
+              width: 300,
             ),
             SizedBox(
-              width: double.infinity,
-              height: height * 1,
-              child: const Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 50),
-                    child: Text(
-                      'WholeSale Grocery Store',
-                      style: TextStyle(
-                        fontSize: 34,
-                        color: ColorsResource.WHITE,
-                      ),
-                    ),
+              height: 40,
+            ),
+            SizedBox(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 50),
+                child: Text(
+                  'WholeSale Grocery Store',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: ColorsResource.BLACK_SHADE,
                   ),
-                ],
+                ),
               ),
             )
           ],

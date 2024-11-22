@@ -30,12 +30,15 @@ class IntroWidget extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * .55,
           decoration: BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill),
-          ),
+              color: Colors.white,
+              image:
+                  DecorationImage(image: AssetImage(image), fit: BoxFit.fill),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30))),
         ),
         Positioned(
-          top: 20,
+          top: 30,
           right: 20,
           child: InkWell(
             onTap: () {
@@ -49,7 +52,7 @@ class IntroWidget extends StatelessWidget {
             child: Text(
               'Skip',
               style: TextStyle(
-                color: ColorsResource.LIGHT_BLUE,
+                color: ColorsResource.BLACK,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
@@ -64,14 +67,6 @@ class IntroWidget extends StatelessWidget {
             height: MediaQuery.of(context).size.height * .45,
             decoration: BoxDecoration(
               color: Colors.white,
-              // borderRadius: BorderRadius.only(
-              //   topLeft: index == 0
-              //       ? const Radius.circular(100)
-              //       : const Radius.circular(0),
-              //   topRight: index == 2
-              //       ? const Radius.circular(100)
-              //       : const Radius.circular(0),
-              // ),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -79,7 +74,7 @@ class IntroWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 35,
+                    height: 10,
                   ),
                   Text(
                     title,

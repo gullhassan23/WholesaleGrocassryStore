@@ -9,7 +9,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Screen"),
+        title: Center(child: const Text("Home Screen")),
+        automaticallyImplyLeading: false,
       ),
       body: Obx(() {
         if (userController.isLoading.value) {

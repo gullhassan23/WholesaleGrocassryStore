@@ -28,8 +28,22 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: ColorsResource.LIGHT_WHITE,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Colors.greenAccent,
-            width: 2.0,
+            color: ColorsResource.PRIMARY_COLOR,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10.0),
         ),
