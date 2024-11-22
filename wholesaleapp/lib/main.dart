@@ -20,10 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demmm',
+      title: 'Wholesale Grocery Store',
       theme: ThemeData(
         scaffoldBackgroundColor: ColorsResource.WHITE,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: ColorsResource.PRIMARY_COLOR),
         useMaterial3: true,
       ),
       home: const SplashScreen(),

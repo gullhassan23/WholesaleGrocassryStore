@@ -25,26 +25,26 @@ class _BoardingScreenState extends State<BoardingScreen> {
   final List<Map<String, dynamic>> _pages = [
     {
       'color': '#ffe24e',
-      'title': 'Life is short and the world is wide',
+      'title': 'Premium Food At Your Doorstep',
       'image': 'assets/images/image1.png',
       'description':
-          "At Friends tours and travel, we customize reliable and trutworthy educational tours to destinations all over the world",
+          "Enjoy premium-quality food delivered to your doorstep. Fresh ingredients, exquisite flavors, and exceptional service for a delightful dining experience.",
       'skip': true
     },
     {
       'color': '#a3e4f1',
-      'title': 'It’s a big world out there go explore',
+      'title': 'Buy Premium Quality Fruits',
       'image': 'assets/images/image2.png',
       'description':
-          'To get the best of your adventure you just need to leave and go where you like. we are waiting for you',
+          'Discover premium quality fruits, handpicked for freshness and taste. Perfect for healthy snacking, cooking, or gifting. Freshness guaranteed!',
       'skip': true
     },
     {
       'color': '#31b77a',
-      'title': 'People don’t take trips, trips take people',
+      'title': 'Buy Quality Dairy Products',
       'image': 'assets/images/image3.png',
       'description':
-          'To get the best of your adventure you just need to leave and go where you like. we are waiting for you',
+          'Discover fresh, high-quality dairy products crafted for rich taste and nutrition. From milk to cheese, enjoy premium goodness daily',
       'skip': false
     },
   ];

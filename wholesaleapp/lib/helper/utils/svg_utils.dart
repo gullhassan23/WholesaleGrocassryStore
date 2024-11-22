@@ -4,12 +4,14 @@ import '../constant/images_resource.dart';
 
 class SvgUtils {
   static List<SvgAssetLoader> svgAssets = [
-    const SvgAssetLoader(ImagesResource.SPLASH),
+    //const SvgAssetLoader(ImagesResource.SPLASH),
     const SvgAssetLoader(ImagesResource.ARROW),
     const SvgAssetLoader(ImagesResource.fb),
     const SvgAssetLoader(ImagesResource.insta),
     const SvgAssetLoader(ImagesResource.twitter),
     const SvgAssetLoader(ImagesResource.ALERT_ICON),
+    const SvgAssetLoader(ImagesResource.LOGIN_ICON),
+    const SvgAssetLoader(ImagesResource.SPLASH),
   ];
 
   static Future<void> preCacheSVGs() async {
