@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wholesaleapp/MODELS/AdminModel.dart';
 import 'package:wholesaleapp/MODELS/PicModel.dart';
 
 import 'package:wholesaleapp/MODELS/distributModel.dart';
@@ -13,7 +14,7 @@ class Authenticationclass {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String adminEmail = 'admin@example.com';
   final String adminPassword = 'admin123';
-  final String adminName = "HASSAN";
+  final String adminName = "Wholesaler";
   final String adminPhone = "+923351764911";
 
   Future<Distributor> getUsersDetails() async {
@@ -85,70 +86,69 @@ class Authenticationclass {
     return output;
   }
 
-  // Future<String> signUpAdmin(
-  //     {required String name,
-  //     required String phone,
-  //     required String email,
-  //     required String password}) async {
-  //   name.trim();
-  //   phone.trim();
-  //   email.trim();
-  //   password.trim();
-  //   String output = "Something went wrong";
-  //   if (name == adminName &&
-  //       phone == adminPhone &&
-  //       email == adminEmail &&
-  //       password == adminPassword) {
-  //     try {
-  //       UserCredential admincred = await auth.createUserWithEmailAndPassword(
-  //           email: email, password: password);
+  Future<String> signUpAdmin(
+      {required String name,
+      required String email,
+      required String password}) async {
+    name.trim();
 
-  //       // String salt = BCrypt.gensalt();
-  //       // String hashedPassword = BCrypt.hashpw(password, salt);
-  //       // print(hashedPassword);
-  //       print(admincred.user!.uid);
-  //       Admin admin = Admin(
-  //           isAdmin: true,
-  //           AlastActive: DateTime.now(),
-  //           Aemail: email,
-  //           Aname: name,
-  //           Apassword: password,
-  //           Aphone: phone,
-  //           Auid: admincred.user!.uid);
+    email.trim();
+    password.trim();
+    String output = "Something went wrong";
+    if (name == adminName &&
+    
+        email == adminEmail &&
+        password == adminPassword) {
+      try {
+        UserCredential admincred = await auth.createUserWithEmailAndPassword(
+            email: email, password: password);
 
-  //       await _firestore
-  //           .collection('Admin')
-  //           .doc(admincred.user!.uid)
-  //           .set(admin.toMap());
-  //       // await cloud().uploadUserDataToFireStore(user: user);
-  //       output = "success";
-  //     } on FirebaseAuthException catch (e) {
-  //       output = e.message.toString();
-  //     }
-  //   } else {
-  //     output = "Please fill up all the fields.";
-  //   }
-  //   return output;
-  // }
+        // String salt = BCrypt.gensalt();
+        // String hashedPassword = BCrypt.hashpw(password, salt);
+        // print(hashedPassword);
+        print(admincred.user!.uid);
+        Admin admin = Admin(
+            isAdmin: true,
+            AlastActive: DateTime.now(),
+            Aemail: email,
+            Aname: name,
+            Apassword: password,
+           
+            Auid: admincred.user!.uid);
 
-  // Future<String> signInAdminUser(
-  //     {required String email, required String password}) async {
-  //   email.trim();
-  //   password.trim();
-  //   String output = "Something went wrong";
-  //   if (email == adminEmail && password == adminPassword) {
-  //     try {
-  //       await auth.signInWithEmailAndPassword(email: email, password: password);
-  //       output = "success";
-  //     } on FirebaseAuthException catch (e) {
-  //       output = e.message.toString();
-  //     }
-  //   } else {
-  //     output = "Please fill up alll the fields.";
-  //   }
+        await _firestore
+            .collection('WholeSaler')
+            .doc(admincred.user!.uid)
+            .set(admin.toMap());
+        // await cloud().uploadUserDataToFireStore(user: user);
+        output = "success";
+      } on FirebaseAuthException catch (e) {
+        output = e.message.toString();
+      }
+    } else {
+      output = "Please fill up all the fields.";
+    }
+    return output;
+  }
 
-  //   return output;
-  // }
+  Future<String> signInAdminUser(
+      {required String email, required String password}) async {
+    email.trim();
+    password.trim();
+    String output = "Something went wrong";
+    if (email == adminEmail && password == adminPassword) {
+      try {
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+        output = "success";
+      } on FirebaseAuthException catch (e) {
+        output = e.message.toString();
+      }
+    } else {
+      output = "Please fill up alll the fields.";
+    }
+
+    return output;
+  }
   // Future<void> Logout(BuildContext context) async {
   //   FirebaseAuth _auth = FirebaseAuth.instance;
   //   try {

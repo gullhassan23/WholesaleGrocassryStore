@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
+import 'package:wholesaleapp/screens/homeScreen/AdminHome.dart';
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -154,32 +155,57 @@ class _SignInState extends State<SignIn> {
                           isLoad = true;
                         });
 
-                        // Call the signup method for the user
-                        String output =
-                            await Authenticationclass().signInDistributor(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        );
-
-                        setState(() {
-                          isLoad = false;
-                        });
-
-                        if (output == "success") {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
+                        if (emailController.text ==
+                                Authenticationclass().adminEmail &&
+                            passwordController.text ==
+                                Authenticationclass().adminPassword) {
+                          String output =
+                              await Authenticationclass().signInAdminUser(
+                            email: emailController.text,
+                            password: passwordController.text,
                           );
+                          setState(() {
+                            isLoad = false;
+                          });
+                          if (output == "success") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminHome()));
+                          } else {
+                            Get.snackbar(
+                              "Signup Error", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }
                         } else {
-                          Get.snackbar(
-                            "Signup Error", // Title
-                            output, // Message
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: Colors.red,
-                            colorText: Colors.white,
-                            duration: Duration(seconds: 3),
-                          );
+                          String output = await Authenticationclass()
+                              .signInDistributor(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+
+                          setState(() {
+                            isLoad = false;
+                          });
+                          if (output == "success") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          } else {
+                            Get.snackbar(
+                              "Signup Error", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }
                         }
                       }
                     },
