@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
+import 'package:wholesaleapp/screens/homeScreen/AdminHome.dart';
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -16,6 +19,19 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool visiblePassword = false;
+  bool isLoad = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -64,16 +80,35 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 40,
                 ),
-                const CustomTextFormField(
+                CustomTextFormField(
+                  controller: emailController,
                   text: 'Email',
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                const CustomTextFormField(
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter password";
+                    }
+                    return null;
+                  },
+                  controller: passwordController,
                   text: 'Password',
-                  suffixIcon: Icon(Icons.remove_red_eye),
-                  obscureText: true,
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          visiblePassword = !visiblePassword;
+                        });
+                      },
+                      icon: Icon(
+                        visiblePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                      )),
+                  obscureText: !visiblePassword,
                 ),
                 const SizedBox(
                   height: 16,
@@ -114,12 +149,65 @@ class _SignInState extends State<SignIn> {
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
                             ColorsResource.PRIMARY_COLOR)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                      );
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoad = true;
+                        });
+
+                        if (emailController.text ==
+                                Authenticationclass().adminEmail &&
+                            passwordController.text ==
+                                Authenticationclass().adminPassword) {
+                          String output =
+                              await Authenticationclass().signInAdminUser(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                          setState(() {
+                            isLoad = false;
+                          });
+                          if (output == "success") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminHome()));
+                          } else {
+                            Get.snackbar(
+                              "Signup Error", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }
+                        } else {
+                          String output = await Authenticationclass()
+                              .signInDistributor(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+
+                          setState(() {
+                            isLoad = false;
+                          });
+                          if (output == "success") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          } else {
+                            Get.snackbar(
+                              "Signup Error", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }
+                        }
+                      }
                     },
                     child: const Text(
                       'Sign In',

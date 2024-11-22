@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282326302369",
+    "project_id": "wholesalestore-8a534",
+    "storage_bucket": "wholesalestore-8a534.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282326302369:android:b28d40a5252063d47ebae0",
+        "android_client_info": {
+          "package_name": "com.example.wholesaleapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4rW2GIJYTj3RHjQHCQYq2CJOTUKcFeKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
