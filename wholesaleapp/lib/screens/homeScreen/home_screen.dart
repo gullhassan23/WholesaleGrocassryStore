@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/distribController.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  final UserController userController = Get.put(UserController());
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Home Screen'),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Home Screen"),
       ),
+      body: Obx(() {
+        if (userController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Welcome to the App!"),
+              const SizedBox(height: 20),
+              Text(
+                "Hello, ${userController.distributer.value.name}",
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => userController.logout(context),
+                child: const Text("Logout"),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

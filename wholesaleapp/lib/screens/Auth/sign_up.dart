@@ -32,34 +32,61 @@ class _SignUpState extends State<SignUP> {
     passcode.dispose();
   }
 
-  void signUp() async {
+  void SignUp() async {
     setState(() {
-      isLoad = true; // Show loading indicator
+      isLoad = true;
     });
 
-    String output = await Authenticationclass().signUpDistributor(
-      name: name.text,
-      email: email.text,
-      password: passcode.text,
-    );
-
-    setState(() {
-      isLoad = false; // Hide loading indicator
-    });
-
-    if (output == "success") {
-      print("User signup successful!");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => SignIn()));
+    if (email.text == Authenticationclass().adminEmail &&
+        passcode.text == Authenticationclass().adminPassword &&
+        name.text == Authenticationclass().adminName) {
+      String output = await Authenticationclass().signUpAdmin(
+          name: name.text,
+          // phone: phone.text,
+          email: email.text,
+          password: passcode.text);
+      setState(() {
+        isLoad = false;
+      });
+      if (output == "success") {
+        print("All good happening");
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const SignIn()));
+      } else {
+        //error
+        Get.snackbar(
+          "Signup Error", // Title
+          output, // Message
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     } else {
-      Get.snackbar(
-        "Signup Error", // Title
-        output, // Message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
+      String output = await Authenticationclass().signUpDistributor(
+        name: name.text,
+        email: email.text,
+        password: passcode.text,
       );
+      setState(() {
+        isLoad = false;
+      });
+      if (output == "success") {
+        print("All good happening");
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const SignIn()));
+      } else {
+        //error
+        Get.snackbar(
+          "Signup Error", // Title
+          output, // Message
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     }
   }
 
@@ -171,7 +198,7 @@ class _SignUpState extends State<SignUP> {
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
                             ColorsResource.PRIMARY_COLOR)),
-                    onPressed: signUp,
+                    onPressed: SignUp,
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(
