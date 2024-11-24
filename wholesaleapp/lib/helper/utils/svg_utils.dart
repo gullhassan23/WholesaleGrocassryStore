@@ -11,7 +11,15 @@ class SvgUtils {
     const SvgAssetLoader(ImagesResource.twitter),
     const SvgAssetLoader(ImagesResource.ALERT_ICON),
     const SvgAssetLoader(ImagesResource.LOGIN_ICON),
+    const SvgAssetLoader(ImagesResource.FRUITS),
+    const SvgAssetLoader(ImagesResource.VEGE),
+    const SvgAssetLoader(ImagesResource.BABY),
+    const SvgAssetLoader(ImagesResource.BEVERAGE),
+    const SvgAssetLoader(ImagesResource.OIL),
+    const SvgAssetLoader(ImagesResource.GROCERY),
     const SvgAssetLoader(ImagesResource.SPLASH),
+    const SvgAssetLoader(ImagesResource.PROFILE_ICON),
+    const SvgAssetLoader(ImagesResource.EDIT_IMAGE_ICON),
   ];
 
   static Future<void> preCacheSVGs() async {
