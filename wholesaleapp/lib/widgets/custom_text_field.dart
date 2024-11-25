@@ -8,18 +8,21 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
   final bool? obscureText;
+  final int lines;
 
   const CustomTextFormField(
       {super.key,
       required this.text,
       this.controller,
       this.validator,
+      this.lines=1,
       this.suffixIcon,
       this.obscureText});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: lines,
       controller: controller,
       obscureText: obscureText ?? false,
       validator: validator,
