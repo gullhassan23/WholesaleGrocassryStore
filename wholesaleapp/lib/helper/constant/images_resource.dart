@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:image_picker/image_picker.dart';
+
 class ImagesResource {
   /// Icons
   //static const String SPLASH = "assets/icons/splash.svg";
@@ -8,6 +12,23 @@ class ImagesResource {
   static const String ALERT_ICON = "assets/icons/alert_icon.svg";
   static const String LOGIN_ICON = "assets/lottie/login.json";
   static const String SPLASH = "assets/lottie/splash.json";
+
+Future<List<Uint8List>> pickproducts() async {
+  final ImagePicker _picker = ImagePicker();
+  List<Uint8List> imagesData = [];
+
+  // Pick multiple images
+  final List<XFile>? images = await _picker.pickMultiImage();
+
+  if (images != null && images.isNotEmpty) {
+    for (var image in images) {
+      Uint8List imageData = await image.readAsBytes();
+      imagesData.add(imageData);
+    }
+  }
+
+  return imagesData;
+}
 
   /// Gifs
 //static const String REVIEW_POSTING_GIF = "assets/gif/review_posting.gif";
