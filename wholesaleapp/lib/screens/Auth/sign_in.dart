@@ -5,6 +5,7 @@ import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 import 'package:wholesaleapp/screens/homeScreen/AdminHome.dart';
 
+import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../../widgets/custom_text_field.dart';
