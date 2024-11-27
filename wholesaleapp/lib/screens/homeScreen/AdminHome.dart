@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/screens/homeScreen/InventoryScreen.dart';
+import 'package:wholesaleapp/screens/homeScreen/StockScreen.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
@@ -64,6 +65,7 @@ class AdminHome extends StatelessWidget {
                       title: "Stock",
                       icon: Icons.storage,
                       onTap: () {
+                        Get.to(() => StockScreen());
                         // Navigate to Stock Screen
                       },
                     ),
