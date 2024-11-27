@@ -28,14 +28,15 @@ class Authenticationclass {
 
   Future<String> signUpDistributor(
       {required String name,
+      required String phone,
       required String email,
       required String password}) async {
     name.trim();
-
+    phone.trim();
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (name != "" && email != "" && password != "") {
+    if (name != "" && email != "" && phone != "" && password != "") {
       try {
         UserCredential cred = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -47,6 +48,7 @@ class Authenticationclass {
         Distributor users = Distributor(
           lastActive: DateTime.now(),
           email: email,
+          phone: phone,
           password: hashedPassword,
           name: name,
           uid: cred.user!.uid,
@@ -89,16 +91,14 @@ class Authenticationclass {
   Future<String> signUpAdmin(
       {required String name,
       required String email,
+      required String phone,
       required String password}) async {
     name.trim();
-
+    phone.trim();
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (name == adminName &&
-    
-        email == adminEmail &&
-        password == adminPassword) {
+    if (name == adminName && email == adminEmail && password == adminPassword) {
       try {
         UserCredential admincred = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -109,11 +109,11 @@ class Authenticationclass {
         print(admincred.user!.uid);
         Admin admin = Admin(
             isAdmin: true,
+            Aphone: phone,
             AlastActive: DateTime.now(),
             Aemail: email,
             Aname: name,
             Apassword: password,
-           
             Auid: admincred.user!.uid);
 
         await _firestore
@@ -149,18 +149,51 @@ class Authenticationclass {
 
     return output;
   }
-  // Future<void> Logout(BuildContext context) async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   try {
-  //     await _auth.signOut().then((value) {
-  //       // Navigator.pushReplacement(
-  //       //     context, MaterialPageRoute(builder: (context) => Login()));
-  //       Get.offAll(() => Login());
-  //     });
-  //   } catch (e) {
-  //     print("error");
-  //   }
-  // }
+
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required Function(String verificationId) onCodeSent,
+    required Function(FirebaseAuthException e) onVerificationFailed,
+  }) async {
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential);
+      },
+      verificationFailed: onVerificationFailed,
+      codeSent: (String verificationId, int? resendToken) {
+        onCodeSent(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Handle auto retrieval timeout
+      },
+    );
+  }
+
+  // Method to verify OTP and reset the password
+  Future<void> verifyOtpAndResetPassword({
+    required String verificationId,
+    required String smsCode,
+    required String newPassword,
+  }) async {
+    try {
+      // Verify the OTP
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+
+      // Sign in using the credential
+      UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+
+      // Update password for the user
+      await userCredential.user?.updatePassword(newPassword);
+    } catch (e) {
+      throw Exception('Failed to reset password: ${e.toString()}');
+    }
+  }
 
   Future<String> ProfilePic({
     required Uint8List file,

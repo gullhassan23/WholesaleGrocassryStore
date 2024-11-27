@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
-
 import '../../helper/constant/colors_resource.dart';
-import '../../helper/constant/images_resource.dart';
 import '../../widgets/custom_text_field.dart';
 
 class SignUP extends StatefulWidget {
@@ -41,10 +39,11 @@ class _SignUpState extends State<SignUP> {
 
     if (email.text == Authenticationclass().adminEmail &&
         passcode.text == Authenticationclass().adminPassword &&
+        phone.text == Authenticationclass().adminPhone &&
         name.text == Authenticationclass().adminName) {
       String output = await Authenticationclass().signUpAdmin(
           name: name.text,
-          // phone: phone.text,
+          phone: phone.text,
           email: email.text,
           password: passcode.text);
       setState(() {
@@ -67,6 +66,7 @@ class _SignUpState extends State<SignUP> {
       }
     } else {
       String output = await Authenticationclass().signUpDistributor(
+        phone: phone.text,
         name: name.text,
         email: email.text,
         password: passcode.text,
@@ -83,10 +83,10 @@ class _SignUpState extends State<SignUP> {
         Get.snackbar(
           "Signup Error", // Title
           output, // Message
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          duration: Duration(seconds: 3),
+          duration: Duration(seconds: 5),
         );
       }
     }
@@ -108,19 +108,6 @@ class _SignUpState extends State<SignUP> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignIn()),
-                        );
-                      },
-                      child: SvgPicture.asset(ImagesResource.ARROW),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
                     const Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -190,16 +177,66 @@ class _SignUpState extends State<SignUP> {
                     const SizedBox(
                       height: 24,
                     ),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter phone number";
-                        }
-                        return null;
-                      },
-                      controller: phone,
-                      text: 'Phone',
+                    IntlPhoneField(
+                      showCountryFlag: true,
+                      dropdownIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.grey,
+                      ),
+                      decoration: InputDecoration(
+                          hintText: "Phone Number",
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: ColorsResource.PRIMARY_COLOR,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          fillColor: ColorsResource.LIGHT_WHITE,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: ColorsResource.LIGHT_WHITE,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          // border: OutlineInputBorder(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     borderSide: Divider.createBorderSide(context)),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Color(0xfffd6f3e),
+                          )),
+                      initialCountryCode: "+92",
+                      onChanged: (text) => setState(() {
+                        phone.text = text.completeNumber;
+                      }),
                     ),
+                    // CustomTextFormField(
+                    //   validator: (value) {
+                    //     if (value!.isEmpty) {
+                    //       return "Enter phone number";
+                    //     }
+                    //     return null;
+                    //   },
+                    //   controller: phone,
+                    //   text: 'Phone',
+                    // ),
                     const SizedBox(
                       height: 40,
                     ),
