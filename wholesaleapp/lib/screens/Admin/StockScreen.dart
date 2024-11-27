@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
+import 'package:wholesaleapp/screens/Admin/EditScreen.dart';
 import 'package:wholesaleapp/widgets/TextForm.dart';
 
 class StockScreen extends StatefulWidget {
@@ -73,22 +74,39 @@ class _StockScreenState extends State<StockScreen> {
                   final item = products[index];
                   return Card(
                     margin: EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: item.imageUrls.isNotEmpty
-                          ? Image.network(
-                              item.imageUrls[0], // Use single image URL here
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(Icons.image_not_supported);
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          leading: item.imageUrls.isNotEmpty
+                              ? Image.network(
+                                  item.imageUrls[
+                                      0], // Use single image URL here
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Icon(Icons.image_not_supported);
+                                  },
+                                )
+                              : Icon(Icons.image_not_supported),
+                          title: Text(item.itemName),
+                          subtitle:
+                              Text('Type: ${item.type}\nCost: \$${item.cost}'),
+                          trailing: Text('Qty: ${item.quantity}'),
+                        ),
+                        Positioned(
+                          bottom: 44,
+                          left: 349,
+                          child: IconButton(
+                              onPressed: () {
+                                Get.to(() => EditProductScreen(product: item));
                               },
-                            )
-                          : Icon(Icons.image_not_supported),
-                      title: Text(item.itemName),
-                      subtitle:
-                          Text('Type: ${item.type}\nCost: \$${item.cost}'),
-                      trailing: Text('Qty: ${item.quantity}'),
+                              icon: Icon(
+                                Icons.edit,
+                                size: 15.sp,
+                              )),
+                        ),
+                      ],
                     ),
                   );
                 },
