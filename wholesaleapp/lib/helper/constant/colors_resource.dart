@@ -13,4 +13,11 @@ class ColorsResource {
   static const Color ORANGE = Color(0xffFF7029);
   static const Color BLACK = Color(0xff000000);
   static const Color PINPUT_DISABLE_COLOR = Color(0xffE5E6EB);
+  static const Color VEG_SHADE = Color(0xffE6F2EA);
+  static const Color FRUIT_SHADE = Color(0xffFFE9E5);
+  static const Color DRINK_SHADE = Color(0xffFFF6E3);
+  static const Color GROCERY_SHADE = Color(0xffF3EFFA);
+  static const Color OIL_SHADE = Color(0xffDCF4F5);
+  static const Color BABY_SHADE = Color(0xffD2EFFF);
+  static const Color PROFILE_AND_COVER_PIC_BG_COLOR = Color(0xffE7EBEE);
 }
