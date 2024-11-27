@@ -124,4 +124,38 @@ class ItemController extends GetxController {
     }
     update(['search']);
   }
+
+  Future<String> updateProductToFirestore({
+    required String uid,
+    required String productName,
+    required String type,
+    required String rawCost,
+    required String quantity,
+    required String description,
+    List<Uint8List>? images,
+  }) async {
+    try {
+      Map<String, dynamic> updateData = {
+        'itemName': productName,
+        'type': type,
+        'cost': double.parse(rawCost),
+        'quantity': quantity,
+        'description': description,
+      };
+
+      // if (images != null && images.isNotEmpty) {
+      //   List<String> imageUrls = await cloud().uploadImage(images);
+      //   updateData['imageUrls'] = imageUrls;
+      // }
+
+      await FirebaseFirestore.instance
+          .collection('Items')
+          .doc(uid)
+          .update(updateData);
+      fetchProductData(); // Refresh items
+      return "success";
+    } catch (e) {
+      return "Error: ${e.toString()}";
+    }
+  }
 }

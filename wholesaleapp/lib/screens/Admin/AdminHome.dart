@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
-import 'package:wholesaleapp/screens/homeScreen/InventoryScreen.dart';
-import 'package:wholesaleapp/screens/homeScreen/StockScreen.dart';
+import 'package:wholesaleapp/screens/Admin/InventoryScreen.dart';
+import 'package:wholesaleapp/screens/Admin/StockScreen.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});

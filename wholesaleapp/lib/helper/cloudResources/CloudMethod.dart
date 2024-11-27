@@ -48,6 +48,7 @@ class cloud {
     return url;
   }
 
+
   Future<String> uploadProductToDatabase({
     required String type,
     required List<Uint8List> imageFiles, // List of Uint8List images

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/AdminController.dart';
 
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
@@ -12,6 +14,7 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  final Admincontroller adminController = Get.put(Admincontroller());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +91,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             height: 50,
           ),
           InkWell(
+            onTap: () {
+              adminController.logout(context);
+            },
             child: ProfileListItem(text: 'Logout'),
           ),
         ],
