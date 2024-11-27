@@ -4,10 +4,12 @@ import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 import 'package:wholesaleapp/screens/homeScreen/AdminHome.dart';
+
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../../widgets/custom_text_field.dart';
+import '../homeScreen/navigation.dart';
 import 'forgot_password.dart';
 
 class SignIn extends StatefulWidget {
@@ -213,7 +215,8 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()),
+                                      builder: (context) =>
+                                          HomeContentScreen()),
                                   (route) => false,
                                 );
                                 // Navigator.push(
