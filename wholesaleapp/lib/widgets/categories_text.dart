@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wholesaleapp/screens/homeScreen/categories_screen.dart';
 
 class CategoriesText extends StatelessWidget {
   const CategoriesText({
@@ -10,7 +11,12 @@ class CategoriesText extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CategoriesScreen()),
+            );
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

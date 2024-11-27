@@ -1,8 +1,17 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../Controllers/distribController.dart';
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
+import '../../helper/utils/dialog_utils.dart';
+import '../../helper/utils/permission_utils.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -12,6 +21,9 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  final UserController userController = Get.put(UserController());
+  final ImagePicker _picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +83,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       width: 24,
                     ),
                     onTap: () {
-                      // _pickProfileImage();
+                      _pickProfileImage();
                     },
                   ),
                 ),
@@ -87,12 +99,76 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           SizedBox(
             height: 50,
           ),
-          InkWell(
+          GestureDetector(
+            onTap: () async {
+              bool? logoutResult =
+                  await DialogUtils.showLogoutDialog(context: context);
+              if (logoutResult == true && context.mounted) {
+                logoutUser();
+              }
+            },
             child: ProfileListItem(text: 'Logout'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _pickProfileImage() async {
+    DialogUtils.showImageOptionsBottomSheet(
+      context: context,
+      chooseFromGalleryCallback: () async {
+        pick(type: 'GALLERY');
+        Navigator.pop(context);
+      },
+      takeAPictureCallback: () async {
+        pick(type: 'CAMERA');
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  Future<void> pick({required String type}) async {
+    AndroidDeviceInfo? androidDeviceInfo;
+    if (Platform.isAndroid) {
+      androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
+    }
+    PermissionStatus permissionStatus = await PermissionUtil().checkPermission(
+        permission: type == 'GALLERY'
+            ? (androidDeviceInfo != null &&
+                        androidDeviceInfo.version.sdkInt >= 33) ||
+                    Platform.isIOS
+                ? Permission.photos
+                : Permission.storage
+            : Permission.camera);
+    if (permissionStatus.isGranted) {
+      XFile? xFileResult;
+      if (type == 'CAMERA') {
+        xFileResult = await _picker.pickImage(
+          source: ImageSource.camera,
+          preferredCameraDevice: CameraDevice.front,
+        );
+      } else if (type == 'GALLERY') {
+        xFileResult = await _picker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+    }
+  }
+
+  Future<void> logoutUser() async {
+    if (context.mounted) {
+      userController.logout(context);
+    }
+    // if (networkStatusService.networkStatus == NetworkStatus.ONLINE) {
+    //   if (context.mounted) {
+    //     userController.logout(context);
+    //   }
+    // } else {
+    //   if (context.mounted) {
+    //     //DialogUtils.showNoInternetDialog(context: context, onRetry: logoutUser);
+    //   }
+    // }
   }
 }
 
@@ -112,22 +188,22 @@ class ProfileListItem extends StatelessWidget {
         Container(
           height: 50,
           margin: EdgeInsets.symmetric(
-            horizontal: 20,
+            horizontal: 10,
           ),
           padding: EdgeInsets.symmetric(
             horizontal: 15,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: Colors.blueGrey.shade100,
+            color: Color(0xFFdcf3ff),
           ),
           child: Row(
             children: <Widget>[
               Text(
                 this.text,
                 style: TextStyle(
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
                   fontSize: 18,
                 ),
               ),

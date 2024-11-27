@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class ColorsResource {
   static const Color LIGHT_PINK = Color(0xffFF939B);
+  static const Color COLOR_GREY = Color(0xff545454);
   static const Color DARK_PINK = Color(0xffEF2A39);
   static const Color PRIMARY_COLOR = Color(0xff24BAEC);
   static const Color WHITE = Color(0xffFFFFFF);
   static const Color GREY = Color(0xff7D848D);
   static const Color LIGHT_GREY = Color(0xff707B81);
+  static const Color LIGHT_GREY_2 = Color(0xffF2F2F2);
   static const Color LIGHT_BLUE = Color(0xffCAEAFF);
   static const Color BLACK_SHADE = Color(0xff1B1E28);
   static const Color LIGHT_WHITE = Color(0xffF7F7F9);
