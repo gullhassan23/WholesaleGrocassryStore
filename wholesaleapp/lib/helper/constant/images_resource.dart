@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,10 @@ class ImagesResource {
   static const String ALERT_ICON = "assets/icons/alert_icon.svg";
   static const String LOGIN_ICON = "assets/lottie/login.json";
   static const String SPLASH = "assets/lottie/splash.json";
+
+  String getUid() {
+    return (100000 + Random().nextInt(10000)).toString();
+  }
 
 Future<List<Uint8List>> pickproducts() async {
   final ImagePicker _picker = ImagePicker();

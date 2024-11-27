@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/AdminModel.dart';
+import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 class Admincontroller extends GetxController {
@@ -64,6 +65,16 @@ class Admincontroller extends GetxController {
     }
   }
 
+  Future<void> addItemToFirestore(ItemModel item) async {
+    try {
+      await FirebaseFirestore.instance.collection('items').add(item.toMap());
+      Get.snackbar('Success', 'Item added successfully!',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to add item: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 // Fetch the current FCM token and save it to Firestore
   // Future<void> saveUserToken() async {
   //   try {
