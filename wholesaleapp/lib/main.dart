@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
           _child = CategoriesScreen();
           break;
         case 2:
-          _child = ProductScreen();
+          _child = AllProductScreen();
           break;
         case 3:
           _child = UserProfileScreen();
