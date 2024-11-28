@@ -70,7 +70,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffdcf3ff),
       appBar: AppBar(
+        backgroundColor: Color(0xffdcf3ff),
         surfaceTintColor: Colors.white,
         centerTitle: true,
         title: GestureDetector(
@@ -170,7 +172,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     width: double.infinity,
                     child: DropdownButton(
                       isExpanded: true,
-                      dropdownColor: Color(0xfff2f2f2),
+                      dropdownColor: Color(0xffFFFDD0),
                       value: category,
                       icon: Icon(Icons.keyboard_arrow_down),
                       items: productCategories.map((String item) {

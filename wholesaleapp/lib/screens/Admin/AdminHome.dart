@@ -15,7 +15,9 @@ class AdminHome extends StatelessWidget {
 
     return ScreenUtilInit(
       builder: (context, child) => Scaffold(
+        backgroundColor: Color(0xffdcf3ff),
         appBar: AppBar(
+          backgroundColor: Color(0xffdcf3ff),
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: GestureDetector(
