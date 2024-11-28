@@ -12,6 +12,7 @@ import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../../helper/utils/dialog_utils.dart';
 import '../../helper/utils/permission_utils.dart';
+import '../../widgets/profile_list_items.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -23,6 +24,7 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final UserController userController = Get.put(UserController());
   final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +68,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                         ),
                       ),
-                      child: SvgPicture.asset(
-                        ImagesResource.PROFILE_ICON,
-                        fit: BoxFit.none,
-                      ),
+                      child: _selectedImage == null
+                          ? SvgPicture.asset(
+                              ImagesResource.PROFILE_ICON,
+                              fit: BoxFit.none,
+                            )
+                          : Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                              width: 80, // Adjust width/height as needed
+                              height: 80,
+                            ),
                     ),
                   ),
                 ),
@@ -153,6 +162,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           source: ImageSource.gallery,
         );
       }
+      if (xFileResult != null) {
+        setState(() {
+          _selectedImage =
+              File(xFileResult!.path); // Update the state with the new image
+        });
+      }
     }
   }
 
@@ -169,58 +184,5 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     //     //DialogUtils.showNoInternetDialog(context: context, onRetry: logoutUser);
     //   }
     // }
-  }
-}
-
-class ProfileListItem extends StatelessWidget {
-  final String text;
-  final bool hasNavigation;
-
-  const ProfileListItem({
-    required this.text,
-    this.hasNavigation = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 50,
-          margin: EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: Color(0xFFdcf3ff),
-          ),
-          child: Row(
-            children: <Widget>[
-              Text(
-                this.text,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18,
-                ),
-              ),
-              Spacer(),
-              if (this.hasNavigation)
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 20,
-                  color: Colors.blueGrey,
-                )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-      ],
-    );
   }
 }

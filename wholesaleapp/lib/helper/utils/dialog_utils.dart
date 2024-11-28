@@ -98,8 +98,8 @@ class DialogUtils {
 
   static Future<dynamic> showImageOptionsBottomSheet({
     required BuildContext context,
-    dynamic chooseFromGalleryCallback,
-    dynamic takeAPictureCallback,
+    required VoidCallback chooseFromGalleryCallback,
+    required VoidCallback takeAPictureCallback,
   }) {
     return showModalBottomSheet(
       context: context,
@@ -107,10 +107,11 @@ class DialogUtils {
       backgroundColor: ColorsResource.WHITE,
       useSafeArea: true,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.r),
-        topRight: Radius.circular(20.r),
-      )),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+      ),
       builder: (BuildContext bottomSheetContext) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.20,
@@ -123,9 +124,7 @@ class DialogUtils {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 10,
-                  ),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Container(
                     height: 4.h,
                     width: 47.w,
@@ -170,19 +169,22 @@ class CustomImageSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 24.h,
-          width: 24.w,
-          child: SvgPicture.asset(icon),
-        ),
-        SizedBox(width: 8.w),
-        Text(
-          text,
-          style: TextStyle(height: 1, color: ColorsResource.COLOR_GREY),
-        ),
-      ],
+    return GestureDetector(
+      onTap: callback, // Invoke the callback when tapped
+      child: Row(
+        children: [
+          SizedBox(
+            height: 24.h,
+            width: 24.w,
+            child: SvgPicture.asset(icon),
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            text,
+            style: TextStyle(height: 1, color: ColorsResource.COLOR_GREY),
+          ),
+        ],
+      ),
     );
   }
 }

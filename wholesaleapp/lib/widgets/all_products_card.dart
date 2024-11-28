@@ -14,22 +14,64 @@ class AllProductsCard extends StatelessWidget {
         image: "https://i.imgur.com/CGCyp1d.png",
         price: 650.62,
         productName: 'Orange',
-        qty: '10 pieces'),
+        qty: '10 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
     ProductModel(
         image: "https://i.imgur.com/AkzWQuJ.png",
         price: 1264,
         productName: 'Chicken',
-        qty: '25 pieces'),
+        qty: '25 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
     ProductModel(
         image: "https://i.imgur.com/J7mGZ12.png",
         price: 650.62,
         productName: 'Orange',
-        qty: '11 pieces'),
+        qty: '11 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
     ProductModel(
         image: "https://i.imgur.com/q9oF9Yq.png",
         price: 1264,
         productName: 'Chicken',
-        qty: '5 pieces'),
+        qty: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
+    ProductModel(
+        image: "https://i.imgur.com/CGCyp1d.png",
+        price: 650.62,
+        productName: 'Orange',
+        qty: '10 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
+    ProductModel(
+        image: "https://i.imgur.com/AkzWQuJ.png",
+        price: 1264,
+        productName: 'Chicken',
+        qty: '25 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
+    ProductModel(
+        image: "https://i.imgur.com/J7mGZ12.png",
+        price: 650.62,
+        productName: 'Orange',
+        qty: '11 pieces',
+        weight: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
+    ProductModel(
+        image: "https://i.imgur.com/q9oF9Yq.png",
+        price: 1264,
+        productName: 'Chicken',
+        qty: '100lb',
+        description:
+            'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
   ];
 
   @override
@@ -44,7 +86,7 @@ class AllProductsCard extends StatelessWidget {
           mainAxisSpacing: 15,
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) {
+              (context, index) {
             ProductModel product = demoPopularProducts[index];
             return InkWell(
               onTap: () {
@@ -63,7 +105,7 @@ class AllProductsCard extends StatelessWidget {
                   children: <Widget>[
                     Flexible(
                       child: Image.network(
-                        product.image,
+                        product.image ?? '',
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
@@ -91,7 +133,7 @@ class AllProductsCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            '\$ ${product.price.toStringAsFixed(2)}',
+                            '\$ ${product.price?.toStringAsFixed(2)}',
                             style: TextStyle(
                               color: ColorsResource.PRIMARY_COLOR,
                             ),
@@ -99,7 +141,7 @@ class AllProductsCard extends StatelessWidget {
                           const SizedBox(height: 8.0),
                           Text('${demoPopularProducts[index].productName}'),
                           const SizedBox(height: 8.0),
-                          Text(product.qty),
+                          Text(product.qty ?? ''),
                         ],
                       ),
                     ),
