@@ -88,7 +88,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Product')),
+      backgroundColor: Color(0xffdcf3ff),
+      appBar: AppBar(
+          backgroundColor: Color(0xffdcf3ff),
+          centerTitle: true,
+          title: Text('Edit Product')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
