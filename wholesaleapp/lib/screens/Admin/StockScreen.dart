@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
-import 'package:wholesaleapp/screens/Admin/EditScreen.dart';
+import 'package:wholesaleapp/screens/Admin/EditProduct.dart';
 import 'package:wholesaleapp/widgets/TextForm.dart';
 
 class StockScreen extends StatefulWidget {
@@ -23,9 +23,9 @@ class _StockScreenState extends State<StockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffdcf3ff),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xffdcf3ff),
+          backgroundColor: Colors.white,
           centerTitle: true,
           title: Text("Stock Screen")),
       body: Column(

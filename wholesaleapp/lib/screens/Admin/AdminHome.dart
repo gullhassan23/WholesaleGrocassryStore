@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
+
 import 'package:wholesaleapp/screens/Admin/InventoryScreen.dart';
+import 'package:wholesaleapp/screens/Admin/ProfileScreen.dart';
 import 'package:wholesaleapp/screens/Admin/StockScreen.dart';
 
 class AdminHome extends StatelessWidget {
@@ -15,9 +17,9 @@ class AdminHome extends StatelessWidget {
 
     return ScreenUtilInit(
       builder: (context, child) => Scaffold(
-        backgroundColor: Color(0xffdcf3ff),
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xffdcf3ff),
+          backgroundColor: Colors.white,
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: GestureDetector(
@@ -51,6 +53,7 @@ class AdminHome extends StatelessWidget {
                       icon: Icons.person,
                       onTap: () {
                         // Navigate to Edit Profile Screen
+                        Get.to(() => Profile());
                       },
                     ),
                     _buildDashboardTile(

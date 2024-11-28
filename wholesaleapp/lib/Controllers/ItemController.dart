@@ -73,6 +73,7 @@ class ItemController extends GetxController {
   }
 
   Future<String> productToFirestore({
+    String weight='',
     String type = '',
     String quantity = '',
     required String productName,
@@ -90,6 +91,7 @@ class ItemController extends GetxController {
 
       // Upload product to the database
       String status = await cloud().uploadProductToDatabase(
+        weight: weight,
           quantity: quantity,
           productName: productName,
           description: description,

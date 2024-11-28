@@ -41,7 +41,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     nameController = TextEditingController(text: widget.product.itemName);
     costController =
         TextEditingController(text: widget.product.cost.toString());
-    quantityController = TextEditingController(text: widget.product.quantity);
+    quantityController =
+        TextEditingController(text: widget.product.quantity.toString());
     descriptionController =
         TextEditingController(text: widget.product.description);
     selectedType = widget.product.type; // Initialize selected type
@@ -88,9 +89,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffdcf3ff),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xffdcf3ff),
+          backgroundColor: Colors.white,
           centerTitle: true,
           title: Text('Edit Product')),
       body: Padding(

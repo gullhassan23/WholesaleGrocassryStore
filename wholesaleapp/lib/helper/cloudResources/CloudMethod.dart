@@ -41,15 +41,15 @@ class cloud {
     String url = await uploadProfileToStorage(file, false, currentUser.uid);
     Pic pic = Pic(id: currentUser.uid, photoUrl: url);
     await firebaseFirestore
-        .collection("Distributor")
+        .collection("WholeSaler")
         .doc(currentUser.uid)
         .update(pic.toJson());
     print(url);
     return url;
   }
 
-
   Future<String> uploadProductToDatabase({
+    required String weight,
     required String type,
     required List<Uint8List> imageFiles, // List of Uint8List images
     required String productName,
@@ -78,11 +78,12 @@ class cloud {
 
         // Parse the raw cost to a double
         double cost = double.parse(rawCost);
-
+        int quan = int.parse(quantity);
         // Create the item model
         ItemModel item = ItemModel(
+          weight: weight,
           type: type,
-          quantity: quantity,
+          quantity: quan,
           createdAT: DateTime.now(),
           uid: docid,
           imageUrls: base64Images, // Store Base64 strings

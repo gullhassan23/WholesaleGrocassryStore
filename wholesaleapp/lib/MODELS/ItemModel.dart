@@ -1,22 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
+  String weight;
   String uid;
   String type;
   String itemName;
   double cost;
   String description;
-  String quantity;
+  int quantity;
   DateTime createdAT;
   List<String> imageUrls;
 
   ItemModel({
+    this.weight = '',
     this.uid = '',
     this.type = '',
     this.itemName = '',
     this.cost = 0.0,
     this.description = '',
-    this.quantity = '',
+    this.quantity = 0,
     required this.createdAT,
     this.imageUrls = const [],
   });
@@ -34,11 +36,12 @@ class ItemModel {
 
     return ItemModel(
       uid: data['uid'] ?? '',
+      weight: data['weight'] ?? '',
       type: data['type'] ?? '',
       itemName: data['itemName'] ?? '',
       cost: (data['cost'] ?? 0).toDouble(),
       description: data['description'] ?? '',
-      quantity: data['quantity'] ?? '',
+      quantity: data['quantity'] ?? 0,
       createdAT: createdAt,
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
     );
@@ -48,7 +51,7 @@ class ItemModel {
     return {
       'uid': uid,
       'type': type,
-
+      'weight': weight,
       'itemName': itemName,
       'cost': cost,
       'description': description,

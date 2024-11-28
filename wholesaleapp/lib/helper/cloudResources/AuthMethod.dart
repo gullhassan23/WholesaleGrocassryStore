@@ -13,9 +13,9 @@ class Authenticationclass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String adminEmail = 'admin@example.com';
-  final String adminPassword = 'admin123';
-  final String adminName = "Wholesaler";
-  final String adminPhone = "+923351764911";
+  // final String adminPassword = 'admin123';
+  // final String adminName = "Wholesaler";
+  // final String adminPhone = "+923351764911";
 
   Future<Distributor> getUsersDetails() async {
     User currentUser = auth.currentUser!;
@@ -98,7 +98,7 @@ class Authenticationclass {
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (name == adminName && email == adminEmail && password == adminPassword) {
+    if (name != "" && email == adminEmail && password != "" && phone != "") {
       try {
         UserCredential admincred = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -136,7 +136,7 @@ class Authenticationclass {
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (email == adminEmail && password == adminPassword) {
+    if (email == adminEmail && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
         output = "success";

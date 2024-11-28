@@ -170,8 +170,7 @@ class _SignInState extends State<SignIn> {
 
                             if (emailController.text ==
                                     Authenticationclass().adminEmail &&
-                                passwordController.text ==
-                                    Authenticationclass().adminPassword) {
+                                passwordController.text != "") {
                               String output =
                                   await Authenticationclass().signInAdminUser(
                                 email: emailController.text,

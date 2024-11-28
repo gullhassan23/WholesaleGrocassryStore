@@ -41,6 +41,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
     'Frozen'
   ];
 
+  String weight = 'kg';
+  List<String> productWeight = ['kg', 'litre', 'dozen'];
+
   @override
   void dispose() {
     productNameController.dispose();
@@ -70,15 +73,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffdcf3ff),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xffdcf3ff),
+        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         centerTitle: true,
-        title: GestureDetector(
-          onTap: () {},
-          child: Text("Inventory Screen", style: TextStyle(fontSize: 20.sp)),
-        ),
+        title: Text("Inventory Screen", style: TextStyle(fontSize: 20.sp)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -119,6 +119,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               width: double.infinity,
                               height: 150,
                               decoration: BoxDecoration(
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,15 +173,18 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     width: double.infinity,
                     child: DropdownButton(
                       isExpanded: true,
-                      dropdownColor: Color(0xffFFFDD0),
+                      dropdownColor: Colors.white,
                       value: category,
                       icon: Icon(Icons.keyboard_arrow_down),
                       items: productCategories.map((String item) {
                         return DropdownMenuItem(
-                          child: Text(
-                            item,
-                            style: TextStyle(
-                              color: Colors.black,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 5.w),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                           value: item,
@@ -194,6 +198,38 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         }
                       },
                     )),
+                SizedBox(height: 10.h),
+                SizedBox(
+                  width: double.infinity,
+                  child: DropdownButton(
+                    isExpanded: true,
+                    dropdownColor: Colors.white,
+                    value: weight, // Correctly linked to the 'weight' variable
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    items: productWeight.map((String item) {
+                      return DropdownMenuItem(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5.w),
+                          child: Text(
+                            item,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        value: item,
+                      );
+                    }).toList(),
+                    onChanged: (String? newVal) {
+                      if (newVal != null) {
+                        setState(() {
+                          weight = newVal; // Correctly update 'weight' here
+                        });
+                      }
+                    },
+                  ),
+                ),
+
                 SizedBox(height: 20.h),
                 CustomButton(
                     text: "Add to stock",

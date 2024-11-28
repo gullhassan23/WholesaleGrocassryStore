@@ -17,8 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   //final UserController userController = Get.put(UserController());
   List imageList = [
     {"id": 1, "image_path": 'assets/images/image1.png'},
