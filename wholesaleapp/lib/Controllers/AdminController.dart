@@ -167,27 +167,39 @@ class Admincontroller extends GetxController {
     }
   }
 
-  // Future<void> updateUserAddress(String newAddress) async {
-  //   User currentUser = FirebaseAuth.instance.currentUser!;
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUser.uid)
-  //       .update({'address': newAddress});
-  //   user.update((val) {
-  //     val?.address = newAddress;
-  //   });
-  // }
+  Future<void> updateAdminName(String newName) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Aname': newName});
+    wholesaler .update((val) {
+      val?.Aname = newName;
+    });
+  }
 
-  // Future<void> updateUserPhone(String newPhone) async {
-  //   User currentUser = FirebaseAuth.instance.currentUser!;
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUser.uid)
-  //       .update({'phone': newPhone});
-  //   user.update((val) {
-  //     val?.phone = newPhone;
-  //   });
-  // }
+  Future<void> updateAdminPhone(String newPhone) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Aphone': newPhone});
+    wholesaler.update((val) {
+      val?.Aphone = newPhone;
+    });
+  }
+
+   Future<void> updateAdminPass(String newPass) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Apassword': newPass});
+    wholesaler.update((val) {
+      val?.Apassword = newPass;
+    });
+  }
+  
 
   // void getToken() async {
   //   FirebaseMessaging messaging = FirebaseMessaging.instance;

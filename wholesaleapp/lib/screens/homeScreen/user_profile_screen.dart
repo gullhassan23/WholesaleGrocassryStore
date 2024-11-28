@@ -105,6 +105,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 class ProfileListItem extends StatelessWidget {
   final String text;
   final bool hasNavigation;
+  
 
   const ProfileListItem({
     required this.text,

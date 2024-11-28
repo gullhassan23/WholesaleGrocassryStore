@@ -38,9 +38,9 @@ class _SignUpState extends State<SignUP> {
     });
 
     if (email.text == Authenticationclass().adminEmail &&
-        passcode.text == Authenticationclass().adminPassword &&
-        phone.text == Authenticationclass().adminPhone &&
-        name.text == Authenticationclass().adminName) {
+        passcode.text != "" &&
+        phone.text != "" &&
+        name.text != "") {
       String output = await Authenticationclass().signUpAdmin(
           name: name.text,
           phone: phone.text,
