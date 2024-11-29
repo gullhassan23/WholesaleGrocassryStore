@@ -7,6 +7,8 @@ class ImagesResource {
   /// Icons
   //static const String SPLASH = "assets/icons/splash.svg";
   static const String ARROW = "assets/icons/Arrow.svg";
+  static const String CAMERA_ICON = "assets/icons/ic_camera.svg";
+  static const String GALLERY_ICON = "assets/icons/ic_gallery.svg";
   static const String BABY = "assets/icons/baby.svg";
   static const String BEVERAGE = "assets/icons/beverage.svg";
   static const String FRUITS = "assets/icons/fruits.svg";
@@ -22,6 +24,9 @@ class ImagesResource {
   static const String PROFILE_ICON = "assets/icons/profile_placeholder.svg";
   static const String EDIT_IMAGE_ICON = "assets/icons/ic_edit_image.svg";
 
+  Future<List<Uint8List>> pickproducts() async {
+    final ImagePicker _picker = ImagePicker();
+    List<Uint8List> imagesData = [];
   String getUid() {
     return (100000 + Random().nextInt(10000)).toString();
   }
@@ -41,18 +46,19 @@ Future<List<Uint8List>> pickproducts() async {
   final ImagePicker _picker = ImagePicker();
   List<Uint8List> imagesData = [];
 
-  // Pick multiple images
-  final List<XFile>? images = await _picker.pickMultiImage();
 
-  if (images != null && images.isNotEmpty) {
-    for (var image in images) {
-      Uint8List imageData = await image.readAsBytes();
-      imagesData.add(imageData);
+    // Pick multiple images
+    final List<XFile>? images = await _picker.pickMultiImage();
+
+    if (images != null && images.isNotEmpty) {
+      for (var image in images) {
+        Uint8List imageData = await image.readAsBytes();
+        imagesData.add(imageData);
+      }
     }
-  }
 
-  return imagesData;
-}
+    return imagesData;
+  }
 
   /// Gifs
 //static const String REVIEW_POSTING_GIF = "assets/gif/review_posting.gif";

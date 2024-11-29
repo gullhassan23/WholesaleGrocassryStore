@@ -47,6 +47,8 @@ dependencies:
   carousel_slider: ^5.0.0
   dotted_border: ^2.1.0
   get: ^4.6.6
+  device_info_plus:
+  permission_handler: ^11.3.1
 
   flashy_tab_bar2: ^0.0.10
   flutter_svg: ^2.0.15

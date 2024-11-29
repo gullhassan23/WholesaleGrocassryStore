@@ -17,6 +17,8 @@ class SvgUtils {
     const SvgAssetLoader(ImagesResource.SPLASH),
     const SvgAssetLoader(ImagesResource.PROFILE_ICON),
     const SvgAssetLoader(ImagesResource.EDIT_IMAGE_ICON),
+    const SvgAssetLoader(ImagesResource.CAMERA_ICON),
+    const SvgAssetLoader(ImagesResource.GALLERY_ICON),
   ];
 
   static Future<void> preCacheSVGs() async {
