@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/AdminModel.dart';
+import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 class Admincontroller extends GetxController {
@@ -64,6 +65,16 @@ class Admincontroller extends GetxController {
     }
   }
 
+  Future<void> addItemToFirestore(ItemModel item) async {
+    try {
+      await FirebaseFirestore.instance.collection('items').add(item.toMap());
+      Get.snackbar('Success', 'Item added successfully!',
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to add item: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 // Fetch the current FCM token and save it to Firestore
   // Future<void> saveUserToken() async {
   //   try {
@@ -156,27 +167,39 @@ class Admincontroller extends GetxController {
     }
   }
 
-  // Future<void> updateUserAddress(String newAddress) async {
-  //   User currentUser = FirebaseAuth.instance.currentUser!;
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUser.uid)
-  //       .update({'address': newAddress});
-  //   user.update((val) {
-  //     val?.address = newAddress;
-  //   });
-  // }
+  Future<void> updateAdminName(String newName) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Aname': newName});
+    wholesaler .update((val) {
+      val?.Aname = newName;
+    });
+  }
 
-  // Future<void> updateUserPhone(String newPhone) async {
-  //   User currentUser = FirebaseAuth.instance.currentUser!;
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUser.uid)
-  //       .update({'phone': newPhone});
-  //   user.update((val) {
-  //     val?.phone = newPhone;
-  //   });
-  // }
+  Future<void> updateAdminPhone(String newPhone) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Aphone': newPhone});
+    wholesaler.update((val) {
+      val?.Aphone = newPhone;
+    });
+  }
+
+   Future<void> updateAdminPass(String newPass) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('WholeSaler')
+        .doc(currentUser.uid)
+        .update({'Apassword': newPass});
+    wholesaler.update((val) {
+      val?.Apassword = newPass;
+    });
+  }
+  
 
   // void getToken() async {
   //   FirebaseMessaging messaging = FirebaseMessaging.instance;

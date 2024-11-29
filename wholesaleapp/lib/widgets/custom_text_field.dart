@@ -4,6 +4,7 @@ import '../helper/constant/colors_resource.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String text;
+  final String hint;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
@@ -14,8 +15,9 @@ class CustomTextFormField extends StatelessWidget {
       {super.key,
       required this.text,
       this.controller,
+      this.hint = "",
       this.validator,
-      this.lines=1,
+      this.lines = 1,
       this.suffixIcon,
       this.obscureText});
 

@@ -4,8 +4,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:wholesaleapp/Controllers/AdminController.dart';
+
 
 import '../../Controllers/distribController.dart';
 import '../../helper/constant/colors_resource.dart';
@@ -22,9 +26,13 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+
   final UserController userController = Get.put(UserController());
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+
+
+  final Admincontroller adminController = Get.put(Admincontroller());
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +116,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           SizedBox(
             height: 50,
           ),
+
           GestureDetector(
             onTap: () async {
               bool? logoutResult =
@@ -115,6 +124,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               if (logoutResult == true && context.mounted) {
                 logoutUser();
               }
+
+          InkWell(
+            onTap: () {
+              adminController.logout(context);
+
             },
             child: ProfileListItem(text: 'Logout'),
           ),
@@ -122,6 +136,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
 
   Future<void> _pickProfileImage() async {
     DialogUtils.showImageOptionsBottomSheet(
@@ -136,6 +151,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       },
     );
   }
+
+class ProfileListItem extends StatelessWidget {
+  final String text;
+  final bool hasNavigation;
+
 
   Future<void> pick({required String type}) async {
     AndroidDeviceInfo? androidDeviceInfo;
