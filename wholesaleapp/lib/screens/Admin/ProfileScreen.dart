@@ -1,14 +1,15 @@
 import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
-import 'package:wholesaleapp/screens/homeScreen/user_profile_screen.dart';
+
+import '../../widgets/profile_list_items.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
