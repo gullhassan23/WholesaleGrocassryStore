@@ -1,5 +1,6 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:wholesaleapp/screens/homeScreen/cart_screen.dart';
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 import 'package:wholesaleapp/screens/homeScreen/user_profile_screen.dart';
 
@@ -20,6 +21,7 @@ class _HomeContentScreenState extends State<HomeContentScreen> {
     HomeScreen(),
     CategoriesScreen(),
     AllProductScreen(),
+    CartScreen(),
     UserProfileScreen(),
   ];
 
@@ -64,6 +66,12 @@ class _HomeContentScreenState extends State<HomeContentScreen> {
             inactiveColor: Colors.blueGrey,
             icon: Icon(Icons.fastfood_rounded),
             title: Text('Products'),
+          ),
+          FlashyTabBarItem(
+            activeColor: Colors.blue,
+            inactiveColor: Colors.blueGrey,
+            icon: Icon(Icons.shopping_cart),
+            title: Text('Cart'),
           ),
           FlashyTabBarItem(
             activeColor: Colors.blue,

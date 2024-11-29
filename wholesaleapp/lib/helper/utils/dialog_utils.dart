@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
 import '../constant/images_resource.dart';
@@ -92,6 +93,39 @@ class DialogUtils {
                 ),
               ],
             ));
+      },
+    );
+  }
+
+  static Future<dynamic> showEditPhoneDialog(
+    BuildContext context,
+    VoidCallback? onPressed,
+  ) {
+    TextEditingController phoneController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit Phone number"),
+          content: TextField(
+            controller: phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(hintText: "Enter new Phone"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: onPressed,
+              child: Text("Save"),
+            ),
+          ],
+        );
       },
     );
   }

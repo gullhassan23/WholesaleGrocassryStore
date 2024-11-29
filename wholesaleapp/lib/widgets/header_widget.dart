@@ -46,7 +46,7 @@ class Header extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                  MaterialPageRoute(builder: (context) => CartScreen()),
                 );
               },
               icon: Icon(Icons.shopping_cart),

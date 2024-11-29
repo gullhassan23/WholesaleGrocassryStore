@@ -18,6 +18,7 @@ class Admincontroller extends GetxController {
   Admin? _wholesaler;
 
   var isLoading = false.obs;
+
   Admin? get wholeModel => _wholesaler;
 
   @override
@@ -75,6 +76,7 @@ class Admincontroller extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
+
 // Fetch the current FCM token and save it to Firestore
   // Future<void> saveUserToken() async {
   //   try {
@@ -173,7 +175,7 @@ class Admincontroller extends GetxController {
         .collection('WholeSaler')
         .doc(currentUser.uid)
         .update({'Aname': newName});
-    wholesaler .update((val) {
+    wholesaler.update((val) {
       val?.Aname = newName;
     });
   }
@@ -189,7 +191,7 @@ class Admincontroller extends GetxController {
     });
   }
 
-   Future<void> updateAdminPass(String newPass) async {
+  Future<void> updateAdminPass(String newPass) async {
     User currentUser = FirebaseAuth.instance.currentUser!;
     await FirebaseFirestore.instance
         .collection('WholeSaler')
@@ -199,7 +201,6 @@ class Admincontroller extends GetxController {
       val?.Apassword = newPass;
     });
   }
-  
 
   // void getToken() async {
   //   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -219,63 +220,63 @@ class Admincontroller extends GetxController {
     }
   }
 
-  // Future<void> sendMessage(
-  //     {required String message, required String receiverId}) async {
-  //   String? senderId = distributer.value.uid;
+// Future<void> sendMessage(
+//     {required String message, required String receiverId}) async {
+//   String? senderId = distributer.value.uid;
 
-  //   if (senderId.isEmpty || receiverId.isEmpty) {
-  //     print("Sender ID or Receiver ID is invalid.");
-  //     return; // Exit if IDs are invalid
-  //   }
+//   if (senderId.isEmpty || receiverId.isEmpty) {
+//     print("Sender ID or Receiver ID is invalid.");
+//     return; // Exit if IDs are invalid
+//   }
 
-  //   // Generate a unique chatId
+//   // Generate a unique chatId
 
-  //   // Save message in Firestore under the unique chatId
-  //   await FirebaseFirestore.instance
-  //       .collection('chats')
-  //       .doc(senderId)
-  //       .collection('messages')
-  //       .add({
-  //     'senderId': senderId,
-  //     'receiverId': receiverId,
-  //     'message': message,
-  //     'timestamp': FieldValue.serverTimestamp(),
-  //   });
+//   // Save message in Firestore under the unique chatId
+//   await FirebaseFirestore.instance
+//       .collection('chats')
+//       .doc(senderId)
+//       .collection('messages')
+//       .add({
+//     'senderId': senderId,
+//     'receiverId': receiverId,
+//     'message': message,
+//     'timestamp': FieldValue.serverTimestamp(),
+//   });
 
-  //   // Fetch doctor's FCM token from Firestore
-  //   DocumentSnapshot doc = await FirebaseFirestore.instance
-  //       .collection('doctors')
-  //       .doc(receiverId)
-  //       .get();
+//   // Fetch doctor's FCM token from Firestore
+//   DocumentSnapshot doc = await FirebaseFirestore.instance
+//       .collection('doctors')
+//       .doc(receiverId)
+//       .get();
 
-  //   String doctorToken = doc['fcmToken'];
-  //   print("doctorToken ${doctorToken}");
-  //   // Send notification
-  //   sendnotificationUsingApi(
-  //     token: doctorToken,
-  //     title: "Message",
-  //     body: message,
-  //     data: {"type": "new-type"},
-  //   );
-  // }
+//   String doctorToken = doc['fcmToken'];
+//   print("doctorToken ${doctorToken}");
+//   // Send notification
+//   sendnotificationUsingApi(
+//     token: doctorToken,
+//     title: "Message",
+//     body: message,
+//     data: {"type": "new-type"},
+//   );
+// }
 
-  // // Fetching messages using chatId
-  // Stream<QuerySnapshot> getMessages(String receiverId) {
-  //   String senderId = user.value.uid;
-  //   // String chatId = getChatId(senderId, receiverId);
+// // Fetching messages using chatId
+// Stream<QuerySnapshot> getMessages(String receiverId) {
+//   String senderId = user.value.uid;
+//   // String chatId = getChatId(senderId, receiverId);
 
-  //   return FirebaseFirestore.instance
-  //       .collection('chats')
-  //       .doc(senderId)
-  //       .collection('messages')
-  //       .orderBy('timestamp', descending: true)
-  //       .snapshots();
-  // }
+//   return FirebaseFirestore.instance
+//       .collection('chats')
+//       .doc(senderId)
+//       .collection('messages')
+//       .orderBy('timestamp', descending: true)
+//       .snapshots();
+// }
 
 // Generate a unique chatId combining sender and receiver IDs
-  // String getChatId(String userId, String doctorId) {
-  //   return userId.hashCode <= doctorId.hashCode
-  //       ? '$userId-$doctorId'
-  //       : '$doctorId-$userId';
-  // }
+// String getChatId(String userId, String doctorId) {
+//   return userId.hashCode <= doctorId.hashCode
+//       ? '$userId-$doctorId'
+//       : '$doctorId-$userId';
+// }
 }

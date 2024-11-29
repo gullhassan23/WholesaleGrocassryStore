@@ -73,4 +73,15 @@ class UserController extends GetxController {
       Get.snackbar('Error', "Failed to logout: $e");
     }
   }
+
+  Future<void> updateUserPhone(String newPhone) async {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('Distributors')
+        .doc(currentUser.uid)
+        .update({'phone': newPhone});
+    distributer.update((val) {
+      val?.phone = newPhone;
+    });
+  }
 }

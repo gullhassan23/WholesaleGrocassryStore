@@ -26,107 +26,122 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final UserController userController = Get.put(UserController());
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+  TextEditingController phoneController = TextEditingController();
 
   final Admincontroller adminController = Get.put(Admincontroller());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(fontWeight: FontWeight.w900),
-        ),
+    return Obx(() {
+      return Scaffold(
         backgroundColor: Colors.white,
-        toolbarHeight: 40,
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: TextStyle(fontWeight: FontWeight.w900),
           ),
-          Center(
-            child: Stack(
-              children: [
-                Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorsResource.PROFILE_AND_COVER_PIC_BG_COLOR,
-                    border: Border.all(
-                      color: ColorsResource.WHITE,
-                      width: 4,
-                    ),
-                  ),
-                  child: ClipOval(
-                    child: Container(
+          backgroundColor: Colors.white,
+          toolbarHeight: 40,
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 110,
+                      height: 110,
                       decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         color: ColorsResource.PROFILE_AND_COVER_PIC_BG_COLOR,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            20,
-                          ),
+                        border: Border.all(
+                          color: ColorsResource.WHITE,
+                          width: 4,
                         ),
                       ),
-                      child: _selectedImage == null
-                          ? SvgPicture.asset(
-                              ImagesResource.PROFILE_ICON,
-                              fit: BoxFit.none,
-                            )
-                          : Image.file(
-                              _selectedImage!,
-                              fit: BoxFit.cover,
-                              width: 80, // Adjust width/height as needed
-                              height: 80,
+                      child: ClipOval(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color:
+                                ColorsResource.PROFILE_AND_COVER_PIC_BG_COLOR,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                20,
+                              ),
                             ),
+                          ),
+                          child: _selectedImage == null
+                              ? SvgPicture.asset(
+                                  ImagesResource.PROFILE_ICON,
+                                  fit: BoxFit.none,
+                                )
+                              : Image.file(
+                                  _selectedImage!,
+                                  fit: BoxFit.cover,
+                                  width: 80, // Adjust width/height as needed
+                                  height: 80,
+                                ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Positioned(
-                  left: 80,
-                  top: 80,
-                  child: GestureDetector(
-                    child: SvgPicture.asset(
-                      ImagesResource.EDIT_IMAGE_ICON,
-                      height: 24,
-                      width: 24,
+                    Positioned(
+                      left: 80,
+                      top: 80,
+                      child: GestureDetector(
+                        child: SvgPicture.asset(
+                          ImagesResource.EDIT_IMAGE_ICON,
+                          height: 24,
+                          width: 24,
+                        ),
+                        onTap: () {
+                          _pickProfileImage();
+                        },
+                      ),
                     ),
-                    onTap: () {
-                      _pickProfileImage();
-                    },
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              ProfileListItem(text: userController.distributer.value.name),
+              ProfileListItem(text: userController.distributer.value.email),
+              ProfileListItem(
+                text: userController.distributer.value.phone,
+                icondata: Icons.arrow_forward_ios,
+                onPressed: () {
+                  DialogUtils.showEditPhoneDialog(context, () async {
+                    if (phoneController.text.isNotEmpty) {
+                      await userController
+                          .updateUserPhone(phoneController.text);
+                      Get.back();
+                    }
+                  });
+                },
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  bool? logoutResult =
+                      await DialogUtils.showLogoutDialog(context: context);
+                  if (logoutResult == true && context.mounted) {
+                    adminController.logout(context);
+                  }
+                },
+                child: ProfileListItem(text: 'Logout'),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 50,
-          ),
-          ProfileListItem(text: 'Sheikh Faizan'),
-          ProfileListItem(text: 'Fazanmuzamal89@gmail.com'),
-          ProfileListItem(text: '03244985570'),
-          SizedBox(
-            height: 50,
-          ),
-          GestureDetector(onTap: () async {
-            bool? logoutResult =
-                await DialogUtils.showLogoutDialog(context: context);
-            if (logoutResult == true && context.mounted) {
-              //// enter logout implementation
-            }
-          }),
-          InkWell(
-            onTap: () {
-              adminController.logout(context);
-            },
-            child: ProfileListItem(text: 'Logout'),
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Future<void> _pickProfileImage() async {
