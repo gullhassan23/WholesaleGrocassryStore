@@ -21,7 +21,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
   @override
   void initState() {
     super.initState();
-    filteredList = itemController.items;
+    filteredList = itemController.allItems;
     _searchController.addListener(() {
       _filterProducts(_searchController.text);
     });
@@ -32,10 +32,10 @@ class _AllProductScreenState extends State<AllProductScreen> {
     setState(() {
       if (query.isEmpty) {
         // Show all products if search query is empty.
-        filteredList = itemController.items;
+        filteredList = itemController.allItems;
       } else {
         // Filter products based on the search query.
-        filteredList = itemController.items
+        filteredList = itemController.allItems
             .where((product) =>
                 (product.itemName.toLowerCase()).contains(query.toLowerCase()))
             .toList();
@@ -127,7 +127,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
           centerTitle: true,
         ),
         body: Obx(() {
-          if (itemController.items.isEmpty) {
+          if (itemController.allItems.isEmpty) {
             return Text("NO products");
           } else {
             return Padding(

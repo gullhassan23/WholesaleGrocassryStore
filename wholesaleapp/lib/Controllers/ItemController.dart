@@ -8,12 +8,12 @@ import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 
 class ItemController extends GetxController {
+  RxList<ItemModel> allItems = <ItemModel>[].obs;
   RxList<ItemModel> items = <ItemModel>[].obs;
   RxList<ItemModel> itemsSearch = <ItemModel>[].obs;
   RxString addToDBStatus = ''.obs;
   RxString query = ''.obs;
   RxString id = ''.obs;
-  
 
   @override
   void onInit() {
@@ -35,14 +35,15 @@ class ItemController extends GetxController {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('Items').get();
       if (snapshot.docs.isNotEmpty) {
-        items.clear();
+        allItems.clear();
         for (var doc in snapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           print("Fetched Item Data: $data");
           ItemModel item = ItemModel.fromMap(data);
-          items.add(item);
+          allItems.add(item);
         }
-        print("Total products fetched: ${items.length}");
+        items.assignAll(allItems); // Initially show all products
+        print("Total products fetched: ${allItems.length}");
       } else {
         print("No products found in the database.");
       }
@@ -74,6 +75,10 @@ class ItemController extends GetxController {
     } catch (e) {
       print('Error fetching products: $e');
     }
+  }
+
+  void resetItems() {
+    items.assignAll(allItems); // Reset to show all products
   }
 
   Future<String> productToFirestore({

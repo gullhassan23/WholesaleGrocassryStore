@@ -61,6 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    itemController.resetItems(); // Reset to all products when navigating back
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -106,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Obx(() {
-              if (itemController.items.isEmpty) {
+              if (itemController.allItems.isEmpty) {
                 return SliverToBoxAdapter(
                   child: Center(
                     child: Text("Product is empty",
@@ -123,10 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final product = itemController.items[index];
+                      final product = itemController.allItems[index];
                       return AllProductsCard(itemModel: product);
                     },
-                    childCount: itemController.items.length,
+                    childCount: itemController.allItems.length,
                   ),
                 );
               }
