@@ -1,48 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../MODELS/icon_text_model.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/ItemController.dart';
+import 'package:wholesaleapp/screens/homeScreen/product_by_cat.dart';
 
 class HorizontalIconList extends StatelessWidget {
-  final List<IconTextModel> items;
-
-  const HorizontalIconList({
+  final ItemController itemController = Get.put(ItemController());
+  final String image;
+  final String dataCat;
+  final String cat;
+  HorizontalIconList({
     Key? key,
-    required this.items,
+    this.image = '',
+    this.dataCat = '',
+    this.cat = '',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return Row(
-                children: [
-                  CircularContainerWithIconAndText(
-                    text: item.text,
-                    assetIconPath: item.assetIconPath,
-                    backgroundColor: item.backgroundColor,
-                    textStyle: item.textStyle,
-                    onTap: item.onTap,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        itemController.fetchProductsByCategory(cat);
+        Get.to(() => ProductsByCategory(category: cat));
+      },
+      child: CircularContainerWithIconAndText(
+        text: cat,
+        assetIconPath: image,
+        textStyle: TextStyle(color: Colors.grey, fontSize: 12),
+      ),
     );
   }
 }
@@ -50,16 +36,12 @@ class HorizontalIconList extends StatelessWidget {
 class CircularContainerWithIconAndText extends StatelessWidget {
   final String text;
   final String assetIconPath;
-  final Color backgroundColor;
   final TextStyle textStyle;
-  final VoidCallback onTap;
 
   const CircularContainerWithIconAndText({
     Key? key,
     required this.text,
     required this.assetIconPath,
-    required this.onTap,
-    this.backgroundColor = Colors.blue,
     this.textStyle = const TextStyle(fontSize: 16, color: Colors.black),
   }) : super(key: key);
 
@@ -68,22 +50,17 @@ class CircularContainerWithIconAndText extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 56,
-            width: 56,
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: SvgPicture.asset(
-                assetIconPath,
-                height: 32,
-                width: 32,
-              ),
+        Container(
+          height: 56,
+          width: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: SvgPicture.asset(
+              assetIconPath,
+              height: 32,
+              width: 32,
             ),
           ),
         ),

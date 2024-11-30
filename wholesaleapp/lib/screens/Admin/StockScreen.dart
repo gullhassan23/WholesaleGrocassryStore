@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
+import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/screens/Admin/EditProduct.dart';
 import 'package:wholesaleapp/widgets/TextForm.dart';
 
@@ -12,9 +13,42 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
-  void searchProduct(String value) {
-    itemController.searchProduct(value.obs);
+  List<ItemModel> filteredList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredList = itemController.items;
+    search.addListener(() {
+      _filterProducts(search.text);
+    });
+    // Initially, show all products
   }
+
+  void _filterProducts(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        // Show all products if search query is empty.
+        filteredList = itemController.items;
+      } else {
+        // Filter products based on the search query.
+        filteredList = itemController.items
+            .where((product) =>
+                (product.itemName.toLowerCase()).contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    search.dispose();
+    super.dispose();
+  }
+
+  // void searchProduct(String value) {
+  //   itemController.searchProduct(value.obs);
+  // }
 
   final ItemController itemController = Get.put(ItemController());
 
@@ -31,9 +65,7 @@ class _StockScreenState extends State<StockScreen> {
       body: Column(
         children: [
           TextForm(
-            onChanged: (value) {
-              searchProduct(value);
-            },
+            onChanged: _filterProducts,
             icon: Icon(
               Icons.search,
               size: 23.sp,
@@ -43,26 +75,26 @@ class _StockScreenState extends State<StockScreen> {
             textInputType: TextInputType.name,
           ),
           SizedBox(height: 20.h),
-          GetBuilder<ItemController>(
-            id: 'search',
-            builder: (productController) {
-              if (search.text.isEmpty) {
-                return SizedBox.shrink();
-              } else if (itemController.itemsSearch.isEmpty) {
-                return Center(child: Text('No products found'));
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(16),
-                  itemCount: itemController.itemsSearch.length,
-                  itemBuilder: (ctx, index) {
-                    final product = itemController.itemsSearch[index];
-                    return Text(product.itemName);
-                  },
-                );
-              }
-            },
-          ),
+          // GetBuilder<ItemController>(
+          //   id: 'search',
+          //   builder: (productController) {
+          //     if (search.text.isEmpty) {
+          //       return SizedBox.shrink();
+          //     } else if (itemController.itemsSearch.isEmpty) {
+          //       return Center(child: Text('No products found'));
+          //     } else {
+          //       return ListView.builder(
+          //         shrinkWrap: true,
+          //         padding: EdgeInsets.all(16),
+          //         itemCount: filteredList.length,
+          //         itemBuilder: (ctx, index) {
+          // final product = filteredList[index];
+          //           return Text(product.itemName);
+          //         },
+          //       );
+          //     }
+          //   },
+          // ),
           Obx(() {
             final products = itemController.query.isEmpty
                 ? itemController.items
@@ -74,9 +106,9 @@ class _StockScreenState extends State<StockScreen> {
 
             return Expanded(
               child: ListView.builder(
-                itemCount: products.length,
+                itemCount: filteredList.length,
                 itemBuilder: (context, index) {
-                  final item = products[index];
+                  final item = filteredList[index];
                   return Dismissible(
                     key: Key(item.uid),
                     direction:
@@ -105,6 +137,10 @@ class _StockScreenState extends State<StockScreen> {
                       );
                     },
                     child: Card(
+                      elevation: 5.0, // Adds shadow
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       margin: EdgeInsets.all(8.0),
                       child: Stack(
                         children: [
@@ -124,7 +160,8 @@ class _StockScreenState extends State<StockScreen> {
                             title: Text(item.itemName),
                             subtitle: Text(
                                 'Type: ${item.type}\nCost: \$${item.cost}'),
-                            trailing: Text('Qty: ${item.quantity}'),
+                            trailing:
+                                Text('Qty: ${item.quantity} ${item.weight}'),
                           ),
                           Positioned(
                             bottom: 44,

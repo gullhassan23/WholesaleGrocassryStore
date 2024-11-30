@@ -31,14 +31,14 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   String category = 'Fruits';
   List<String> productCategories = [
+    'Vegetables',
     'Fruits',
-    'Vegitables',
-    'MEAT',
-    'Grocessary',
     'Beverages',
-    'Cleaner',
-    'Dry-Fruits',
-    'Frozen'
+    'Grocery',
+    'Meat',
+    'Clean',
+    'Frozen',
+    'Dry-Fruits'
   ];
 
   String weight = 'kg';
@@ -235,6 +235,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     text: "Add to stock",
                     ontap: () async {
                       String output = await itemController.productToFirestore(
+                        weight: weight,
                         type: category,
                         quantity: quantityController.text,
                         productName: productNameController.text,
