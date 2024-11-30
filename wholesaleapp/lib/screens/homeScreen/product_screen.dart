@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
 import '../../MODELS/product_model.dart';
@@ -7,9 +9,11 @@ import '../../widgets/circular_icon_btn.dart';
 import 'cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
-  final ProductModel product;
-
-  ProductScreen({required this.product});
+  final ItemModel itemModel;
+  const ProductScreen({
+    Key? key,
+    required this.itemModel,
+  }) : super(key: key);
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -20,7 +24,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ProductModel product = widget.product;
+    // ProductModel product = widget.product;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,7 +45,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(15.r),
               child: Image.network(
-                product.image ?? "",
+                "https://i.imgur.com/CGCyp1d.png",
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 250,
@@ -51,7 +55,8 @@ class _ProductScreenState extends State<ProductScreen> {
             Row(
               children: [
                 Text(
-                  product.productName ?? '',
+                  widget.itemModel.itemName,
+                  // product.productName ?? '',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Spacer(),
@@ -81,12 +86,12 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '\$ ${product.price?.toStringAsFixed(2)}',
+              '\$ ${widget.itemModel.cost.toStringAsFixed(2)}',
               style: TextStyle(fontSize: 20, color: Colors.green),
             ),
             const SizedBox(height: 8),
             Text(
-              product.qty ?? '',
+              '${widget.itemModel.quantity} ${widget.itemModel.weight}',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -94,7 +99,8 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              product.description ?? '',
+              widget.itemModel.description,
+              // product.description ?? '',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(

@@ -13,6 +13,7 @@ class ItemController extends GetxController {
   RxString addToDBStatus = ''.obs;
   RxString query = ''.obs;
   RxString id = ''.obs;
+  
 
   @override
   void onInit() {
@@ -37,10 +38,11 @@ class ItemController extends GetxController {
         items.clear();
         for (var doc in snapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          print("Fetched Item Data: $data");
           ItemModel item = ItemModel.fromMap(data);
           items.add(item);
         }
-        print("Products fetched successfully: ${items.length}");
+        print("Total products fetched: ${items.length}");
       } else {
         print("No products found in the database.");
       }
@@ -61,7 +63,9 @@ class ItemController extends GetxController {
         return ItemModel(
           createdAT: DateTime.now(),
           uid: doc.id,
-          itemName: doc['productName'],
+          quantity: doc['quantity'],
+          weight: doc['weight'],
+          itemName: doc['itemName'],
           type: doc['type'],
           cost: doc['cost'].toDouble(),
           imageUrls: List<String>.from(doc['imageUrls']),
@@ -73,7 +77,7 @@ class ItemController extends GetxController {
   }
 
   Future<String> productToFirestore({
-    String weight='',
+    String weight = '',
     String type = '',
     String quantity = '',
     required String productName,
@@ -91,7 +95,7 @@ class ItemController extends GetxController {
 
       // Upload product to the database
       String status = await cloud().uploadProductToDatabase(
-        weight: weight,
+          weight: weight,
           quantity: quantity,
           productName: productName,
           description: description,

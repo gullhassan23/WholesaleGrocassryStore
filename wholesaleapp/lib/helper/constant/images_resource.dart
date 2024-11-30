@@ -13,7 +13,10 @@ class ImagesResource {
   static const String BEVERAGE = "assets/icons/beverage.svg";
   static const String FRUITS = "assets/icons/fruits.svg";
   static const String GROCERY = "assets/icons/grocery.svg";
-  static const String OIL = "assets/icons/oil.svg";
+  static const String Meat = "assets/icons/meat.svg";
+  static const String frozen = "assets/icons/fr.svg";
+  static const String nuts = "assets/icons/nuts.svg";
+  static const String cl = "assets/icons/cl.svg";
   static const String VEGE = "assets/icons/vege.svg";
   static const String fb = "assets/icons/fb.svg";
   static const String insta = "assets/icons/ins.svg";

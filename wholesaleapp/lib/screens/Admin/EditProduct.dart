@@ -22,17 +22,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late TextEditingController costController;
   late TextEditingController quantityController;
   late TextEditingController descriptionController;
-  String selectedType = ''; // For dropdown
+  String selectedType = '';
+  String selectedWeight = ''; // For dropdown
   List<String> productCategories = [
+    'Vegetables',
     'Fruits',
-    'Vegitables',
-    'MEAT',
-    'Grocessary',
     'Beverages',
-    'Cleaner',
-    'Dry-Fruits',
-    'Frozen'
+    'Grocery',
+    'Meat',
+    'Clean',
+    'Frozen',
+    'Dry-Fruits'
   ];
+  List<String> productWeight = ['kg', 'litre', 'dozen'];
   List<Uint8List> images = [];
 
   @override
@@ -45,7 +47,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
         TextEditingController(text: widget.product.quantity.toString());
     descriptionController =
         TextEditingController(text: widget.product.description);
-    selectedType = widget.product.type; // Initialize selected type
+    selectedType = widget.product.type;
+    selectedWeight = widget.product.weight; // Initialize selected type
   }
 
   void selectImage() async {
@@ -127,6 +130,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 keyboardType: TextInputType.number,
                 validator: (value) =>
                     value!.isEmpty ? 'Cost cannot be empty' : null,
+              ),
+              // Weight dropdown
+              DropdownButtonFormField<String>(
+                value: selectedWeight,
+                items: productWeight.map((String weight) {
+                  return DropdownMenuItem(
+                    value: weight,
+                    child: Text(weight),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedWeight = newValue!;
+                  });
+                },
+                decoration: InputDecoration(labelText: 'Weight'),
               ),
               TextFormField(
                 controller: quantityController,
