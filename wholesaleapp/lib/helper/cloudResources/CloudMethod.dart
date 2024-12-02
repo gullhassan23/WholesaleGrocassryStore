@@ -80,7 +80,7 @@ class cloud {
 
         // Parse the raw cost to a double
         double cost = double.parse(rawCost);
-        String quan = quantity;
+        int quan = int.parse(quantity);
         // Create the item model
         ItemModel item = ItemModel(
           weight: weight,

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
+import 'package:wholesaleapp/screens/Admin/AdminHome.dart';
 import 'package:wholesaleapp/widgets/customButton.dart';
 import 'package:wholesaleapp/widgets/custom_text_field.dart';
 
@@ -248,10 +249,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                           "Posted Item", // Title
                           output, // Message
                           snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.green,
                           colorText: Colors.white,
                           duration: Duration(seconds: 3),
                         );
+                        Future.delayed(Duration(seconds: 3));
+                        Get.to(() => AdminHome());
                       } else {
                         Get.snackbar(
                           "Error", // Title

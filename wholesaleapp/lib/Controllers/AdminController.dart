@@ -191,15 +191,51 @@ class Admincontroller extends GetxController {
     });
   }
 
+  // Future<void> updateAdminPass(String newPass) async {
+  //   User currentUser = FirebaseAuth.instance.currentUser!;
+  //   await FirebaseFirestore.instance
+  //       .collection('WholeSaler')
+  //       .doc(currentUser.uid)
+  //       .update({'Apassword': newPass});
+  //   wholesaler.update((val) {
+  //     val?.Apassword = newPass;
+  //   });
+  // }
+
   Future<void> updateAdminPass(String newPass) async {
-    User currentUser = FirebaseAuth.instance.currentUser!;
-    await FirebaseFirestore.instance
-        .collection('WholeSaler')
-        .doc(currentUser.uid)
-        .update({'Apassword': newPass});
-    wholesaler.update((val) {
-      val?.Apassword = newPass;
-    });
+    try {
+      User currentUser = FirebaseAuth.instance.currentUser!;
+
+      // Update the password in Firebase Auth
+      await currentUser.updatePassword(newPass);
+
+      // Update the password in Firestore
+      await FirebaseFirestore.instance
+          .collection('WholeSaler')
+          .doc(currentUser.uid)
+          .update({'Apassword': newPass});
+
+      wholesaler.update((val) {
+        val?.Apassword = newPass;
+      });
+
+      Get.snackbar(
+        'Success',
+        'Password updated successfully',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      print("Error updating password: $e");
+      Get.snackbar(
+        'Error',
+        'Failed to update password. Please try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   // void getToken() async {

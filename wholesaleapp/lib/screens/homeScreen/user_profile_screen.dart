@@ -135,7 +135,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     adminController.logout(context);
                   }
                 },
-                child: ProfileListItem(text: 'Logout'),
+                child: ProfileListItem(
+                  text: 'Logout',
+                  icondata: Icons.logout,
+                ),
               ),
             ],
           ),

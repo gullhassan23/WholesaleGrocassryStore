@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ProfileListItem extends StatelessWidget {
   final String text;
   IconData? icondata;
@@ -23,7 +24,7 @@ class ProfileListItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: Color(0xFFdcf3ff),
+              color: Colors.blueGrey.shade100,
             ),
             child: Row(
               children: <Widget>[
