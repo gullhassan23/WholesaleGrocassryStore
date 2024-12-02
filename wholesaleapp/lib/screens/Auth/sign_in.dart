@@ -193,7 +193,7 @@ class _SignInState extends State<SignIn> {
                               } else {
                                 Get.snackbar(
                                   "Signup Error", // Title
-                                  output, // Message
+                                  "Email or password you entered is incorrect",
                                   snackPosition: SnackPosition.BOTTOM,
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,

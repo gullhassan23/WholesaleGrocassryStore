@@ -7,7 +7,7 @@ class ItemModel {
   String itemName;
   double cost;
   String description;
-  String quantity;
+  int quantity;
   DateTime createdAT;
   List<String> imageUrls;
 
@@ -18,7 +18,7 @@ class ItemModel {
     this.itemName = '',
     this.cost = 0.0,
     this.description = '',
-    this.quantity = '',
+    this.quantity = 0,
     required this.createdAT,
     this.imageUrls = const [],
   });
@@ -41,7 +41,7 @@ class ItemModel {
       itemName: data['itemName'] ?? '',
       cost: (data['cost'] ?? 0).toDouble(),
       description: data['description'] ?? '',
-      quantity: data['quantity'] ?? '',
+      quantity: int.tryParse(data['quantity'].toString()) ?? 0,
       createdAT: createdAt,
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
     );

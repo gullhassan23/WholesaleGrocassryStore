@@ -70,12 +70,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Future<void> saveChanges() async {
     if (_formKey.currentState!.validate()) {
+      int parsedQuantity = int.tryParse(quantityController.text) ?? 0;
+
+      if (parsedQuantity == 0 && quantityController.text.isNotEmpty) {
+        // If the quantity is invalid (i.e., not a valid number and not empty), show an error
+        Get.snackbar('Error', 'Please enter a valid quantity.');
+        return;
+      }
       String status = await itemController.updateProductToFirestore(
         uid: widget.product.uid,
         productName: nameController.text,
         type: selectedType, // Use dropdown value
         rawCost: costController.text,
-        quantity: quantityController.text,
+        quantity: parsedQuantity.toString(),
         description: descriptionController.text,
         images: images.isEmpty ? null : images,
       );

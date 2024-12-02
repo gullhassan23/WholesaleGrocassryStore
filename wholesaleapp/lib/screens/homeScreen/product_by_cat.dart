@@ -17,7 +17,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
 
   @override
   void initState() {
-    itemController = Get.find();
+    itemController.fetchProductsByCategory(widget.category);
     super.initState();
   }
 

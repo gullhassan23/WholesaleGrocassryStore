@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
+import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
 
 import '../../widgets/profile_list_items.dart';
 
@@ -141,6 +142,7 @@ class _ProfileState extends State<Profile> {
           content: TextField(
             controller: passController,
             decoration: InputDecoration(hintText: "Enter new Password"),
+            obscureText: true,
           ),
           actions: [
             TextButton(
@@ -152,8 +154,26 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: () async {
                 if (passController.text.isNotEmpty) {
-                  await adminController.updateAdminPass(passController.text);
-                  Get.back();
+                  try {
+                    await adminController.updateAdminPass(passController.text);
+                    Get.snackbar(
+                      'Success',
+                      'Password change successfully',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.green,
+                      colorText: Colors.white,
+                    );
+                    Get.back();
+                  } catch (e) {
+                    print("Error updating password: $e");
+                    Get.snackbar(
+                      'Error',
+                      'Failed to update password. Please try again.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  }
                 }
               },
               child: Text("Save"),
@@ -205,25 +225,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-
-              // Text(
-              //   adminController.wholesaler.value.Aname,
-              //   style: TextStyle(
-              //     fontStyle: FontStyle.italic,
-              //     color: Colors.black,
-              //     fontSize: 20,
-              //   ),
-              // ),
-              // Text(
-              //   adminController.wholesaler.value.Aemail,
-              //   style: TextStyle(
-              //     fontStyle: FontStyle.italic,
-              //     color: Colors.black,
-              //     fontSize: 20,
-              //   ),
-              // ),
-              SizedBox(height: 20),
+              SizedBox(height: 50),
               buildInfoRow(
                 "Name",
                 adminController.wholesaler.value.Aname,
@@ -234,7 +236,6 @@ class _ProfileState extends State<Profile> {
                 adminController.wholesaler.value.Aphone,
                 showEditPhoneDialog,
               ),
-
               buildInfoRow(
                 "Password",
                 adminController.wholesaler.value.Apassword,
@@ -243,11 +244,18 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 height: 50,
               ),
-              InkWell(
-                onTap: () {
-                  adminController.logout(context);
+              GestureDetector(
+                onTap: () async {
+                  bool? logoutResult =
+                      await DialogUtils.showLogoutDialog(context: context);
+                  if (logoutResult == true && context.mounted) {
+                    adminController.logout(context);
+                  }
                 },
-                child: ProfileListItem(text: 'Logout'),
+                child: ProfileListItem(
+                  text: 'Logout',
+                  icondata: Icons.logout,
+                ),
               ),
             ],
           ),
