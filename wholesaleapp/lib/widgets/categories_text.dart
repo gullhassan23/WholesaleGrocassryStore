@@ -35,7 +35,7 @@ class CategoriesText extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
       ],
     );

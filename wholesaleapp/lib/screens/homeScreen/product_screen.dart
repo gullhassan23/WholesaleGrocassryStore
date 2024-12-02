@@ -4,12 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
-import '../../MODELS/product_model.dart';
-import '../../widgets/circular_icon_btn.dart';
 import 'cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   final ItemModel itemModel;
+
   const ProductScreen({
     Key? key,
     required this.itemModel,
@@ -72,7 +71,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Available in stock',
+                        widget.itemModel.quantity == 0
+                            ? 'Available in stock'
+                            : "ccdsdc",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -99,60 +100,15 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              widget.itemModel.description,
+              'cndjcbndj${widget.itemModel.description}',
               // product.description ?? '',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
             ),
             const SizedBox(
               height: 20,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.blueGrey,
-                  width: 1, // Border width
-                ),
-              ),
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Quantity',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Spacer(),
-                  CircularButton(
-                    icon: Icons.add,
-                    onPressed: () {
-                      setState(() {
-                        quantity++;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    width: 50,
-                    height: 20,
-                    child: Center(
-                      child: Text(
-                        quantity.toString(),
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  CircularButton(
-                    icon: Icons.remove,
-                    onPressed: () {
-                      setState(() {
-                        if (quantity > 0) {
-                          quantity--;
-                        }
-                      });
-                    },
-                  ),
-                ],
-              ),
             ),
             Spacer(),
             Center(

@@ -7,7 +7,7 @@ class ItemModel {
   String itemName;
   double cost;
   String description;
-  int quantity;
+  String quantity;
   DateTime createdAT;
   List<String> imageUrls;
 
@@ -18,7 +18,7 @@ class ItemModel {
     this.itemName = '',
     this.cost = 0.0,
     this.description = '',
-    this.quantity = 0,
+    this.quantity = '',
     required this.createdAT,
     this.imageUrls = const [],
   });
@@ -41,7 +41,7 @@ class ItemModel {
       itemName: data['itemName'] ?? '',
       cost: (data['cost'] ?? 0).toDouble(),
       description: data['description'] ?? '',
-      quantity: data['quantity'] ?? 0,
+      quantity: data['quantity'] ?? '',
       createdAT: createdAt,
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
     );
