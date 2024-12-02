@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
-import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 import 'package:wholesaleapp/screens/Admin/AdminHome.dart';
+import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
@@ -224,7 +224,7 @@ class _SignInState extends State<SignIn> {
                               } else {
                                 Get.snackbar(
                                   "Signup Error", // Title
-                                  output, // Message
+                                  "Email or password you entered is incorrect",
                                   snackPosition: SnackPosition.BOTTOM,
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,

@@ -2,8 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import 'package:wholesaleapp/screens/splashScreen/splash_screen.dart';
+import 'package:wholesaleapp/screens/homeScreen/navigation.dart';
 
 import 'helper/constant/colors_resource.dart';
 import 'helper/utils/svg_utils.dart';
@@ -38,7 +37,7 @@ class _MyAppState extends State<MyApp> {
               useMaterial3: true,
             ),
             // home: HomeContentScreen()
-            home: SplashScreen());
+            home: HomeContentScreen());
       },
     );
   }

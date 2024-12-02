@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
@@ -93,18 +94,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     CategoriesText(),
                     SizedBox(
-                      height: 100, // Adjust height as necessary
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: categories.length,
+                      height: 70.h, // Adjust height as necessary
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        itemBuilder: (ctx, index) {
-                          return HorizontalIconList(
-                            image: categories[index],
-                            cat: categoryName[index],
-                          );
-                        },
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: categories.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (ctx, index) {
+                            return Row(
+                              children: [
+                                HorizontalIconList(
+                                  image: categories[index],
+                                  cat: categoryName[index],
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     AllProductText(),
                   ],

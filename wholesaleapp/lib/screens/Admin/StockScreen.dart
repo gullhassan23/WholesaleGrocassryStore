@@ -111,8 +111,8 @@ class _StockScreenState extends State<StockScreen> {
                   final item = filteredList[index];
                   return Dismissible(
                     key: Key(item.uid),
-                    direction:
-                        DismissDirection.endToStart, // Swipe right to left
+                    direction: DismissDirection.endToStart,
+                    // Swipe right to left
                     background: Container(
                       color: Colors.red, // Background color when swiping
                       alignment: Alignment.centerRight,
@@ -160,21 +160,22 @@ class _StockScreenState extends State<StockScreen> {
                             title: Text(item.itemName),
                             subtitle: Text(
                                 'Type: ${item.type}\nCost: \$${item.cost}'),
-                            trailing:
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(
+                                        () => EditProductScreen(product: item));
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 15.sp,
+                                  ),
+                                ),
                                 Text('Qty: ${item.quantity} ${item.weight}'),
-                          ),
-                          Positioned(
-                            bottom: 44,
-                            left: 349,
-                            child: IconButton(
-                                onPressed: () {
-                                  Get.to(
-                                      () => EditProductScreen(product: item));
-                                },
-                                icon: Icon(
-                                  Icons.edit,
-                                  size: 15.sp,
-                                )),
+                              ],
+                            ),
                           ),
                         ],
                       ),

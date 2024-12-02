@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
 // CartController to manage state
 class CartController extends GetxController {
@@ -41,21 +42,6 @@ class CartController extends GetxController {
   }
 }
 
-// Main Application
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CartScreen(),
-    );
-  }
-}
-
 // CartScreen with GetX
 class CartScreen extends StatelessWidget {
   final CartController cartController = Get.put(CartController());
@@ -63,121 +49,169 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cart")),
+      appBar: AppBar(
+        title: Text(
+          "Cart",
+          style: TextStyle(fontWeight: FontWeight.w900),
+        ),
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
-            child: Obx(
-              () => ListView.builder(
-                itemCount: cartController.cartItems.length,
-                itemBuilder: (context, index) {
-                  final item = cartController.cartItems[index];
-                  final int quantity = item['quantity'];
-                  final double price = item['cost'];
-                  final double totalPriceForItem = price * quantity;
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Obx(
+                    () => ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: cartController.cartItems.length,
+                      itemBuilder: (context, index) {
+                        final item = cartController.cartItems[index];
+                        final int quantity = item['quantity'];
+                        final double price = item['cost'];
+                        final double totalPriceForItem = price * quantity;
 
-                  return Card(
-                    color: Colors.brown,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: CachedNetworkImage(
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error,
-                                    color: Colors.white,
-                                  ),
-                                  imageUrl: item['imageUrls'][0],
-                                  height: 100.0,
-                                  width: 100.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(width: 10.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['productName'],
-                                    style: GoogleFonts.fredoka(
+                        return Card(
+                          color: Colors.white,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: CachedNetworkImage(
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
                                       color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
                                     ),
+                                    imageUrl: item['imageUrls'][0],
+                                    height: 50.0,
+                                    width: 50.0,
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(height: 10.0),
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () => cartController
-                                            .decrementQuantity(index),
-                                        child: Icon(
-                                          Icons.remove,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.0),
-                                      Text(
-                                        quantity.toString(),
-                                        style: GoogleFonts.fredoka(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.0),
-                                      InkWell(
-                                        onTap: () => cartController
-                                            .incrementQuantity(index),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                '\$ ${totalPriceForItem.toStringAsFixed(2)}',
-                                style: GoogleFonts.fredoka(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
-                              SizedBox(height: 10.0),
-                              InkWell(
-                                onTap: () =>
-                                    cartController.removeFromCart(index),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
+                                SizedBox(width: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item['productName'],
+                                    ),
+                                    SizedBox(height: 10.0),
+                                    SizedBox(
+                                      width: 200.w,
+                                      height: 40.h,
+                                      child: Text(
+                                        item['productDescription'],
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.0),
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () => cartController
+                                              .decrementQuantity(index),
+                                          child: Container(
+                                            height: 30.0, // Adjust height
+                                            width: 30.0, // Adjust width
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              // Background color
+                                              shape: BoxShape
+                                                  .circle, // Circular shape
+                                            ),
+                                            child: Icon(
+                                              Icons.remove,
+                                              color: Colors.black,
+                                              size: 18.0, // Adjust icon size
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        Text(
+                                          quantity.toString(),
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        InkWell(
+                                          onTap: () => cartController
+                                              .incrementQuantity(index),
+                                          child: Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ColorsResource.PRIMARY_COLOR,
+                                              shape: BoxShape
+                                                  .circle, // Circular shape
+                                            ),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                              size: 18.0, // Adjust icon size
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                Spacer(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '\$ ${totalPriceForItem.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(height: 50.h),
+                                    InkWell(
+                                      onTap: () =>
+                                          cartController.removeFromCart(index),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  // TextField Below ListView
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter your text here',
                       ),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ),
@@ -187,12 +221,8 @@ class CartScreen extends StatelessWidget {
               color: Colors.grey[900],
               padding: EdgeInsets.all(16.0),
               child: Text(
+                style: TextStyle(color: Colors.white),
                 'Total Amount: \$ ${cartController.getTotalAmount().toStringAsFixed(2)}',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
-                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -202,7 +232,9 @@ class CartScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           cartController.addToCart({
-            'productName': 'New Product',
+            'productName': 'Apple',
+            'productDescription':
+                'Apple is good for your health ccd Apple is good for your health cndj cjs e cdnc cdnc cnsdj',
             'quantity': 1,
             'cost': 15.0,
             'imageUrls': ['https://via.placeholder.com/100'],

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,6 +12,7 @@ class cloud {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   User currentUser = FirebaseAuth.instance.currentUser!;
+
   // CommonFunctions cMethod = CommonFunctions();
   Future<String> uploadProfileToStorage(
       Uint8List file, bool isPost, String uid) async {
@@ -78,7 +80,7 @@ class cloud {
 
         // Parse the raw cost to a double
         double cost = double.parse(rawCost);
-        int quan = int.parse(quantity);
+        String quan = quantity;
         // Create the item model
         ItemModel item = ItemModel(
           weight: weight,
@@ -86,7 +88,8 @@ class cloud {
           quantity: quan,
           createdAT: DateTime.now(),
           uid: docid,
-          imageUrls: base64Images, // Store Base64 strings
+          imageUrls: base64Images,
+          // Store Base64 strings
           itemName: productName,
           cost: cost,
           description: description,
