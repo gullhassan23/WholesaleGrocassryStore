@@ -100,7 +100,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'cndjcbndj${widget.itemModel.description}',
+              '${widget.itemModel.description}',
               // product.description ?? '',
               style: TextStyle(
                 fontSize: 16,
