@@ -18,10 +18,11 @@ class _StockScreenState extends State<StockScreen> {
   @override
   void initState() {
     super.initState();
-    filteredList = itemController.items;
+    filteredList = itemController.allItems;
     search.addListener(() {
       _filterProducts(search.text);
     });
+    print(itemController.allItems.length);
     // Initially, show all products
   }
 

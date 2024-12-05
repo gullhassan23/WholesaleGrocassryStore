@@ -26,7 +26,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final Admincontroller adminController = Get.put(Admincontroller());
-
+  bool isLoad = false;
   // Change to store a single image
   List<Uint8List> image = [];
 
@@ -232,40 +232,49 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
 
                 SizedBox(height: 20.h),
-                CustomButton(
-                    text: "Add to stock",
-                    ontap: () async {
-                      String output = await itemController.productToFirestore(
-                        weight: weight,
-                        type: category,
-                        quantity: quantityController.text,
-                        productName: productNameController.text,
-                        rawCost: priceController.text,
-                        description: descriptionController.text,
-                        images: image, // Pass single image in list
-                      );
-                      if (output == "success") {
-                        Get.snackbar(
-                          "Posted Item", // Title
-                          output, // Message
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.green,
-                          colorText: Colors.white,
-                          duration: Duration(seconds: 3),
-                        );
-                        Future.delayed(Duration(seconds: 3));
-                        Get.to(() => AdminHome());
-                      } else {
-                        Get.snackbar(
-                          "Error", // Title
-                          output, // Message
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                          duration: Duration(seconds: 3),
-                        );
-                      }
-                    }),
+                isLoad
+                    ? CircularProgressIndicator()
+                    : CustomButton(
+                        text: "Add to stock",
+                        ontap: () async {
+                          setState(() {
+                            isLoad = true; // Show the loading indicator
+                          });
+                          String output =
+                              await itemController.productToFirestore(
+                            weight: weight,
+                            type: category,
+                            quantity: quantityController.text,
+                            productName: productNameController.text,
+                            rawCost: priceController.text,
+                            description: descriptionController.text,
+                            images: image, // Pass single image in list
+                          );
+                          setState(() {
+                            isLoad = false; // Hide the loading indicator
+                          });
+                          if (output == "success") {
+                            Get.snackbar(
+                              "Posted Item", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                            Future.delayed(Duration(seconds: 3));
+                            Get.to(() => AdminHome());
+                          } else {
+                            Get.snackbar(
+                              "Error", // Title
+                              output, // Message
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }
+                        }),
                 SizedBox(
                   height: 10.h,
                 )
