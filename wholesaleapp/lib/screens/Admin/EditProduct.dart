@@ -23,7 +23,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late TextEditingController quantityController;
   late TextEditingController descriptionController;
   String selectedType = '';
-  String selectedWeight = ''; // For dropdown
+  String selectedWeight = '';
   List<String> productCategories = [
     'Vegetables',
     'Fruits',
@@ -80,7 +80,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       String status = await itemController.updateProductToFirestore(
         uid: widget.product.uid,
         productName: nameController.text,
-        type: selectedType, // Use dropdown value
+        type: selectedType,
+        weight: selectedWeight,
+
+        // Use dropdown value
         rawCost: costController.text,
         quantity: parsedQuantity.toString(),
         description: descriptionController.text,
@@ -140,7 +143,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ),
               // Weight dropdown
               DropdownButtonFormField<String>(
-                value: selectedWeight,
+                value:
+                    productWeight.contains(widget.product.weight.toLowerCase())
+                        ? widget.product.weight.toLowerCase()
+                        : null,
                 items: productWeight.map((String weight) {
                   return DropdownMenuItem(
                     value: weight,
@@ -149,11 +155,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    selectedWeight = newValue!;
+                    selectedWeight =
+                        newValue!; // Update the selectedWeight variable
                   });
                 },
                 decoration: InputDecoration(labelText: 'Weight'),
               ),
+
               TextFormField(
                 controller: quantityController,
                 decoration: InputDecoration(labelText: 'Quantity'),

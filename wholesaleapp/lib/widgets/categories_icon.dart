@@ -22,6 +22,10 @@ class HorizontalIconList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        itemController.items.forEach((item) {
+          print(item.type);
+        });
+
         itemController.fetchProductsByCategory(cat);
         Get.to(() => ProductsByCategory(category: cat));
       },

@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
@@ -42,7 +41,7 @@ class ItemController extends GetxController {
           ItemModel item = ItemModel.fromMap(data);
           allItems.add(item);
         }
-        items.assignAll(allItems); // Initially show all products
+        items.assignAll(allItems);
         print("Total products fetched: ${allItems.length}");
       } else {
         print("No products found in the database.");
@@ -55,7 +54,7 @@ class ItemController extends GetxController {
 
   void fetchProductsByCategory(String category) async {
     try {
-      final querySnapshot = await FirebaseFirestore.instance
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Items')
           .where('type', isEqualTo: category)
           .get();
@@ -67,6 +66,7 @@ class ItemController extends GetxController {
           quantity: doc['quantity'],
           weight: doc['weight'],
           itemName: doc['itemName'],
+          description: doc['description'],
           type: doc['type'],
           cost: doc['cost'].toDouble(),
           imageUrls: List<String>.from(doc['imageUrls']),
@@ -143,11 +143,13 @@ class ItemController extends GetxController {
     required String rawCost,
     required String quantity,
     required String description,
+    required String weight,
     List<Uint8List>? images,
   }) async {
     try {
       Map<String, dynamic> updateData = {
         'itemName': productName,
+        'weight': weight,
         'type': type,
         'cost': double.parse(rawCost),
         'quantity': quantity,
