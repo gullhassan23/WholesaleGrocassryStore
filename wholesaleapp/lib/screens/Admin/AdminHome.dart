@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
-
 import 'package:wholesaleapp/screens/Admin/InventoryScreen.dart';
 import 'package:wholesaleapp/screens/Admin/ProfileScreen.dart';
 import 'package:wholesaleapp/screens/Admin/StockScreen.dart';
@@ -39,50 +38,54 @@ class AdminHome extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.all(16.w),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.w,
-                  mainAxisSpacing: 16.h,
-                  children: [
-                    _buildDashboardTile(
-                      context: context,
-                      title: "Edit Profile",
-                      icon: Icons.person,
-                      onTap: () {
-                        // Navigate to Edit Profile Screen
-                        Get.to(() => Profile());
-                      },
-                    ),
-                    _buildDashboardTile(
-                      context: context,
-                      title: "Inventory",
-                      icon: Icons.inventory,
-                      onTap: () {
-                        // Navigate to Inventory Screen
-                        Get.to(() => InventoryScreen());
-                      },
-                    ),
-                    _buildDashboardTile(
-                      context: context,
-                      title: "Stock",
-                      icon: Icons.storage,
-                      onTap: () {
-                        Get.to(() => StockScreen());
-                        // Navigate to Stock Screen
-                      },
-                    ),
-                    _buildDashboardTile(
-                      context: context,
-                      title: "Handle Orders",
-                      icon: Icons.shopping_cart,
-                      onTap: () {
-                        // Navigate to Handle Orders Screen
-                      },
-                    ),
-                  ],
+              Center(
+                child: Expanded(
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.w,
+                    mainAxisSpacing: 16.h,
+                    children: [
+                      _buildDashboardTile(
+                        context: context,
+                        title: "Edit Profile",
+                        icon: Icons.person,
+                        onTap: () {
+                          // Navigate to Edit Profile Screen
+                          Get.to(() => Profile());
+                        },
+                      ),
+                      _buildDashboardTile(
+                        context: context,
+                        title: "Inventory",
+                        icon: Icons.inventory,
+                        onTap: () {
+                          // Navigate to Inventory Screen
+                          Get.to(() => InventoryScreen());
+                        },
+                      ),
+                      _buildDashboardTile(
+                        context: context,
+                        title: "Stock",
+                        icon: Icons.storage,
+                        onTap: () {
+                          Get.to(() => StockScreen());
+                          // Navigate to Stock Screen
+                        },
+                      ),
+                      _buildDashboardTile(
+                        context: context,
+                        title: "Handle Orders",
+                        icon: Icons.shopping_cart,
+                        onTap: () {
+                          // Navigate to Handle Orders Screen
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
