@@ -25,16 +25,15 @@ class _AllProductScreenState extends State<AllProductScreen> {
     _searchController.addListener(() {
       _filterProducts(_searchController.text);
     });
+    print(filteredList.length);
     // Initially, show all products
   }
 
   void _filterProducts(String query) {
     setState(() {
       if (query.isEmpty) {
-        // Show all products if search query is empty.
         filteredList = itemController.allItems;
       } else {
-        // Filter products based on the search query.
         filteredList = itemController.allItems
             .where((product) =>
                 (product.itemName.toLowerCase()).contains(query.toLowerCase()))
@@ -137,7 +136,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                   SizedBox(
                     child: TextField(
                       controller: _searchController,
-                      onChanged: _filterProducts, // Filter list on text input
+                      onChanged: _filterProducts,
                       decoration: InputDecoration(
                         hintText: 'Search Product',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
+import 'package:wholesaleapp/widgets/customButton.dart';
 
 class EditProductScreen extends StatefulWidget {
   final ItemModel product;
@@ -21,6 +22,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late TextEditingController nameController;
   late TextEditingController costController;
   late TextEditingController quantityController;
+  bool isLoad = false;
   late TextEditingController descriptionController;
   String selectedType = '';
   String selectedWeight = '';
@@ -70,6 +72,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Future<void> saveChanges() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoad = true; // Show the loading indicator
+      });
       int parsedQuantity = int.tryParse(quantityController.text) ?? 0;
 
       if (parsedQuantity == 0 && quantityController.text.isNotEmpty) {
@@ -82,19 +87,33 @@ class _EditProductScreenState extends State<EditProductScreen> {
         productName: nameController.text,
         type: selectedType,
         weight: selectedWeight,
-
-        // Use dropdown value
         rawCost: costController.text,
         quantity: parsedQuantity.toString(),
         description: descriptionController.text,
         images: images.isEmpty ? null : images,
       );
-
+      setState(() {
+        isLoad = false; // Hide the loading indicator
+      });
       if (status == "success") {
         Get.back();
-        Get.snackbar('Success', 'Product updated successfully');
+        Get.snackbar(
+          "Success", // Title
+          "Item updated successfully", // Message
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
       } else {
-        Get.snackbar('Error', status);
+        Get.snackbar(
+          'Error',
+          status,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
       }
     }
   }
@@ -111,7 +130,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
             children: [
               TextFormField(
                 controller: nameController,
@@ -194,10 +213,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 label: Text('Pick Images'),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: saveChanges,
-                child: Text('Save Changes'),
-              ),
+              isLoad
+                  ? CircularProgressIndicator()
+                  : CustomButton(text: "Save Changes", ontap: saveChanges)
+              // ElevatedButton(
+              //   onPressed: saveChanges,
+              //   child: Text('Save Changes'),
+              // ),
             ],
           ),
         ),

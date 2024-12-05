@@ -23,6 +23,7 @@ class ImagesResource {
   static const String twitter = "assets/icons/t.svg";
   static const String ALERT_ICON = "assets/icons/alert_icon.svg";
   static const String LOGIN_ICON = "assets/lottie/login.json";
+  static const String DASH = "assets/lottie/dash.json";
   static const String SPLASH = "assets/lottie/splash.json";
   static const String PROFILE_ICON = "assets/icons/profile_placeholder.svg";
   static const String EDIT_IMAGE_ICON = "assets/icons/ic_edit_image.svg";
