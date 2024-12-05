@@ -10,6 +10,7 @@ class HorizontalIconList extends StatelessWidget {
   final String image;
   final String dataCat;
   final String cat;
+
   HorizontalIconList({
     Key? key,
     this.image = '',
@@ -51,8 +52,8 @@ class CircularContainerWithIconAndText extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: 56,
-          width: 56,
+          height: 55,
+          width: 70,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
           ),
@@ -64,7 +65,7 @@ class CircularContainerWithIconAndText extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        //const SizedBox(height: 8),
         Text(
           text,
           style: textStyle,

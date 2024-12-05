@@ -11,6 +11,8 @@ import 'package:wholesaleapp/widgets/categories_text.dart';
 import 'package:wholesaleapp/widgets/courasal_Widget.dart';
 import 'package:wholesaleapp/widgets/header_widget.dart';
 
+import 'all_products_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -92,9 +94,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       },
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     CategoriesText(),
                     SizedBox(
-                      height: 70.h, // Adjust height as necessary
+                      height: 10,
+                    ),
+                    Container(
+                      color: Colors.grey.shade100,
+                      height: 100.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: ListView.builder(
@@ -118,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     AllProductText(),
                   ],
@@ -150,7 +159,64 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }
-            })
+            }),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllProductScreen()),
+                        );
+                      },
+                      child: Container(
+                        width: 200,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16), // Inner padding
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(16), // Rounded corners
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Show more',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

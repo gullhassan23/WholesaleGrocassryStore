@@ -11,29 +11,38 @@ class CategoriesText extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CategoriesScreen()),
-            );
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Categories',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CategoriesScreen()),
+              );
+            },
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey.shade400,
+                    thickness: 1,
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 20,
-              ),
-            ],
-          ),
-        ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Shop by categories',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey.shade400,
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            )),
         SizedBox(
           height: 5,
         ),
