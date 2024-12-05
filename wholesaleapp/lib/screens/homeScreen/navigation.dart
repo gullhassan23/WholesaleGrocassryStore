@@ -1,6 +1,5 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
-import 'package:wholesaleapp/screens/homeScreen/cart_screen.dart';
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 import 'package:wholesaleapp/screens/homeScreen/user_profile_screen.dart';
 
@@ -21,21 +20,21 @@ class _HomeContentScreenState extends State<HomeContentScreen> {
     HomeScreen(),
     CategoriesScreen(),
     AllProductScreen(),
-    CartScreen(),
+//    CartScreen(),
     UserProfileScreen(),
   ];
 
   @override
   void initState() {
     super.initState();
-    _currentScreen = _screens[_selectedIndex]; // Initial screen
+    _currentScreen = _screens[_selectedIndex];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _currentScreen, // Directly use the screen widget here
+      body: _currentScreen,
       bottomNavigationBar: FlashyTabBar(
         animationDuration: Duration(milliseconds: 800),
         animationCurve: Curves.linear,
@@ -58,21 +57,21 @@ class _HomeContentScreenState extends State<HomeContentScreen> {
           FlashyTabBarItem(
             activeColor: Colors.blue,
             inactiveColor: Colors.blueGrey,
-            icon: Icon(Icons.category_rounded),
+            icon: Icon(Icons.menu),
             title: Text('Categories'),
           ),
           FlashyTabBarItem(
             activeColor: Colors.blue,
             inactiveColor: Colors.blueGrey,
-            icon: Icon(Icons.fastfood_rounded),
+            icon: Icon(Icons.shopping_bag),
             title: Text('Products'),
           ),
-          FlashyTabBarItem(
-            activeColor: Colors.blue,
-            inactiveColor: Colors.blueGrey,
-            icon: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
-          ),
+          // FlashyTabBarItem(
+          //   activeColor: Colors.blue,
+          //   inactiveColor: Colors.blueGrey,
+          //   icon: Icon(Icons.shopping_cart),
+          //   title: Text('Cart'),
+          // ),
           FlashyTabBarItem(
             activeColor: Colors.blue,
             inactiveColor: Colors.blueGrey,

@@ -17,21 +17,47 @@ class AllProductText extends StatelessWidget {
         );
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'All Products',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Divider(
+              color: Colors.grey.shade400,
+              thickness: 1,
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 20,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              'All Products',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Divider(
+              color: Colors.grey.shade400,
+              thickness: 1,
+            ),
           ),
         ],
       ),
+      // child: Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text(
+      //       'All Products',
+      //       style: TextStyle(
+      //         fontSize: 20,
+      //         fontWeight: FontWeight.bold,
+      //       ),
+      //     ),
+      //     Icon(
+      //       Icons.arrow_forward_ios_rounded,
+      //       size: 20,
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
