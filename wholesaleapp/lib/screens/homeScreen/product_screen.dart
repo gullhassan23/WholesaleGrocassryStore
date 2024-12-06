@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/CartController.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
@@ -19,7 +21,9 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  CartController cartController = Get.put(CartController());
   int quantity = 0;
+  bool isLoad = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,19 +125,38 @@ class _ProductScreenState extends State<ProductScreen> {
                     side: BorderSide(color: ColorsResource.PRIMARY_COLOR),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
-                  );
+                onPressed: () async {
+                  setState(() {
+                    isLoad = true; // Show the loading indicator
+                  });
+                  await cartController.addToCart(widget.itemModel);
+                  setState(() {
+                    isLoad = false; // Hide the loading indicator
+                  });
+                  if (cartController.addTocartStatus.value == "success") {
+                    Get.snackbar(
+                      "Sucess",
+                      "Your item added to cart",
+                    );
+
+                    Get.to(() => CartScreen());
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(cartController.addTocartStatus.value),
+                      ),
+                    );
+                  }
                 },
-                child: Text(
-                  'Add to cart',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ), // Optional content
+                child: isLoad
+                    ? CircularProgressIndicator()
+                    : Text(
+                        'Add to cart',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ), // Optional content
               ),
             ),
             SizedBox(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/CartModel.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
@@ -8,7 +9,9 @@ import 'package:wholesaleapp/helper/constant/images_resource.dart';
 
 class CartController extends GetxController {
   var cartItems = <QueryDocumentSnapshot>[].obs;
+  // RxList cartItems = <Cart>[].obs;
   var totalPrice = 0.0.obs;
+  var totalPriceGst = 0.0.obs;
   RxString addTocartStatus = ''.obs;
   // CommonFunctions cMethod = CommonFunctions();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -68,6 +71,7 @@ class CartController extends GetxController {
         .get();
     cartItems.value = snapshot.docs;
     calculateTotalPrice();
+    calculatewithGST();
   }
 
   void calculateTotalPrice() {
@@ -81,6 +85,24 @@ class CartController extends GetxController {
       total += price * quantity;
     }
     totalPrice.value = total;
+  }
+
+  // void calculatewithGST() {
+  //   double sub = 0.0;
+  //   if (totalPrice.value != 0.0) {
+  //     sub += 10;
+  //   }
+  //   totalPriceGst.value = sub;
+  //   print("subPrice ${totalPriceGst}");
+  // }
+
+  void calculatewithGST() {
+    if (totalPrice.value > 0.0) {
+      totalPriceGst.value = totalPrice.value + 10; // Adding 10% GST
+    } else {
+      totalPriceGst.value = 0.0;
+    }
+    print("Total Price with GST: ${totalPriceGst.value}");
   }
 
   void removeFromCart(String cartItemId) {
@@ -124,8 +146,65 @@ class CartController extends GetxController {
         .collection('Cart')
         .doc(currentUser.uid)
         .collection("items")
-        .doc(cartItemId) // Make sure cartItemId is not null or empty
+        .doc(cartItemId)
         .delete();
+  }
+
+  void incrementQuantity(int index) async {
+    try {
+      final document = cartItems[index]; // Get the Firestore document.
+      final cartItemId = document.id; // Get the document ID.
+      final data = document.data() as Map<String, dynamic>;
+
+      int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
+      currentQuantity++; // Increment the quantity.
+
+      // Update the quantity in Firestore.
+      await firebaseFirestore
+          .collection('Cart')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('items')
+          .doc(cartItemId)
+          .update({'quantity': currentQuantity});
+
+      fetchCartItems(); // Refresh the cart items after updating.
+    } catch (e) {
+      print('Error incrementing quantity: $e');
+    }
+  }
+
+  void decrementQuantity(int index) async {
+    try {
+      final document = cartItems[index]; // Get the Firestore document.
+      final cartItemId = document.id; // Get the document ID.
+      final data = document.data() as Map<String, dynamic>;
+
+      int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
+      if (currentQuantity > 1) {
+        currentQuantity--; // Decrement the quantity.
+
+        // Update the quantity in Firestore.
+        await firebaseFirestore
+            .collection('Cart')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('items')
+            .doc(cartItemId)
+            .update({'quantity': currentQuantity});
+
+        fetchCartItems(); // Refresh the cart items after updating.
+      } else {
+        // Show a snackbar if the quantity cannot be decremented further.
+        Get.snackbar(
+          'Error',
+          'Quantity cannot be less than 1',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Error decrementing quantity: $e');
+    }
   }
 
   Future<void> addToCart(ItemModel itemModel) async {
@@ -150,8 +229,10 @@ class CartController extends GetxController {
         // If the product is not in the cart, add it using Cart model
         Cart cart = Cart(
           cid: uid,
-          productImage:
-              itemModel.imageUrls.isNotEmpty ? itemModel.imageUrls[0] : '',
+          productImage: "https://i.imgur.com/CGCyp1d.png",
+          // productImage: itemModel.imageUrls.isNotEmpty == true
+          //     ? itemModel.imageUrls[0]
+          //     : '',
           productName: itemModel.itemName,
           cost: itemModel.cost,
           productId: itemModel.uid,

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:wholesaleapp/Controllers/CartController.dart';
 
 import '../helper/constant/images_resource.dart';
-import '../screens/homeScreen/cart_screen.dart';
 
-class cartScreenBorderContainer extends StatelessWidget {
+class cartScreenBorderContainer extends StatefulWidget {
   const cartScreenBorderContainer({
     super.key,
     required this.cartController,
@@ -20,6 +20,12 @@ class cartScreenBorderContainer extends StatelessWidget {
   final String displayText;
   final TextEditingController locationController;
 
+  @override
+  State<cartScreenBorderContainer> createState() =>
+      _cartScreenBorderContainerState();
+}
+
+class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,7 +68,7 @@ class cartScreenBorderContainer extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    '\$ ${cartController.getsubAmount().toStringAsFixed(2)}',
+                    '\$ ${widget.cartController.totalPrice.value.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
@@ -104,7 +110,7 @@ class cartScreenBorderContainer extends StatelessWidget {
                 ),
                 Obx(
                   () => Text(
-                    '\$ ${cartController.getTotalAmount().toStringAsFixed(2)}',
+                    '\$ ${widget.cartController.totalPriceGst.value.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
@@ -134,7 +140,7 @@ class cartScreenBorderContainer extends StatelessWidget {
             ),
             Row(
               children: [
-                _selectedRadio == 0
+                widget._selectedRadio == 0
                     ? SvgPicture.asset(
                         ImagesResource.BEVERAGE,
                         height: 20,
@@ -149,7 +155,7 @@ class cartScreenBorderContainer extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  displayText,
+                  widget.displayText,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -208,7 +214,7 @@ class cartScreenBorderContainer extends StatelessWidget {
                   height: 50,
                   width: 210,
                   child: Text(
-                    locationController.text,
+                    widget.locationController.text,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
