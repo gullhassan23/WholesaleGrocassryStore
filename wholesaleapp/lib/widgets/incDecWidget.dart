@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wholesaleapp/Controllers/CartController.dart';
 
 import '../helper/constant/colors_resource.dart';
-import '../screens/homeScreen/cart_screen.dart';
+
 
 class incDecWidget extends StatelessWidget {
   const incDecWidget({
