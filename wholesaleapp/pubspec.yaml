@@ -49,7 +49,7 @@ dependencies:
   get: ^4.6.6
   device_info_plus:
   permission_handler: ^11.3.1
-
+  shared_preferences: ^2.3.3
   flashy_tab_bar2: ^0.0.10
   flutter_svg: ^2.0.15
   cached_network_image: ^3.4.1

@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wholesaleapp/MODELS/AdminModel.dart';
 import 'package:wholesaleapp/MODELS/PicModel.dart';
-
 import 'package:wholesaleapp/MODELS/distributModel.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 
@@ -13,6 +13,7 @@ class Authenticationclass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String adminEmail = 'admin@example.com';
+
   // final String adminPassword = 'admin123';
   // final String adminName = "Wholesaler";
   // final String adminPhone = "+923351764911";
@@ -77,6 +78,8 @@ class Authenticationclass {
     if (email != "" && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("userRole", "distributor");
         output = "success";
       } on FirebaseAuthException catch (e) {
         output = e.message.toString();
@@ -139,6 +142,8 @@ class Authenticationclass {
     if (email == adminEmail && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("userRole", "admin");
         output = "success";
       } on FirebaseAuthException catch (e) {
         output = e.message.toString();
