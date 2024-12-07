@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/Controllers/CartController.dart';
+import 'package:wholesaleapp/helper/Service/stripe_payment.dart';
 
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
@@ -219,8 +220,15 @@ class _CartScreenState extends State<CartScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {
-                          // perform navigation
+                        onPressed: () async {
+                          if (cartController.totalPriceGst > 0) {
+                            String cost = cartController.totalPrice.toString();
+                            await PaymentMethod().makePayment2(cost);
+                            cartController
+                                .clearCart(); // Clear the cart after payment
+                          } else {
+                            Get.snackbar("Payment Message", "Cart is empty");
+                          }
                         },
                         child: Center(
                           child: Text(
