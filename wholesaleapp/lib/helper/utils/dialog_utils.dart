@@ -7,6 +7,8 @@ import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import '../constant/images_resource.dart';
 
 class DialogUtils {
+  String stID =
+      "pk_test_51LYvOaG5oJVKdCdohaq2PoZRQfiMsxnFxdMXEKRRejxqi3J47f9ayTmrPHIWEelgADGiL9ZrysBM5TsMeUJg4LPS00urKX4NBZ";
   static Future<bool?> showLogoutDialog(
       {required BuildContext context,
       Function()? onRetry,
@@ -187,8 +189,6 @@ class DialogUtils {
       },
     );
   }
-
-
 }
 
 class CustomImageSelection extends StatelessWidget {
@@ -223,5 +223,4 @@ class CustomImageSelection extends StatelessWidget {
       ),
     );
   }
-  
 }

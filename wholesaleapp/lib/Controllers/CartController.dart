@@ -25,21 +25,28 @@ class CartController extends GetxController {
 
   Future<void> clearCart() async {
     try {
+      // Get the current user
       User currentUser = firebaseAuth.currentUser!;
-      DocumentReference cartDocRef = FirebaseFirestore.instance
+
+      // Reference to the 'items' subcollection of the current user's cart
+      CollectionReference cartItemsRef = FirebaseFirestore.instance
           .collection("Cart")
           .doc(currentUser.uid)
-          .collection("items")
-          .doc();
+          .collection("items");
 
-      // Check if the document exists before attempting to delete it
-      DocumentSnapshot cartDocSnapshot = await cartDocRef.get();
-      if (cartDocSnapshot.exists) {
-        // Delete the document (cart)
-        await cartDocRef.delete();
-        print('Cart document deleted from Firestore.');
+      // Fetch all documents in the 'items' subcollection
+      QuerySnapshot cartSnapshot = await cartItemsRef.get();
+
+      // Check if there are any items in the cart
+      if (cartSnapshot.docs.isNotEmpty) {
+        // Loop through each document and delete it
+        for (var doc in cartSnapshot.docs) {
+          await doc.reference.delete();
+          print('Cart item deleted: ${doc.id}');
+        }
+        print('All cart items deleted from Firestore.');
       } else {
-        print('Cart document does not exist.');
+        print('No items found in the cart.');
       }
 
       // Clear local cart items and total price
@@ -49,6 +56,33 @@ class CartController extends GetxController {
       print("Failed to clear cart: ${e.toString()}");
     }
   }
+
+  // Future<void> clearCart() async {
+  //   try {
+  //     User currentUser = firebaseAuth.currentUser!;
+  //     DocumentReference cartDocRef = FirebaseFirestore.instance
+  //         .collection("Cart")
+  //         .doc(currentUser.uid)
+  //         .collection("items").doc();
+
+  //     // Check if the document exists before attempting to delete it
+  //     DocumentSnapshot cartDocSnapshot = await cartDocRef.get();
+  //     print("cart---> ${cartDocSnapshot.id.length}");
+  //     if (cartDocSnapshot.exists) {
+  //       // Delete the document (cart)
+  //       await cartDocRef.delete();
+  //       print('Cart document deleted from Firestore.');
+  //     } else {
+  //       print('Cart document does not exist.');
+  //     }
+
+  //     // Clear local cart items and total price
+  //     cartItems.clear();
+  //     totalPrice.value = 0.0;
+  //   } catch (e) {
+  //     print("Failed to clear cart: ${e.toString()}");
+  //   }
+  // }
 
   // Mock method to get product quantity from Firestore
   Future<int> getProductQuantity(String itemId) async {
