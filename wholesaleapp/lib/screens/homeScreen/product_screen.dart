@@ -48,7 +48,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(15.r),
               child: Image.network(
-                "https://i.imgur.com/CGCyp1d.png",
+                widget.itemModel.imageUrls[0],
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 250,

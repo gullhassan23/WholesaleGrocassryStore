@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
+import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 
 import '../../Controllers/distribController.dart';
 import '../../helper/constant/colors_resource.dart';
@@ -191,6 +194,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           _selectedImage =
               File(xFileResult!.path); // Update the state with the new image
         });
+
+        // Convert to Uint8List
+        Uint8List imageBytes = await xFileResult.readAsBytes();
+        // Upload to Firebase
+        String output = await cloud().ProfilePic(
+          collectionName: "Distributors",
+          file: imageBytes,
+          uid: FirebaseAuth.instance.currentUser!.uid,
+        );
+
+        if (output == "success") {
+          Get.snackbar(
+            "Success",
+            "Profile Picture updated to firebase",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+          );
+        } else {
+          Get.snackbar(
+            "Error",
+            "Failed to update profile picture to Firebase",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+          );
+        }
       }
     }
   }

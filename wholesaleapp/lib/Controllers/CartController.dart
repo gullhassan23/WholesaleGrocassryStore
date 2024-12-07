@@ -229,7 +229,7 @@ class CartController extends GetxController {
         // If the product is not in the cart, add it using Cart model
         Cart cart = Cart(
           cid: uid,
-          productImage: "https://i.imgur.com/CGCyp1d.png",
+          productImage: itemModel.imageUrls[0],
           // productImage: itemModel.imageUrls.isNotEmpty == true
           //     ? itemModel.imageUrls[0]
           //     : '',
