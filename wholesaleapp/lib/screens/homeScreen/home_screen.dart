@@ -23,11 +23,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ItemController itemController = Get.put(ItemController());
 
-  // Carousel images
   final List<Map<String, dynamic>> imageList = [
     {"id": 1, "image_path": 'assets/images/image1.png'},
-    {"id": 2, "image_path": 'assets/images/image2.png'},
-    {"id": 3, "image_path": 'assets/images/image3.png'},
+    {"id": 2, "image_path": 'assets/images/1.png'},
+    {"id": 3, "image_path": 'assets/images/3.jpg'},
   ];
 
   List categories = [

@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
-import '../boardingScreen/boarding_screen.dart';
+import '../Admin/AdminHome.dart';
+import '../Auth/sign_in.dart';
+import '../homeScreen/navigation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,17 +17,50 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late FirebaseAuth auth;
+  User? user;
   var size, height, width;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const BoardingScreen()),
-      );
-    });
+    auth = FirebaseAuth.instance;
+    user = auth.currentUser;
+    navigateBasedOnRole();
+  }
+
+  Future<void> navigateBasedOnRole() async {
+    if (user != null) {
+      // Fetch user role
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userRole = prefs.getString("userRole");
+
+      Future.delayed(const Duration(seconds: 3), () {
+        if (userRole == "admin") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminHome()),
+          );
+        } else if (userRole == "distributor") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeContentScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const SignIn()),
+          );
+        }
+      });
+    } else {
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SignIn()),
+        );
+      });
+    }
   }
 
   @override

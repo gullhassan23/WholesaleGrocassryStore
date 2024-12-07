@@ -17,14 +17,14 @@ class CategoriesScreen extends StatelessWidget {
   }) : super(key: key);
 
   final List<Map<String, String>> categories = [
-    {"image": "https://i.imgur.com/CGCyp1d.png", "text": "Vegetables"},
-    {"image": "https://i.imgur.com/AkzWQuJ.png", "text": "Fruits"},
-    {"image": "https://i.imgur.com/J7mGZ12.png", "text": "Beverages"},
-    {"image": "https://i.imgur.com/q9oF9Yq.png", "text": "Grocery"},
-    {"image": "https://i.imgur.com/CGCyp1d.png", "text": "Meat"},
-    {"image": "https://i.imgur.com/AkzWQuJ.png", "text": "Clean"},
-    {"image": "https://i.imgur.com/J7mGZ12.png", "text": "Frozen"},
-    {"image": "https://i.imgur.com/q9oF9Yq.png", "text": "Dry-Fruits"},
+    {"image": "assets/images/4.png", "text": "Vegetables"},
+    {"image": "assets/images/fruits.png", "text": "Fruits"},
+    {"image": "assets/images/drinks.png", "text": "Beverages"},
+    {"image": "assets/images/grocery.png", "text": "Grocery"},
+    {"image": "assets/images/meat.png", "text": "Meat"},
+    {"image": "assets/images/clean.png", "text": "Clean"},
+    {"image": "assets/images/frozen.png", "text": "Frozen"},
+    {"image": "assets/images/dry.png", "text": "Dry-Fruits"},
   ];
 
   @override
@@ -52,25 +52,39 @@ class CategoriesScreen extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 140,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    image: NetworkImage(category["image"]!),
-                    fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 140,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        image: AssetImage(category["image"]!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  category["text"]!,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  Container(
+                    height: 140,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.black.withOpacity(0.5),
+                    ),
                   ),
-                ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 140,
+                    child: Text(
+                      category["text"]!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );
