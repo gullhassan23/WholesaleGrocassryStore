@@ -1,14 +1,20 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
+import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
 import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
+import 'package:wholesaleapp/helper/utils/permission_utils.dart';
 
 import '../../widgets/profile_list_items.dart';
 
@@ -21,7 +27,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isLoading = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ImagePicker _picker = ImagePicker();
+
   final Admincontroller adminController = Get.put(Admincontroller());
 
   @override
@@ -30,36 +37,81 @@ class _ProfileState extends State<Profile> {
     adminController.fetchWholeSaleData();
   }
 
-  Uint8List? image;
+  Future<void> pickProfileImage() async {
+    DialogUtils.showImageOptionsBottomSheet(
+      context: context,
+      chooseFromGalleryCallback: () async {
+        pick(type: 'GALLERY');
+        Navigator.pop(context);
+      },
+      takeAPictureCallback: () async {
+        pick(type: 'CAMERA');
+        Navigator.pop(context);
+      },
+    );
+  }
 
-  void selectImage() async {
-    User currentUser = _auth.currentUser!;
-    Uint8List im = await ImagesResource().pickImage(ImageSource.gallery);
+  File? _selectedImage;
+  Future<void> pick({required String type}) async {
+    AndroidDeviceInfo? androidDeviceInfo;
+    if (Platform.isAndroid) {
+      androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
+    }
+    PermissionStatus permissionStatus = await PermissionUtil().checkPermission(
+        permission: type == 'GALLERY'
+            ? (androidDeviceInfo != null &&
+                        androidDeviceInfo.version.sdkInt >= 33) ||
+                    Platform.isIOS
+                ? Permission.photos
+                : Permission.storage
+            : Permission.camera);
+    if (permissionStatus.isGranted) {
+      XFile? xFileResult;
+      if (type == 'CAMERA') {
+        xFileResult = await _picker.pickImage(
+          source: ImageSource.camera,
+          preferredCameraDevice: CameraDevice.front,
+        );
+      } else if (type == 'GALLERY') {
+        xFileResult = await _picker.pickImage(
+          source: ImageSource.gallery,
+        );
+      }
+      if (xFileResult != null) {
+        setState(() {
+          _selectedImage =
+              File(xFileResult!.path); // Update the state with the new image
+        });
 
-    setState(() {
-      image = im;
-    });
+        // Convert to Uint8Lists
+        Uint8List imageBytes = await xFileResult.readAsBytes();
+        // Upload to Firebase
+        String output = await cloud().ProfilePic(
+          collectionName: "WholeSaler",
+          file: imageBytes,
+          uid: FirebaseAuth.instance.currentUser!.uid,
+        );
 
-    String output =
-        await cloud().ProfilePic(file: image!, uid: currentUser.uid);
-    if (output == "success") {
-      Get.snackbar(
-        "Posted Profile Picture", // Title
-        output, // Message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
-    } else {
-      Get.snackbar(
-        "Profile picture not posted", // Title
-        output, // Message
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+        if (output == "success") {
+          Get.snackbar(
+            "Success",
+            "Profile Picture updated to firebase",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+          );
+        } else {
+          Get.snackbar(
+            "Error",
+            "Failed to update profile picture to Firebase",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
+          );
+        }
+      }
     }
   }
 
@@ -203,25 +255,56 @@ class _ProfileState extends State<Profile> {
               Center(
                 child: Stack(
                   children: [
-                    image != null
-                        ? CircleAvatar(
-                            radius: 64, backgroundImage: MemoryImage(image!))
-                        : CircleAvatar(
-                            radius: 64,
-                            backgroundImage:
-                                AssetImage("assets/images/image1.png")),
-                    Positioned(
-                      top: 93,
-                      left: 80,
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: Icon(
-                          Icons.edit,
-                          size: 30,
-                          color: Colors.grey,
+                    Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ColorsResource.PROFILE_AND_COVER_PIC_BG_COLOR,
+                        border: Border.all(
+                          color: ColorsResource.WHITE,
+                          width: 4,
                         ),
                       ),
-                    )
+                      child: ClipOval(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color:
+                                ColorsResource.PROFILE_AND_COVER_PIC_BG_COLOR,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                20,
+                              ),
+                            ),
+                          ),
+                          child: _selectedImage == null
+                              ? SvgPicture.asset(
+                                  ImagesResource.PROFILE_ICON,
+                                  fit: BoxFit.none,
+                                )
+                              : Image.file(
+                                  _selectedImage!,
+                                  fit: BoxFit.cover,
+                                  width: 80, // Adjust width/height as needed
+                                  height: 80,
+                                ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 80,
+                      top: 80,
+                      child: GestureDetector(
+                        child: SvgPicture.asset(
+                          ImagesResource.EDIT_IMAGE_ICON,
+                          height: 24,
+                          width: 24,
+                        ),
+                        onTap: () {
+                          pickProfileImage();
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -21,7 +21,9 @@ class AllProductsCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         itemController.fetchProductData();
-        Get.to(() => ProductScreen(itemModel: itemModel,));
+        Get.to(() => ProductScreen(
+              itemModel: itemModel,
+            ));
       },
       child: Card(
         elevation: 10,
@@ -32,7 +34,8 @@ class AllProductsCard extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: Image.network(
-                'https://i.imgur.com/CGCyp1d.png',
+                itemModel.imageUrls[0],
+                // 'https://i.imgur.com/CGCyp1d.png',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,

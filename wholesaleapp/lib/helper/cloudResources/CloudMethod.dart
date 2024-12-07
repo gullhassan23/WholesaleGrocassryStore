@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/MODELS/PicModel.dart';
+import 'package:wholesaleapp/helper/constant/images_resource.dart';
 
 class cloud {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -24,17 +24,18 @@ class cloud {
     return task.ref.getDownloadURL();
   }
 
-  // Future<String> uploadImageToDatabase(
-  //     {required Uint8List image, required String uid}) async {
-  //   Reference storageRef =
-  //       FirebaseStorage.instance.ref().child("Items").child(uid);
-  //   UploadTask uploadTask = storageRef.putData(image);
-  //   TaskSnapshot task = await uploadTask;
-  //   return task.ref.getDownloadURL();
-  // }
+  Future<String> uploadImageToDatabase(
+      {required Uint8List image, required String uid}) async {
+    Reference storageRef =
+        FirebaseStorage.instance.ref().child("Items").child(uid);
+    UploadTask uploadTask = storageRef.putData(image);
+    TaskSnapshot task = await uploadTask;
+    return task.ref.getDownloadURL();
+  }
 
 // profilePic
   Future<String> ProfilePic({
+    required String collectionName,
     required Uint8List file,
     required String uid,
   }) async {
@@ -43,17 +44,18 @@ class cloud {
     String url = await uploadProfileToStorage(file, false, currentUser.uid);
     Pic pic = Pic(id: currentUser.uid, photoUrl: url);
     await firebaseFirestore
-        .collection("WholeSaler")
+        .collection(collectionName)
         .doc(currentUser.uid)
         .update(pic.toJson());
     print(url);
-    return url;
+    return "success";
+    // return url;
   }
 
   Future<String> uploadProductToDatabase({
     required String weight,
     required String type,
-    required List<Uint8List> imageFiles, // List of Uint8List images
+    required List<Uint8List?> imageFiles,
     required String productName,
     required String rawCost,
     required description,
@@ -72,11 +74,18 @@ class cloud {
       try {
         // Create a new document ID
         String docid = firebaseFirestore.collection("Items").doc().id;
-
+        String uid = ImagesResource().getUid();
+        List<String> imageUrls = [];
+        for (var image in imageFiles) {
+          if (image != null) {
+            String url = await uploadImageToDatabase(image: image, uid: uid);
+            imageUrls.add(url);
+          }
+        }
         // Convert images to Base64 strings
-        List<String> base64Images = imageFiles.map((image) {
-          return base64Encode(image);
-        }).toList();
+        // List<String> base64Images = imageFiles.map((image) {
+        //   return base64Encode(image);
+        // }).toList();
 
         // Parse the raw cost to a double
         double cost = double.parse(rawCost);
@@ -88,7 +97,7 @@ class cloud {
           quantity: quan,
           createdAT: DateTime.now(),
           uid: docid,
-          imageUrls: base64Images,
+          imageUrls: imageUrls,
           // Store Base64 strings
           itemName: productName,
           cost: cost,
