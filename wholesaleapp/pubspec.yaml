@@ -69,9 +69,6 @@ flutter_native_splash:
 
   web: false
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
