@@ -11,9 +11,12 @@ import 'helper/utils/svg_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Stripe.publishableKey = DialogUtils().stID;
   await Firebase.initializeApp();
   SvgUtils.preCacheSVGs();
+
   runApp(MyApp());
 }
 
@@ -23,6 +26,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    //FlutterNativeSplash.remove();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -36,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               scaffoldBackgroundColor: ColorsResource.WHITE,
               colorScheme:
-                  ColorScheme.fromSeed(seedColor: ColorsResource.PRIMARY_COLOR),
+              ColorScheme.fromSeed(seedColor: ColorsResource.PRIMARY_COLOR),
               useMaterial3: true,
             ),
             home: SplashScreen());

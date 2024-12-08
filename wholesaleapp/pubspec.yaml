@@ -54,9 +54,22 @@ dependencies:
   flashy_tab_bar2: ^0.0.10
   flutter_svg: ^2.0.15
   cached_network_image: ^3.4.1
-
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.3
   flutter_screenutil: ^5.9.3
   intl_phone_field: ^3.2.0
+
+flutter_native_splash:
+  color: "#048c2c"
+  image: assets/images/car.jpg
+
+  android_12:
+    color: "#048c2c"
+    image: assets/images/car.jpg
+
+  web: false
+
+
 
 
 dev_dependencies:
