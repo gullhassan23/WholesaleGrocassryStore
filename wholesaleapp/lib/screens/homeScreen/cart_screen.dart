@@ -221,6 +221,16 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         onPressed: () async {
+                          if (locationController.text.trim().isEmpty) {
+                            Get.snackbar(
+                              "Validation Error",
+                              "Please fill in the delivery address.",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red.withOpacity(0.8),
+                              colorText: Colors.white,
+                            );
+                            return;
+                          }
                           if (cartController.totalPriceGst > 0) {
                             String cost = cartController.totalPrice.toString();
                             await PaymentMethod().makePayment2(cost);
@@ -245,21 +255,7 @@ class _CartScreenState extends State<CartScreen> {
               ),
             );
           }
-        })
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     cartController.addToCart({
-        //       'productName': 'Apple',
-        //       'productDescription':
-        //           'Apple is good for your health ccd Apple is good for your health cndj cjs e cdnc cdnc cnsdj',
-        //       'quantity': 1,
-        //       'cost': 15.0,
-        //       'imageUrls': ['https://via.placeholder.com/100'],
-        //     });
-        //   },
-        //   child: Icon(Icons.add),
-        // ),
-        );
+        }));
   }
 
   Column buildColumn() {
@@ -280,6 +276,7 @@ class _CartScreenState extends State<CartScreen> {
           focusNode: focusNode,
           onChanged: (value) {
             setState(() {});
+            cartController.updateShippingAddress(value);
           },
           decoration: InputDecoration(
             hintText: 'Enter your address',

@@ -31,6 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
   String? _firebaseImageUrl;
+  bool _isUploading = false;
   TextEditingController phoneController = TextEditingController();
 
   final Admincontroller adminController = Get.put(Admincontroller());
@@ -104,30 +105,34 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                             ),
                           ),
-                          child: _selectedImage != null
-                              ? Image.file(
-                                  _selectedImage!,
-                                  fit: BoxFit.cover,
-                                  width: 110,
-                                  height: 110,
-                                )
-                              : (_firebaseImageUrl != null
-                                  ? Image.network(
-                                      _firebaseImageUrl!,
+                          child: _isUploading
+                              ? Center(
+                                  child:
+                                      CircularProgressIndicator()) // Show spinner during upload
+                              : _selectedImage != null
+                                  ? Image.file(
+                                      _selectedImage!,
                                       fit: BoxFit.cover,
                                       width: 110,
                                       height: 110,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              SvgPicture.asset(
-                                        ImagesResource.PROFILE_ICON,
-                                        fit: BoxFit.none,
-                                      ),
                                     )
-                                  : SvgPicture.asset(
-                                      ImagesResource.PROFILE_ICON,
-                                      fit: BoxFit.none,
-                                    )),
+                                  : (_firebaseImageUrl != null
+                                      ? Image.network(
+                                          _firebaseImageUrl!,
+                                          fit: BoxFit.cover,
+                                          width: 110,
+                                          height: 110,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  SvgPicture.asset(
+                                            ImagesResource.PROFILE_ICON,
+                                            fit: BoxFit.none,
+                                          ),
+                                        )
+                                      : SvgPicture.asset(
+                                          ImagesResource.PROFILE_ICON,
+                                          fit: BoxFit.none,
+                                        )),
                         ),
                       ),
                     ),
@@ -230,8 +235,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
       if (xFileResult != null) {
         setState(() {
-          _selectedImage =
-              File(xFileResult!.path); // Update the state with the new image
+          _selectedImage = File(xFileResult!.path);
+
+          _isUploading = true; // Update the state with the new image
         });
 
         // Convert to Uint8List
@@ -242,7 +248,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           file: imageBytes,
           uid: FirebaseAuth.instance.currentUser!.uid,
         );
-
+        setState(() {
+          _isUploading = false; // Reset uploading state
+        });
         if (output == "success") {
           await _fetchProfileImageFromFirebase();
           Get.snackbar(

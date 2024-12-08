@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Cart {
   final String cid;
   final String productImage;
@@ -28,21 +30,23 @@ class Cart {
       'cost': cost,
       'productId': productId,
       'quantity': quantity,
-      'orderedAt': orderedAt.millisecondsSinceEpoch,
+      'orderedAt': orderedAt,
       'uSerid': uSerid,
     };
   }
 
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
-      cid: map['cid'] as String,
-      productImage: map['productImage'] as String,
-      productName: map['productName'] as String,
-      cost: map['cost'] as double,
-      productId: map['productId'] as String,
-      quantity: map['quantity'] as int,
-      orderedAt: DateTime.fromMillisecondsSinceEpoch(map['orderedAt'] as int),
-      uSerid: map['uSerid'] as String,
+      cid: map['cid'] ?? '',
+      productImage: map['productImage'] ?? '',
+      productName: map['productName'] ?? '',
+      cost: (map['cost'] ?? 0).toDouble(),
+      productId: map['productId'] ?? '',
+      quantity: int.tryParse(map['quantity'].toString()) ?? 0,
+      orderedAt: map['orderedAt'] != null
+          ? (map['orderedAt'] as Timestamp).toDate()
+          : DateTime.now(),
+      uSerid: map['uSerid'] ?? '',
     );
   }
 

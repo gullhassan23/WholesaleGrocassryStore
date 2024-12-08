@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/CartController.dart';
+import 'package:wholesaleapp/Controllers/ItemController.dart';
+import 'package:wholesaleapp/Controllers/OrderController.dart';
+import 'package:wholesaleapp/Controllers/distribController.dart';
 import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
 import 'package:wholesaleapp/screens/splashScreen/splash_screen.dart';
 
@@ -16,7 +20,10 @@ void main() async {
   Stripe.publishableKey = DialogUtils().stID;
   await Firebase.initializeApp();
   SvgUtils.preCacheSVGs();
-
+  Get.lazyPut<ItemController>(() => ItemController());
+  Get.lazyPut<CartController>(() => CartController());
+  Get.lazyPut<OrderController>(() => OrderController());
+  Get.lazyPut<UserController>(() => UserController());
   runApp(MyApp());
 }
 
@@ -28,7 +35,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initState
     //FlutterNativeSplash.remove();
     super.initState();
   }
@@ -46,7 +52,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               scaffoldBackgroundColor: ColorsResource.WHITE,
               colorScheme:
-              ColorScheme.fromSeed(seedColor: ColorsResource.PRIMARY_COLOR),
+                  ColorScheme.fromSeed(seedColor: ColorsResource.PRIMARY_COLOR),
               useMaterial3: true,
             ),
             home: SplashScreen());
