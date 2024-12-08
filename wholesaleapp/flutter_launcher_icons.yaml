@@ -7,6 +7,7 @@ flutter_launcher_icons:
   image_path: "assets/icons/internet.png"
   image_path_android: "assets/icons/internet.png"
   adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/internet.png"
   remove_alpha_ios: true
   web:
     generate: true
