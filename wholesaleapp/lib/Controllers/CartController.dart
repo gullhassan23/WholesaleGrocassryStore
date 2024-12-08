@@ -189,16 +189,72 @@ class CartController extends GetxController {
         .delete();
   }
 
-  void incrementQuantity(int index) async {
+  // void incrementQuantity(int index) async {
+  //   try {
+  //     final document = cartItems[index]; // Get the Firestore document.
+  //     final cartItemId = document.id; // Get the document ID.
+  //     final data = document.data() as Map<String, dynamic>;
+
+  //     int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
+  //     currentQuantity++; // Increment the quantity.
+
+  //     // Update the quantity in Firestore.
+  //     await firebaseFirestore
+  //         .collection('Cart')
+  //         .doc(firebaseAuth.currentUser!.uid)
+  //         .collection('items')
+  //         .doc(cartItemId)
+  //         .update({'quantity': currentQuantity});
+
+  //     fetchCartItems(); // Refresh the cart items after updating.
+  //   } catch (e) {
+  //     print('Error incrementing quantity: $e');
+  //   }
+  // }
+
+  // void decrementQuantity(int index) async {
+  //   try {
+  //     final document = cartItems[index]; // Get the Firestore document.
+  //     final cartItemId = document.id; // Get the document ID.
+  //     final data = document.data() as Map<String, dynamic>;
+
+  //     int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
+  //     if (currentQuantity > 1) {
+  //       currentQuantity--; // Decrement the quantity.
+
+  //       // Update the quantity in Firestore.
+  //       await firebaseFirestore
+  //           .collection('Cart')
+  //           .doc(firebaseAuth.currentUser!.uid)
+  //           .collection('items')
+  //           .doc(cartItemId)
+  //           .update({'quantity': currentQuantity});
+
+  //       fetchCartItems(); // Refresh the cart items after updating.
+  //     } else {
+  //       // Show a snackbar if the quantity cannot be decremented further.
+  //       Get.snackbar(
+  //         'Error',
+  //         'Quantity cannot be less than 1',
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error decrementing quantity: $e');
+  //   }
+  // }
+
+  void incrementQuantity(int index, int amount) async {
     try {
-      final document = cartItems[index]; // Get the Firestore document.
-      final cartItemId = document.id; // Get the document ID.
+      final document = cartItems[index];
+      final cartItemId = document.id;
       final data = document.data() as Map<String, dynamic>;
 
-      int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
-      currentQuantity++; // Increment the quantity.
+      int currentQuantity = data['quantity'] ?? 0;
+      currentQuantity += amount;
 
-      // Update the quantity in Firestore.
       await firebaseFirestore
           .collection('Cart')
           .doc(firebaseAuth.currentUser!.uid)
@@ -206,23 +262,22 @@ class CartController extends GetxController {
           .doc(cartItemId)
           .update({'quantity': currentQuantity});
 
-      fetchCartItems(); // Refresh the cart items after updating.
+      fetchCartItems();
     } catch (e) {
       print('Error incrementing quantity: $e');
     }
   }
 
-  void decrementQuantity(int index) async {
+  void decrementQuantity(int index, int amount) async {
     try {
-      final document = cartItems[index]; // Get the Firestore document.
-      final cartItemId = document.id; // Get the document ID.
+      final document = cartItems[index];
+      final cartItemId = document.id;
       final data = document.data() as Map<String, dynamic>;
 
-      int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
-      if (currentQuantity > 1) {
-        currentQuantity--; // Decrement the quantity.
+      int currentQuantity = data['quantity'] ?? 0;
+      if (currentQuantity > amount) {
+        currentQuantity -= amount;
 
-        // Update the quantity in Firestore.
         await firebaseFirestore
             .collection('Cart')
             .doc(firebaseAuth.currentUser!.uid)
@@ -230,12 +285,11 @@ class CartController extends GetxController {
             .doc(cartItemId)
             .update({'quantity': currentQuantity});
 
-        fetchCartItems(); // Refresh the cart items after updating.
+        fetchCartItems();
       } else {
-        // Show a snackbar if the quantity cannot be decremented further.
         Get.snackbar(
           'Error',
-          'Quantity cannot be less than 1',
+          'Quantity cannot be less than $amount',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
