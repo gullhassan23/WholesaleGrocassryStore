@@ -8,7 +8,6 @@ class Admin {
   String Auid;
   String Aemail;
   String Apassword;
-
   DateTime AlastActive;
   String Aphone;
   Admin({
@@ -21,6 +20,28 @@ class Admin {
     this.Aphone = '',
   });
 
+  factory Admin.fromMap(Map<String, dynamic> map) {
+    // DateTime AlastActive;
+    // if (map['createdAT'] is Timestamp) {
+    //   AlastActive = (map['AlastActive'] as Timestamp).toDate();
+    // } else if (map['AlastActive'] is int) {
+    //   AlastActive = DateTime.fromMillisecondsSinceEpoch(map['AlastActive']);
+    // } else {
+    //   AlastActive = DateTime.now(); // Default value if neither type is matched
+    // }
+    return Admin(
+      Aname: map['Aname'] as String,
+      isAdmin: map['isAdmin'] as bool,
+      Auid: map['Auid'] as String,
+      Aemail: map['Aemail'] as String,
+      Apassword: map['Apassword'] as String,
+      AlastActive: map['AlastActive'] != null
+          ? (map['AlastActive'] as Timestamp).toDate()
+          : DateTime.now(),
+      Aphone: map['Aphone'] as String,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'Aname': Aname,
@@ -28,29 +49,9 @@ class Admin {
       'Auid': Auid,
       'Aemail': Aemail,
       'Apassword': Apassword,
-      'AlastActive': AlastActive.millisecondsSinceEpoch,
+      'AlastActive': AlastActive,
       'Aphone': Aphone,
     };
-  }
-
-  factory Admin.fromMap(Map<String, dynamic> map) {
-    DateTime AlastActive;
-    if (map['createdAT'] is Timestamp) {
-      AlastActive = (map['AlastActive'] as Timestamp).toDate();
-    } else if (map['AlastActive'] is int) {
-      AlastActive = DateTime.fromMillisecondsSinceEpoch(map['AlastActive']);
-    } else {
-      AlastActive = DateTime.now(); // Default value if neither type is matched
-    }
-    return Admin(
-      Aname: map['Aname'] as String,
-      isAdmin: map['isAdmin'] as bool,
-      Auid: map['Auid'] as String,
-      Aemail: map['Aemail'] as String,
-      Apassword: map['Apassword'] as String,
-      AlastActive: AlastActive,
-      Aphone: map['Aphone'] as String,
-    );
   }
 
   String toJson() => json.encode(toMap());

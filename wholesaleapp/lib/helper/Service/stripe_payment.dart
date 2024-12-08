@@ -5,13 +5,14 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:wholesaleapp/Controllers/CartController.dart';
+import 'package:wholesaleapp/Controllers/OrderController.dart';
 import 'package:wholesaleapp/Controllers/distribController.dart';
-import 'package:wholesaleapp/screens/homeScreen/navigation.dart';
+import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
 
 class PaymentMethod {
   final CartController cartController = Get.find();
-  // final OrderController orderController = Get.find();
-  final UserController userController = Get.put(UserController());
+  final OrderController orderController = Get.find();
+  final UserController userController = Get.find<UserController>();
   Map<String, dynamic>? paymentIntent;
   // final Cart cart;
 
@@ -46,7 +47,7 @@ class PaymentMethod {
       await Stripe.instance.presentPaymentSheet();
 
       // Save order to Firestore
-      // await orderController.ordertoFirestore();
+      await orderController.ordertoFirestore();
 
       print('Order sent to Firestore');
 
@@ -55,7 +56,7 @@ class PaymentMethod {
 
       // Navigate to the successful payment screen
       // Get.to(() => SuccessfullPayment());
-      Get.to(() => HomeContentScreen());
+      Get.to(() => HomeScreen());
       print('Payment done');
     } catch (e) {
       // Handle payment failure

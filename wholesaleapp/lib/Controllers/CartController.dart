@@ -12,6 +12,7 @@ class CartController extends GetxController {
   // RxList cartItems = <Cart>[].obs;
   var totalPrice = 0.0.obs;
   var totalPriceGst = 0.0.obs;
+  var shippingAddress = ''.obs;
   RxString addTocartStatus = ''.obs;
   // CommonFunctions cMethod = CommonFunctions();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -55,6 +56,10 @@ class CartController extends GetxController {
     } catch (e) {
       print("Failed to clear cart: ${e.toString()}");
     }
+  }
+
+  void updateShippingAddress(String address) {
+    shippingAddress.value = address;
   }
 
   // Future<void> clearCart() async {

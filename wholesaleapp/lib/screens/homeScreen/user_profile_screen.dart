@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final UserController userController = Get.put(UserController());
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+  String? _firebaseImageUrl;
+  bool _isUploading = false;
   TextEditingController phoneController = TextEditingController();
 
   final Admincontroller adminController = Get.put(Admincontroller());
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfileImageFromFirebase();
+  }
+
+  Future<void> _fetchProfileImageFromFirebase() async {
+    try {
+      // Fetch the profile image URL from Firebase
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("Distributors")
+          .doc(uid)
+          .get();
+
+      setState(() {
+        _firebaseImageUrl = userDoc[
+            'photoUrl']; // Assuming `photoUrl` is the field in your Firestore document
+      });
+    } catch (e) {
+      print("Error fetching profile image: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +105,34 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                             ),
                           ),
-                          child: _selectedImage == null
-                              ? SvgPicture.asset(
-                                  ImagesResource.PROFILE_ICON,
-                                  fit: BoxFit.none,
-                                )
-                              : Image.file(
-                                  _selectedImage!,
-                                  fit: BoxFit.cover,
-                                  width: 80, // Adjust width/height as needed
-                                  height: 80,
-                                ),
+                          child: _isUploading
+                              ? Center(
+                                  child:
+                                      CircularProgressIndicator()) // Show spinner during upload
+                              : _selectedImage != null
+                                  ? Image.file(
+                                      _selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 110,
+                                      height: 110,
+                                    )
+                                  : (_firebaseImageUrl != null
+                                      ? Image.network(
+                                          _firebaseImageUrl!,
+                                          fit: BoxFit.cover,
+                                          width: 110,
+                                          height: 110,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  SvgPicture.asset(
+                                            ImagesResource.PROFILE_ICON,
+                                            fit: BoxFit.none,
+                                          ),
+                                        )
+                                      : SvgPicture.asset(
+                                          ImagesResource.PROFILE_ICON,
+                                          fit: BoxFit.none,
+                                        )),
                         ),
                       ),
                     ),
@@ -191,8 +235,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
       if (xFileResult != null) {
         setState(() {
-          _selectedImage =
-              File(xFileResult!.path); // Update the state with the new image
+          _selectedImage = File(xFileResult!.path);
+
+          _isUploading = true; // Update the state with the new image
         });
 
         // Convert to Uint8List
@@ -203,8 +248,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           file: imageBytes,
           uid: FirebaseAuth.instance.currentUser!.uid,
         );
-
+        setState(() {
+          _isUploading = false; // Reset uploading state
+        });
         if (output == "success") {
+          await _fetchProfileImageFromFirebase();
           Get.snackbar(
             "Success",
             "Profile Picture updated to firebase",
