@@ -3,7 +3,6 @@ import 'package:wholesaleapp/Controllers/CartController.dart';
 
 import '../helper/constant/colors_resource.dart';
 
-
 class incDecWidget extends StatelessWidget {
   const incDecWidget({
     super.key,
@@ -21,7 +20,7 @@ class incDecWidget extends StatelessWidget {
     return Row(
       children: [
         InkWell(
-          onTap: () => cartController.decrementQuantity(index),
+          onTap: () => cartController.decrementQuantity(index, 4),
           child: Container(
             height: 30.0,
             width: 30.0,
@@ -42,7 +41,7 @@ class incDecWidget extends StatelessWidget {
         ),
         SizedBox(width: 10.0),
         InkWell(
-          onTap: () => cartController.incrementQuantity(index),
+          onTap: () => cartController.incrementQuantity(index, 4),
           child: Container(
             height: 30.0,
             width: 30.0,
