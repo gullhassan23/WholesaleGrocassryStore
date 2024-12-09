@@ -22,6 +22,7 @@ class ImagesResource {
   static const String insta = "assets/icons/ins.svg";
   static const String twitter = "assets/icons/t.svg";
   static const String empty_cart = "assets/lottie/empty_cart.json";
+  static const String success = "assets/lottie/success.json";
   static const String ALERT_ICON = "assets/icons/alert_icon.svg";
   static const String LOGIN_ICON = "assets/lottie/login.json";
   static const String DASH = "assets/lottie/dash.json";

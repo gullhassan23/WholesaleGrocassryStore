@@ -7,6 +7,7 @@ import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../Admin/AdminHome.dart';
 import '../Auth/sign_in.dart';
+import '../boardingScreen/boarding_screen.dart';
 import '../homeScreen/navigation.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,12 +27,28 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     auth = FirebaseAuth.instance;
     user = auth.currentUser;
-    navigateBasedOnRole();
+    // navigateBasedOnRole();
+    navigateBasedOnState();
+  }
+
+  Future<void> navigateBasedOnState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    if (isFirstTime) {
+      await Future.delayed(const Duration(seconds: 3));
+
+      await prefs.setBool('isFirstTime', false);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const BoardingScreen()),
+      );
+    } else {
+      navigateBasedOnRole();
+    }
   }
 
   Future<void> navigateBasedOnRole() async {
     if (user != null) {
-      // Fetch user role
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? userRole = prefs.getString("userRole");
 

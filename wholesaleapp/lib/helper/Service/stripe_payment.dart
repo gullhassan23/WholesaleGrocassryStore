@@ -7,13 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:wholesaleapp/Controllers/CartController.dart';
 import 'package:wholesaleapp/Controllers/OrderController.dart';
 import 'package:wholesaleapp/Controllers/distribController.dart';
-import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
+
+import '../../screens/homeScreen/cart_success.dart';
 
 class PaymentMethod {
   final CartController cartController = Get.find();
   final OrderController orderController = Get.find();
   final UserController userController = Get.find<UserController>();
   Map<String, dynamic>? paymentIntent;
+
   // final Cart cart;
 
   // PaymentMethod(this.cart);
@@ -56,7 +58,7 @@ class PaymentMethod {
 
       // Navigate to the successful payment screen
       // Get.to(() => SuccessfullPayment());
-      Get.to(() => HomeScreen());
+      Get.to(() => CartSuccessScreen());
       print('Payment done');
     } catch (e) {
       // Handle payment failure

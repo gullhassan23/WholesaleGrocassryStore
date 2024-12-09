@@ -20,7 +20,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final ItemController itemController = Get.put(ItemController());
 
   final List<Map<String, dynamic>> imageList = [
@@ -54,17 +55,46 @@ class _HomeScreenState extends State<HomeScreen> {
   final CarouselSliderController carouselController =
       CarouselSliderController();
   int currentIndex = 0;
+  late AnimationController _controller;
+  late Animation<double> _widthAnimation;
+  late Animation<Color?> _colorAnimation;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    // Width animation
+    _widthAnimation = Tween<double>(begin: 200, end: 230).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ),
+    );
+
+    _colorAnimation =
+        ColorTween(begin: Colors.white, end: Colors.grey.shade200).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ),
+    );
     itemController.fetchProductData();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    itemController.resetItems(); // Reset to all products when navigating back
+    itemController.resetItems();
   }
 
   @override
@@ -151,7 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final product = itemController.allItems[index];
-                      return AllProductsCard(itemModel: product);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 8),
+                        child: AllProductsCard(itemModel: product),
+                      );
                     },
                     childCount: itemController.allItems.length,
                   ),
@@ -174,38 +208,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => AllProductScreen()),
                         );
                       },
-                      child: Container(
-                        width: 200,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16), // Inner padding
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            width: 1,
-                          ),
-                          borderRadius:
-                              BorderRadius.circular(16), // Rounded corners
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Show more',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                      child: AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, child) {
+                          return Container(
+                            width: _widthAnimation.value,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: _colorAnimation.value,
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                                width: 1,
                               ),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            SizedBox(
-                              width: 10,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Show more',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              ],
                             ),
-                            Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 20,
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(

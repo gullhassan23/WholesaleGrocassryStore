@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/Controllers/CartController.dart';
 import 'package:wholesaleapp/helper/Service/stripe_payment.dart';
-
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
 
@@ -62,7 +61,10 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 Lottie.asset(
                   ImagesResource.empty_cart,
-                  width: 300,
+                  width: 200,
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 Text(
                   "Your cart is empty",
