@@ -26,7 +26,6 @@ class _AllProductScreenState extends State<AllProductScreen> {
       _filterProducts(_searchController.text);
     });
     print(filteredList.length);
-    // Initially, show all products
   }
 
   void _filterProducts(String query) {
@@ -127,7 +126,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
         ),
         body: Obx(() {
           if (itemController.allItems.isEmpty) {
-            return Text("NO products");
+            return Center(child: Text("NO products"));
           } else {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -165,18 +164,26 @@ class _AllProductScreenState extends State<AllProductScreen> {
                     height: 10,
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredList.length,
-                      itemBuilder: (context, index) {
-                        final item = filteredList[index];
-                        // final product = filteredList[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
+                    child: filteredList.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No products found",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredList.length,
+                            itemBuilder: (context, index) {
+                              final item = filteredList[index];
+                              // final product = filteredList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
                                     builder: (context) => ProductScreen(
                                           itemModel: item,
                                         )),

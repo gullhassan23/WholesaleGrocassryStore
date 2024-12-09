@@ -255,7 +255,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           await _fetchProfileImageFromFirebase();
           Get.snackbar(
             "Success",
-            "Profile Picture updated to firebase",
+            "Profile picture has successfully been updated",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
@@ -264,7 +264,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         } else {
           Get.snackbar(
             "Error",
-            "Failed to update profile picture to Firebase",
+            "Failed to update profile picture.",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
             colorText: Colors.white,
