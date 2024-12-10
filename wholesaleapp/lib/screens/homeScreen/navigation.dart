@@ -1,7 +1,7 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:wholesaleapp/screens/homeScreen/home_screen.dart';
-import 'package:wholesaleapp/screens/homeScreen/user_profile_screen.dart';
+import 'package:wholesaleapp/screens/user/user_profile_screen.dart';
 
 import 'all_products_screen.dart';
 import 'categories_screen.dart';
