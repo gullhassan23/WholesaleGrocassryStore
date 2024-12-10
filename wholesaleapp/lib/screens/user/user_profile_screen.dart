@@ -18,6 +18,7 @@ import '../../helper/constant/images_resource.dart';
 import '../../helper/utils/dialog_utils.dart';
 import '../../helper/utils/permission_utils.dart';
 import '../../widgets/profile_list_items.dart';
+import 'order_history.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -169,6 +170,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Get.back();
                     }
                   });
+                },
+              ),
+              ProfileListItem(
+                text: 'Order History',
+                icondata: Icons.arrow_forward_ios,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderHistory(),
+                    ),
+                  );
                 },
               ),
               SizedBox(
