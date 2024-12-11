@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     if (_selectedRadio == 1) {
-      displayText = 'Cash';
+      displayText = 'cash';
     } else if (_selectedRadio == 0) {
       displayText = 'Debit Card.';
     } else {
@@ -235,9 +235,10 @@ class _CartScreenState extends State<CartScreen> {
                           }
                           if (cartController.totalPriceGst > 0) {
                             String cost = cartController.totalPrice.toString();
-                            await PaymentMethod().makePayment2(cost);
-                            cartController
-                                .clearCart(); // Clear the cart after payment
+                            String selectedPaymentMethod =
+                                _selectedRadio == 0 ? 'card' : 'cash';
+                            await PaymentMethod()
+                                .processPayment(cost, selectedPaymentMethod);
                           } else {
                             Get.snackbar("Payment Message", "Cart is empty");
                           }

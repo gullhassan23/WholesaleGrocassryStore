@@ -21,6 +21,7 @@ class InventoryScreen extends StatefulWidget {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   final ItemController itemController = ItemController();
+  final TextEditingController weight = TextEditingController();
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -42,11 +43,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
     'Dry-Fruits'
   ];
 
-  String weight = 'kg';
+  String volume = 'kg';
   List<String> productWeight = ['kg', 'litre', 'dozen'];
 
   @override
   void dispose() {
+    weight.dispose();
     productNameController.dispose();
     descriptionController.dispose();
     priceController.dispose();
@@ -199,13 +201,19 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         }
                       },
                     )),
+                CustomTextFormField(
+                  controller: weight,
+                  text: "weight",
+                  obscureText: false,
+                ),
+                SizedBox(height: 10.h),
                 SizedBox(height: 10.h),
                 SizedBox(
                   width: double.infinity,
                   child: DropdownButton(
                     isExpanded: true,
                     dropdownColor: Colors.white,
-                    value: weight, // Correctly linked to the 'weight' variable
+                    value: volume, // Correctly linked to the 'weight' variable
                     icon: Icon(Icons.keyboard_arrow_down),
                     items: productWeight.map((String item) {
                       return DropdownMenuItem(
@@ -224,7 +232,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     onChanged: (String? newVal) {
                       if (newVal != null) {
                         setState(() {
-                          weight = newVal; // Correctly update 'weight' here
+                          volume = newVal; // Correctly update 'weight' here
                         });
                       }
                     },
@@ -242,7 +250,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                           });
                           String output =
                               await itemController.productToFirestore(
-                            weight: weight,
+                            weight: weight.text,
+                            volume: volume,
                             type: category,
                             quantity: quantityController.text,
                             productName: productNameController.text,

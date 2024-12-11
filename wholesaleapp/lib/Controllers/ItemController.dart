@@ -61,10 +61,11 @@ class ItemController extends GetxController {
 
       items.value = querySnapshot.docs.map((doc) {
         return ItemModel(
+          weight: doc['weight'],
           createdAT: DateTime.now(),
           uid: doc.id,
           quantity: doc['quantity'],
-          weight: doc['weight'],
+          volume: doc['volume'],
           itemName: doc['itemName'],
           description: doc['description'],
           type: doc['type'],
@@ -82,6 +83,7 @@ class ItemController extends GetxController {
   }
 
   Future<String> productToFirestore({
+    String volume = '',
     String weight = '',
     String type = '',
     String quantity = '',
@@ -100,6 +102,7 @@ class ItemController extends GetxController {
 
       // Upload product to the database
       String status = await cloud().uploadProductToDatabase(
+          volume: volume,
           weight: weight,
           quantity: quantity,
           productName: productName,
@@ -123,15 +126,27 @@ class ItemController extends GetxController {
     }
   }
 
+  // Future<void> searchProduct(String query) async {
+  //   if (query.isEmpty) {
+  //     itemsSearch.clear();
+  //   } else {
+  //     itemsSearch.assignAll(allItems.where((product) =>
+  //         product.itemName.toLowerCase().contains(query.toLowerCase())));
+  //     print("Search results count: ${itemsSearch.length}");
+  //   }
+  //   update(['search']); // Ensure this matches the GetBuilder ID
+  // }
+
   Future<void> searchProduct(RxString query) async {
     if (query.value.isEmpty) {
       itemsSearch.clear();
     } else {
-      itemsSearch.value = items
+      itemsSearch.value = allItems
           .where((product) => product.itemName
               .toLowerCase()
               .contains(query.value.toLowerCase()))
           .toList();
+      print(" search ===> ${items.length}");
     }
     update(['search']);
   }
@@ -143,13 +158,15 @@ class ItemController extends GetxController {
     required String rawCost,
     required String quantity,
     required String description,
+    required String volume,
     required String weight,
     List<Uint8List>? images,
   }) async {
     try {
       Map<String, dynamic> updateData = {
-        'itemName': productName,
         'weight': weight,
+        'itemName': productName,
+        'volume': volume,
         'type': type,
         'cost': double.parse(rawCost),
         'quantity': quantity,

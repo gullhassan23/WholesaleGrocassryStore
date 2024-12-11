@@ -16,9 +16,16 @@ class PaymentMethod {
   final UserController userController = Get.find<UserController>();
   Map<String, dynamic>? paymentIntent;
 
-  // final Cart cart;
+  Future<void> processPayment(String amount, String paymentMethod) async {
+    if (paymentMethod == 'card') {
+      await makePayment2(amount);
+    } else if (paymentMethod == 'cash') {
+      await processCashOnDelivery();
+    } else {
+      Get.snackbar('Error', 'Invalid payment method');
+    }
+  }
 
-  // PaymentMethod(this.cart);
   Future<void> makePayment2(String amount) async {
     print(amount);
     try {
@@ -38,31 +45,57 @@ class PaymentMethod {
       await displayPaymentSheet();
 
       // Clear the cart after successful payment
-      cartController.clearCart();
+      // cartController.clearCart();
+    } on StripeException catch (e) {
+      // Handle cancellation and errors
+      if (e.error.localizedMessage != null &&
+          e.error.localizedMessage!.toLowerCase().contains('canceled')) {
+        print("User canceled the payment sheet.");
+      } else {
+        print("StripeException occurred: ${e.error.localizedMessage}");
+      }
     } catch (e) {
       print("Error initializing payment sheet: ${e.toString()}");
     }
   }
 
+  Future<void> processCashOnDelivery() async {
+    try {
+      await orderController.ordertoFirestore(paymentMethod: 'cash');
+      cartController.clearCart();
+      Get.to(() => CartSuccessScreen());
+      print('Cash on delivery order placed successfully');
+    } catch (e) {
+      print("Error processing cash on delivery: ${e.toString()}");
+      Get.snackbar('Error', 'Failed to place cash on delivery order');
+    }
+  }
+
   Future<void> displayPaymentSheet() async {
     try {
+      // Present the payment sheet to the user
       await Stripe.instance.presentPaymentSheet();
 
-      // Save order to Firestore
-      await orderController.ordertoFirestore();
-
+      // Save the order to Firestore after successful payment
+      await orderController.ordertoFirestore(paymentMethod: 'card');
       print('Order sent to Firestore');
 
       // Clear the cart after successful payment
       cartController.clearCart();
 
       // Navigate to the successful payment screen
-      // Get.to(() => SuccessfullPayment());
       Get.to(() => CartSuccessScreen());
-      print('Payment done');
+      print('Payment done successfully');
+    } on StripeException catch (e) {
+      // Handle cancellation and errors
+      if (e.error.localizedMessage != null &&
+          e.error.localizedMessage!.toLowerCase().contains('canceled')) {
+        print("User canceled the payment sheet.");
+      } else {
+        print("StripeException occurred: ${e.error.localizedMessage}");
+      }
     } catch (e) {
-      // Handle payment failure
-      // Get.to(() => UnSuccessfullPayment());
+      // Handle unexpected errors
       print("Failed to display payment sheet: ${e.toString()}");
     }
   }

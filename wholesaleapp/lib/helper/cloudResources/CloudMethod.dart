@@ -54,6 +54,7 @@ class cloud {
 
   Future<String> uploadProductToDatabase({
     required String weight,
+    required String volume,
     required String type,
     required List<Uint8List?> imageFiles,
     required String productName,
@@ -93,6 +94,7 @@ class cloud {
         // Create the item model
         ItemModel item = ItemModel(
           weight: weight,
+          volume: volume,
           type: type,
           quantity: quan,
           createdAT: DateTime.now(),

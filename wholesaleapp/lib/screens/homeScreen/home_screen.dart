@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
+
+
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
+
+
+
 import 'package:wholesaleapp/widgets/all_product_text.dart';
 import 'package:wholesaleapp/widgets/all_products_card.dart';
 import 'package:wholesaleapp/widgets/categories_icon.dart';
@@ -23,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final ItemController itemController = Get.put(ItemController());
-
+  final search = TextEditingController();
   final List<Map<String, dynamic>> imageList = [
     {"id": 1, "image_path": 'assets/images/image1.png'},
     {"id": 2, "image_path": 'assets/images/1.png'},
@@ -96,6 +101,10 @@ class _HomeScreenState extends State<HomeScreen>
     super.didChangeDependencies();
     itemController.resetItems();
   }
+
+  // void searchProductsss(String value) {
+  //   itemController.searchProduct(value.obs);
+  // }
 
   @override
   Widget build(BuildContext context) {

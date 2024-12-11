@@ -29,9 +29,9 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 30,
-        vertical: 10,
+      padding: EdgeInsets.symmetric(
+        horizontal: 30.w,
+        vertical: 10.h,
       ),
       child: Container(
         width: double.infinity,
@@ -39,7 +39,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: Colors.grey.shade400, // Border color
             width: 2,
@@ -54,179 +54,173 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
           //   ),
           // ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'SubTotal',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Obx(
-                  () => Text(
-                    '\$ ${widget.cartController.totalPrice.value.toStringAsFixed(2)}',
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'SubTotal',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Shipping Fee',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  '\$10',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Order Total',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Obx(
-                  () => Text(
-                    '\$ ${widget.cartController.totalPriceGst.value.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(
-              color: Colors.grey.shade400,
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Payment Method',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                widget._selectedRadio == 0
-                    ? SvgPicture.asset(
-                        ImagesResource.BEVERAGE,
-                        height: 20,
-                        width: 20,
-                      )
-                    : SvgPicture.asset(
-                        ImagesResource.VEGE,
-                        height: 20,
-                        width: 20,
+                  Obx(
+                    () => Text(
+                      '\$ ${widget.cartController.totalPrice.value.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
                       ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  widget.displayText,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Shipping Address',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                ],
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Faizan',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+              SizedBox(
+                height: 10.h,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Icon(Icons.call),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  '03244985570',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Shipping Fee',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
+                  Text(
+                    '\$10',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Order Total',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Obx(
+                    () => Text(
+                      '\$ ${widget.cartController.totalPriceGst.value.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Divider(
+                color: Colors.grey.shade400,
+                thickness: 1,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'Payment Method',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Icon(Icons.person),
-                SizedBox(
-                  width: 5,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: 210,
-                  child: Text(
-                    widget.locationController.text,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  widget._selectedRadio == 0
+                      ? Icon(Icons.credit_card)
+                      : Icon(Icons.attach_money_sharp),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Text(
+                    widget.displayText,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Text(
+                'Shipping Address',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'Faizan',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.call),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Text(
+                    '03244985570',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.person),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  SizedBox(
+                    // height: 40.h,
+                    width: 210.w,
+                    child: Text(
+                      widget.locationController.text,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

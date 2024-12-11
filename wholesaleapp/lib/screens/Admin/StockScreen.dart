@@ -22,7 +22,7 @@ class _StockScreenState extends State<StockScreen> {
     search.addListener(() {
       _filterProducts(search.text);
     });
-    print(itemController.allItems.length);
+    print("-----> ${filteredList.length}");
     // Initially, show all products
   }
 
@@ -174,7 +174,7 @@ class _StockScreenState extends State<StockScreen> {
                                     size: 15.sp,
                                   ),
                                 ),
-                                Text('Qty: ${item.quantity} ${item.weight}'),
+                                Text('Qty: ${item.quantity}'),
                               ],
                             ),
                           ),

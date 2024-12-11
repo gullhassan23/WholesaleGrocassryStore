@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/helper/constant/colors_resource.dart';
+import 'package:wholesaleapp/screens/homeScreen/cart_screen.dart';
+import 'package:wholesaleapp/widgets/all_products_card.dart';
 
-import '../helper/constant/colors_resource.dart';
-import '../screens/homeScreen/cart_screen.dart';
+import '../Controllers/ItemController.dart';
 
-class Header extends StatelessWidget {
+class Header extends StatefulWidget {
   const Header({
     super.key,
   });
+
+  @override
+  State<Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<Header> {
+  final search = TextEditingController();
+  final ItemController itemController = Get.put(ItemController());
+
+  void searchProductt(String value) {
+    itemController.searchProduct(value.obs);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +31,10 @@ class Header extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width * .82,
-              child: TextField(
+              child: TextFormField(
+                onChanged: (value) {
+                  searchProductt(value);
+                },
                 decoration: InputDecoration(
                   hintText: 'Search Product',
                   contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -41,7 +59,6 @@ class Header extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(),
             IconButton(
               onPressed: () {
                 Navigator.push(
@@ -54,7 +71,26 @@ class Header extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 7,
+          height: 2,
+        ),
+        GetBuilder<ItemController>(
+          id: 'search',
+          builder: (productController) {
+            if (search.text.isEmpty) {
+              return SizedBox.shrink();
+            } else if (productController.itemsSearch.isEmpty) {
+              return Center(child: Text('No products found'));
+            } else {
+              return ListView.builder(
+                padding: EdgeInsets.all(16),
+                itemCount: productController.itemsSearch.length,
+                itemBuilder: (ctx, index) {
+                  final product = productController.itemsSearch[index];
+                  return AllProductsCard(itemModel: product);
+                },
+              );
+            }
+          },
         ),
       ],
     );
