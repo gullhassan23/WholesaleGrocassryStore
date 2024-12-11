@@ -1,148 +1,141 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
 import 'package:wholesaleapp/screens/Admin/InventoryScreen.dart';
 import 'package:wholesaleapp/screens/Admin/ProfileScreen.dart';
 import 'package:wholesaleapp/screens/Admin/StockScreen.dart';
+import 'package:wholesaleapp/screens/Admin/manage_orders.dart';
 
-import 'manage_orders.dart';
+import '../../Controllers/AdminController.dart';
 
-class AdminHome extends StatelessWidget {
-  const AdminHome({super.key});
+class AdminHome extends StatefulWidget {
+  @override
+  State<AdminHome> createState() => _AdminHomeState();
+}
 
+class _AdminHomeState extends State<AdminHome> {
+  final Admincontroller adminController = Get.put(Admincontroller());
   @override
   Widget build(BuildContext context) {
-    final Admincontroller adminController = Get.put(Admincontroller());
-    var height, width;
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Container(
-        color: Colors.blue,
-        height: height,
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final double width = MediaQuery.of(context).size.width;
+
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.blue, // Set your preferred background color
+        body: Column(
           children: [
-            // Custom Header Section
-            Container(
-              height: height * 0.25,
-              width: width,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              decoration: BoxDecoration(
-                color: Colors.blue, // Match the background color
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 8.w,
+                right: 8.w,
+                top: 8.h,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                          'https://picsum.photos/250?image=8',
-                        ),
-                        backgroundColor: Colors.grey.shade200,
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                          onTap: () async {
-                            bool? logoutResult =
-                                await DialogUtils.showLogoutDialog(
-                                    context: context);
-                            if (logoutResult == true && context.mounted) {
-                              adminController.logout(context);
-                            }
-                          },
-                          child: Icon(
-                            Icons.logout,
-                            size: 30.sp,
-                            color: Colors.white,
-                          )),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Admin Dashboard',
-                      style: TextStyle(
+                  Obx(() {
+                    return CircleAvatar(
+                      radius: 30.r,
+                      backgroundImage:
+                          adminController.wholesaler.value.photoUrl != null &&
+                                  adminController
+                                      .wholesaler.value.photoUrl.isNotEmpty
+                              ? NetworkImage(
+                                  adminController.wholesaler.value.photoUrl)
+                              : AssetImage('assets/images/default_avatar.png'),
+                      backgroundColor: Colors.grey.shade200,
+                    );
+                  }),
+                  GestureDetector(
+                      onTap: () async {
+                        bool? logoutResult = await DialogUtils.showLogoutDialog(
+                            context: context);
+                        if (logoutResult == true && context.mounted) {
+                          adminController.logout(context);
+                        }
+                      },
+                      child: Icon(
+                        Icons.logout,
+                        size: 30.sp,
                         color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Last Update Text
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
+                      )),
                 ],
               ),
             ),
+            // Top Header Section
             Container(
-              height: height * 0.75,
               width: width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+              alignment: Alignment.center,
+              child: Text(
+                'Admin Dashboard',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              child: Expanded(
+            ),
+
+            // Last Update Text
+            Obx(() {
+              return Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Welcome Back ${adminController.wholesaler.value.Aname}',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 15,
+                  ),
+                ),
+              );
+            }),
+            SizedBox(
+              height: 70.h,
+            ),
+            // Main Content Section
+            Expanded(
+              child: Container(
+                width: width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 32.0),
                   child: GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                     children: [
                       _buildDashboardTile(
-                        context: context,
-                        title: "Edit Profile",
-                        icon: Icons.person,
+                        icon: Icons.people,
+                        label: 'Edit Profile',
                         onTap: () {
-                          // Navigate to Edit Profile Screen
                           Get.to(() => Profile());
                         },
                       ),
                       _buildDashboardTile(
-                        context: context,
-                        title: "Inventory",
                         icon: Icons.inventory,
+                        label: 'Inventory',
                         onTap: () {
-                          // Navigate to Inventory Screen
                           Get.to(() => InventoryScreen());
                         },
                       ),
                       _buildDashboardTile(
-                        context: context,
-                        title: "Stock",
                         icon: Icons.storage,
+                        label: 'Stock',
                         onTap: () {
                           Get.to(() => StockScreen());
                         },
                       ),
                       _buildDashboardTile(
-                        context: context,
-                        title: "Manage Orders",
-                        icon: Icons.shopping_cart,
+                        icon: Icons.shopping_bag,
+                        label: 'Manage Orders',
                         onTap: () {
                           Get.to(() => ManageOrders());
                         },
@@ -152,17 +145,15 @@ class AdminHome extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Grid Section
           ],
         ),
       ),
     );
   }
+
   Widget _buildDashboardTile({
-    required BuildContext context,
-    required String title,
     required IconData icon,
+    required String label,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
@@ -170,29 +161,31 @@ class AdminHome extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 6.r,
-              offset: Offset(0, 3.h),
-              spreadRadius: 2,
-            ),
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 5,
+                offset: Offset(0, 3),
+                spreadRadius: 2),
           ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.blueGrey, size: 40.sp),
-            SizedBox(height: 10.h),
+            Icon(
+              icon,
+              size: 40,
+              color: Colors.blueGrey,
+            ),
+            SizedBox(height: 10),
             Text(
-              title,
+              label,
               style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
