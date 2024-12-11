@@ -10,7 +10,9 @@ class Admin {
   String Apassword;
   DateTime AlastActive;
   String Aphone;
+  String photoUrl;
   Admin({
+    this.photoUrl = '',
     this.Aname = '',
     this.isAdmin = false,
     this.Auid = '',
@@ -30,15 +32,16 @@ class Admin {
     //   AlastActive = DateTime.now(); // Default value if neither type is matched
     // }
     return Admin(
-      Aname: map['Aname'] as String,
+      Aname: map['Aname'] ?? "",
       isAdmin: map['isAdmin'] as bool,
-      Auid: map['Auid'] as String,
-      Aemail: map['Aemail'] as String,
-      Apassword: map['Apassword'] as String,
+      Auid: map['Auid'] ?? "",
+      Aemail: map['Aemail'] ?? "",
+      Apassword: map['Apassword'] ?? "",
       AlastActive: map['AlastActive'] != null
           ? (map['AlastActive'] as Timestamp).toDate()
           : DateTime.now(),
-      Aphone: map['Aphone'] as String,
+      Aphone: map['Aphone'] ?? "",
+      photoUrl: map['photoUrl'] ?? "",
     );
   }
 
@@ -47,6 +50,7 @@ class Admin {
       'Aname': Aname,
       'isAdmin': isAdmin,
       'Auid': Auid,
+      'photoUrl': photoUrl,
       'Aemail': Aemail,
       'Apassword': Apassword,
       'AlastActive': AlastActive,

@@ -46,7 +46,7 @@ dependencies:
   bcrypt: ^1.1.3
   image_picker: ^1.1.2
   carousel_slider: ^5.0.0
-  dotted_border: ^2.1.0
+  dotted_border: ^2.0.0
   get: ^4.6.6
   device_info_plus:
   permission_handler: ^11.3.1

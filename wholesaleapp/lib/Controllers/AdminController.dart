@@ -12,6 +12,7 @@ class Admincontroller extends GetxController {
     Aemail: '',
     Apassword: '',
     Aname: '',
+    photoUrl: '',
   ).obs;
 
   String? token;

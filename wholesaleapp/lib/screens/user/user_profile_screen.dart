@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
+import 'package:wholesaleapp/MODELS/distributModel.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 
 import '../../Controllers/distribController.dart';
@@ -47,15 +48,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     try {
       // Fetch the profile image URL from Firebase
       String uid = FirebaseAuth.instance.currentUser!.uid;
+
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection("Distributors")
           .doc(uid)
           .get();
 
-      setState(() {
-        _firebaseImageUrl = userDoc[
-            'photoUrl']; // Assuming `photoUrl` is the field in your Firestore document
-      });
+      if (userDoc.exists) {
+        // Parse the Firestore document into an Admin model
+        Distributor user =
+            Distributor.fromMap(userDoc.data() as Map<String, dynamic>);
+
+        setState(() {
+          _firebaseImageUrl =
+              user.photoUrl; // Use the `photoUrl` from the model
+        });
+      } else {
+        print("Document does not exist");
+      }
     } catch (e) {
       print("Error fetching profile image: $e");
     }

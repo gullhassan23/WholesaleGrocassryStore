@@ -4,10 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 
-
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
-
-
 
 import 'package:wholesaleapp/widgets/all_product_text.dart';
 import 'package:wholesaleapp/widgets/all_products_card.dart';
@@ -196,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen>
                         child: AllProductsCard(itemModel: product),
                       );
                     },
-                    childCount: itemController.allItems.length,
+                    childCount: 4,
                   ),
                 );
               }

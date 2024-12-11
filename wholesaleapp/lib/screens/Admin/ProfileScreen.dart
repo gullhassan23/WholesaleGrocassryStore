@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
+import 'package:wholesaleapp/MODELS/AdminModel.dart';
 import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
@@ -58,19 +59,46 @@ class _ProfileState extends State<Profile> {
     try {
       // Fetch the profile image URL from Firebase
       String uid = FirebaseAuth.instance.currentUser!.uid;
+
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection("WholeSaler")
           .doc(uid)
           .get();
 
-      setState(() {
-        _firebaseImageUrl = userDoc[
-            'photoUrl']; // Assuming `photoUrl` is the field in your Firestore document
-      });
+      if (userDoc.exists) {
+        // Parse the Firestore document into an Admin model
+        Admin admin = Admin.fromMap(userDoc.data() as Map<String, dynamic>);
+
+        setState(() {
+          _firebaseImageUrl =
+              admin.photoUrl; // Use the `photoUrl` from the model
+        });
+      } else {
+        print("Document does not exist");
+      }
     } catch (e) {
       print("Error fetching profile image: $e");
     }
   }
+
+  // Future<void> _fetchProfileImageFromFirebase() async {
+  //   try {
+  //     // Fetch the profile image URL from Firebase
+  //     String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  //     DocumentSnapshot userDoc = await FirebaseFirestore.instance
+  //         .collection("WholeSaler")
+  //         .doc(uid)
+  //         .get();
+
+  //     setState(() {
+  //       _firebaseImageUrl = userDoc[
+  //           'photoUrl']; // Assuming `photoUrl` is the field in your Firestore document
+  //     });
+  //   } catch (e) {
+  //     print("Error fetching profile image: $e");
+  //   }
+  // }
 
   Future<void> pick({required String type}) async {
     AndroidDeviceInfo? androidDeviceInfo;
