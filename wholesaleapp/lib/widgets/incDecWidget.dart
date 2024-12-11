@@ -20,7 +20,7 @@ class incDecWidget extends StatelessWidget {
     return Row(
       children: [
         InkWell(
-          onTap: () => cartController.decrementQuantity(index, 4),
+          onTap: () => cartController.decrementQuantity(index, 1),
           child: Container(
             height: 30.0,
             width: 30.0,
@@ -41,7 +41,7 @@ class incDecWidget extends StatelessWidget {
         ),
         SizedBox(width: 10.0),
         InkWell(
-          onTap: () => cartController.incrementQuantity(index, 4),
+          onTap: () => cartController.incrementQuantity(index, 1),
           child: Container(
             height: 30.0,
             width: 30.0,

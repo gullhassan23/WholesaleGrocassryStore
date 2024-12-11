@@ -184,104 +184,109 @@ class _AllProductScreenState extends State<AllProductScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                    builder: (context) => ProductScreen(
-                                          itemModel: item,
-                                        )),
-                              );
-                            },
-                            child: Card(
-                              color: Colors.white,
-                              elevation: 5.0, // Adds shadow
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                        'https://i.imgur.com/CGCyp1d.png',
-                                        width: 80,
-                                        height: 80,
-                                        fit: BoxFit.fill,
-                                        loadingBuilder:
-                                            (context, child, loadingProgress) {
-                                          if (loadingProgress == null)
-                                            return child;
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      (loadingProgress
-                                                              .expectedTotalBytes ??
-                                                          1)
-                                                  : null,
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Icon(Icons.error,
-                                                    color: Colors.red),
-                                      ),
+                                          builder: (context) => ProductScreen(
+                                                itemModel: item,
+                                              )),
+                                    );
+                                  },
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 5.0, // Adds shadow
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    const SizedBox(width: 10.0),
-                                    Expanded(
-                                      child: Column(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 100,
-                                                child: Text(
-                                                  item.itemName,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16.0,
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                              item.imageUrls[0],
+                                              width: 80,
+                                              height: 80,
+                                              fit: BoxFit.fill,
+                                              loadingBuilder: (context, child,
+                                                  loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            (loadingProgress
+                                                                    .expectedTotalBytes ??
+                                                                1)
+                                                        : null,
                                                   ),
-                                                ),
-                                              ),
-                                              Text(
-                                                "\$${item.cost.toStringAsFixed(2)}",
-                                                style: TextStyle(
-                                                  color: ColorsResource
-                                                      .PRIMARY_COLOR,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
+                                                );
+                                              },
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Icon(Icons.error,
+                                                      color: Colors.red),
+                                            ),
                                           ),
-                                          const SizedBox(height: 5.0),
-                                          Text(
-                                            (item.description.length) > 50
-                                                ? "${item.description.substring(0, 50)}..."
-                                                : (item.description),
-                                            style:
-                                                TextStyle(color: Colors.grey),
+                                          const SizedBox(width: 10.0),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Text(
+                                                        item.itemName,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16.0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "\$${item.cost.toStringAsFixed(2)}",
+                                                      style: TextStyle(
+                                                        color: ColorsResource
+                                                            .PRIMARY_COLOR,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 5.0),
+                                                Text(
+                                                  (item.description.length) > 50
+                                                      ? "${item.description.substring(0, 50)}..."
+                                                      : (item.description),
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.arrow_forward_ios),
+                                            onPressed: () {},
                                           ),
                                         ],
                                       ),
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.arrow_forward_ios),
-                                      onPressed: () {},
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ],
               ),

@@ -15,9 +15,11 @@ class OrderModel {
   final String shippingAddress;
   final String userName;
   final double totalBIll;
+  String dispatchstatus;
   String status;
 
   OrderModel({
+    this.status = "",
     this.pid = '',
     this.shippingAddress = '',
     this.cartIID = '',
@@ -29,11 +31,12 @@ class OrderModel {
     this.userid = '',
     this.userName = '',
     this.totalBIll = 0.0,
-    this.status = 'Pending',
+    this.dispatchstatus = 'Pending',
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'status': status,
       'pid': pid,
       'shippingAddress': shippingAddress,
       'cartIID': cartIID,
@@ -45,7 +48,7 @@ class OrderModel {
       'userid': userid,
       'userName': userName,
       'totalBIll': totalBIll,
-      'status': status,
+      'dispatchstatus': dispatchstatus,
     };
   }
 
@@ -63,8 +66,9 @@ class OrderModel {
       price: (map['price'] ?? 0).toDouble(),
       userid: map['userid'] ?? '',
       userName: map['userName'] ?? '',
-      totalBIll: (map['totalBIll'] ?? 0).toDouble(),
       status: map['status'] ?? '',
+      totalBIll: (map['totalBIll'] ?? 0).toDouble(),
+      dispatchstatus: map['dispatchstatus'] ?? '',
     );
   }
 

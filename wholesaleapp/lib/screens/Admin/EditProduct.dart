@@ -20,6 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final ItemController itemController = Get.find<ItemController>();
   final _formKey = GlobalKey<FormState>();
   late TextEditingController nameController;
+  late TextEditingController weightController;
   late TextEditingController costController;
   late TextEditingController quantityController;
   bool isLoad = false;
@@ -42,6 +43,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     super.initState();
+    weightController = TextEditingController(text: widget.product.weight);
     nameController = TextEditingController(text: widget.product.itemName);
     costController =
         TextEditingController(text: widget.product.cost.toString());
@@ -50,7 +52,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     descriptionController =
         TextEditingController(text: widget.product.description);
     selectedType = widget.product.type;
-    selectedWeight = widget.product.weight; // Initialize selected type
+    selectedWeight = widget.product.volume; // Initialize selected type
   }
 
   void selectImage() async {
@@ -83,10 +85,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
         return;
       }
       String status = await itemController.updateProductToFirestore(
+        weight: weightController.text,
         uid: widget.product.uid,
         productName: nameController.text,
         type: selectedType,
-        weight: selectedWeight,
+        volume: selectedWeight,
         rawCost: costController.text,
         quantity: parsedQuantity.toString(),
         description: descriptionController.text,
@@ -130,97 +133,105 @@ class _EditProductScreenState extends State<EditProductScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: 'Product Name'),
-                validator: (value) =>
-                    value!.isEmpty ? 'Product Name cannot be empty' : null,
-              ),
-              DropdownButtonFormField<String>(
-                value: selectedType,
-                items: productCategories.map((String category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedType = newValue!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Type'),
-              ),
-              TextFormField(
-                controller: costController,
-                decoration: InputDecoration(labelText: 'Cost'),
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? 'Cost cannot be empty' : null,
-              ),
-              // Weight dropdown
-              DropdownButtonFormField<String>(
-                value:
-                    productWeight.contains(widget.product.weight.toLowerCase())
-                        ? widget.product.weight.toLowerCase()
-                        : null,
-                items: productWeight.map((String weight) {
-                  return DropdownMenuItem(
-                    value: weight,
-                    child: Text(weight),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedWeight =
-                        newValue!; // Update the selectedWeight variable
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Weight'),
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(labelText: 'Product Name'),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Product Name cannot be empty' : null,
+                ),
+                TextFormField(
+                  controller: weightController,
+                  decoration: InputDecoration(labelText: 'Product weight'),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Product weight cannot be empty' : null,
+                ),
+                DropdownButtonFormField<String>(
+                  value: selectedType,
+                  items: productCategories.map((String category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedType = newValue!;
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Type'),
+                ),
+                TextFormField(
+                  controller: costController,
+                  decoration: InputDecoration(labelText: 'Cost'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Cost cannot be empty' : null,
+                ),
+                // Weight dropdown
+                DropdownButtonFormField<String>(
+                  value: productWeight
+                          .contains(widget.product.volume.toLowerCase())
+                      ? widget.product.volume.toLowerCase()
+                      : null,
+                  items: productWeight.map((String volume) {
+                    return DropdownMenuItem(
+                      value: volume,
+                      child: Text(volume),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedWeight =
+                          newValue!; // Update the selectedWeight variable
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Volume'),
+                ),
 
-              TextFormField(
-                controller: quantityController,
-                decoration: InputDecoration(labelText: 'Quantity'),
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? 'Quantity cannot be empty' : null,
-              ),
-              TextFormField(
-                controller: descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-              ),
-              SizedBox(height: 20),
-              images.isNotEmpty
-                  ? Wrap(
-                      spacing: 8,
-                      children: images.map((img) {
-                        return Image.memory(
-                          img,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        );
-                      }).toList(),
-                    )
-                  : SizedBox(),
-              TextButton.icon(
-                onPressed: selectImage,
-                icon: Icon(Icons.add_photo_alternate),
-                label: Text('Pick Images'),
-              ),
-              SizedBox(height: 20),
-              isLoad
-                  ? CircularProgressIndicator()
-                  : CustomButton(text: "Save Changes", ontap: saveChanges)
-              // ElevatedButton(
-              //   onPressed: saveChanges,
-              //   child: Text('Save Changes'),
-              // ),
-            ],
+                TextFormField(
+                  controller: quantityController,
+                  decoration: InputDecoration(labelText: 'Quantity'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Quantity cannot be empty' : null,
+                ),
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  maxLines: 3,
+                ),
+                SizedBox(height: 20),
+                images.isNotEmpty
+                    ? Wrap(
+                        spacing: 8,
+                        children: images.map((img) {
+                          return Image.memory(
+                            img,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          );
+                        }).toList(),
+                      )
+                    : SizedBox(),
+                TextButton.icon(
+                  onPressed: selectImage,
+                  icon: Icon(Icons.add_photo_alternate),
+                  label: Text('Pick Images'),
+                ),
+                SizedBox(height: 20),
+                isLoad
+                    ? CircularProgressIndicator()
+                    : CustomButton(text: "Save Changes", ontap: saveChanges)
+                // ElevatedButton(
+                //   onPressed: saveChanges,
+                //   child: Text('Save Changes'),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

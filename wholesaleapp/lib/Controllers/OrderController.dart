@@ -19,7 +19,6 @@ class OrderController extends GetxController {
 
   @override
   void onInit() {
-    ordertoFirestore();
     fetchOrdersData();
     checkAdminStatus();
     super.onInit();
@@ -52,7 +51,7 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<void> ordertoFirestore() async {
+  Future<void> ordertoFirestore({required String paymentMethod}) async {
     try {
       User? currentUser = firebaseAuth.currentUser;
       if (currentUser != null) {
@@ -70,8 +69,11 @@ class OrderController extends GetxController {
             price: itemData['cost'],
             quantity: itemData['quantity'],
             cartIID: cartID,
+            status: paymentMethod == 'card'
+                ? "payment_with_card"
+                : "cash_on_delivery",
             pid: productUID,
-            status: "pending",
+            dispatchstatus: "pending",
             totalBIll: cartController.totalPrice.value,
             userid: currentUser.uid,
             userName: distributerController.distributer.value.name,

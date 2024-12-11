@@ -62,33 +62,6 @@ class CartController extends GetxController {
     shippingAddress.value = address;
   }
 
-  // Future<void> clearCart() async {
-  //   try {
-  //     User currentUser = firebaseAuth.currentUser!;
-  //     DocumentReference cartDocRef = FirebaseFirestore.instance
-  //         .collection("Cart")
-  //         .doc(currentUser.uid)
-  //         .collection("items").doc();
-
-  //     // Check if the document exists before attempting to delete it
-  //     DocumentSnapshot cartDocSnapshot = await cartDocRef.get();
-  //     print("cart---> ${cartDocSnapshot.id.length}");
-  //     if (cartDocSnapshot.exists) {
-  //       // Delete the document (cart)
-  //       await cartDocRef.delete();
-  //       print('Cart document deleted from Firestore.');
-  //     } else {
-  //       print('Cart document does not exist.');
-  //     }
-
-  //     // Clear local cart items and total price
-  //     cartItems.clear();
-  //     totalPrice.value = 0.0;
-  //   } catch (e) {
-  //     print("Failed to clear cart: ${e.toString()}");
-  //   }
-  // }
-
   // Mock method to get product quantity from Firestore
   Future<int> getProductQuantity(String itemId) async {
     // Fetch product from Firestore using productId and get the available quantity
@@ -189,62 +162,16 @@ class CartController extends GetxController {
         .delete();
   }
 
-  // void incrementQuantity(int index) async {
-  //   try {
-  //     final document = cartItems[index]; // Get the Firestore document.
-  //     final cartItemId = document.id; // Get the document ID.
-  //     final data = document.data() as Map<String, dynamic>;
-
-  //     int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
-  //     currentQuantity++; // Increment the quantity.
-
-  //     // Update the quantity in Firestore.
-  //     await firebaseFirestore
-  //         .collection('Cart')
-  //         .doc(firebaseAuth.currentUser!.uid)
-  //         .collection('items')
-  //         .doc(cartItemId)
-  //         .update({'quantity': currentQuantity});
-
-  //     fetchCartItems(); // Refresh the cart items after updating.
-  //   } catch (e) {
-  //     print('Error incrementing quantity: $e');
-  //   }
-  // }
-
-  // void decrementQuantity(int index) async {
-  //   try {
-  //     final document = cartItems[index]; // Get the Firestore document.
-  //     final cartItemId = document.id; // Get the document ID.
-  //     final data = document.data() as Map<String, dynamic>;
-
-  //     int currentQuantity = data['quantity'] ?? 0; // Get the current quantity.
-  //     if (currentQuantity > 1) {
-  //       currentQuantity--; // Decrement the quantity.
-
-  //       // Update the quantity in Firestore.
-  //       await firebaseFirestore
-  //           .collection('Cart')
-  //           .doc(firebaseAuth.currentUser!.uid)
-  //           .collection('items')
-  //           .doc(cartItemId)
-  //           .update({'quantity': currentQuantity});
-
-  //       fetchCartItems(); // Refresh the cart items after updating.
-  //     } else {
-  //       // Show a snackbar if the quantity cannot be decremented further.
-  //       Get.snackbar(
-  //         'Error',
-  //         'Quantity cannot be less than 1',
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: Colors.red,
-  //         colorText: Colors.white,
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('Error decrementing quantity: $e');
-  //   }
-  // }
+  Future<bool> checkAvailableQuantity(
+      String itemId, int requestedQuantity) async {
+    DocumentSnapshot productDoc =
+        await FirebaseFirestore.instance.collection('Items').doc(itemId).get();
+    if (productDoc.exists) {
+      int availableQuantity = productDoc['quantity'] ?? 0;
+      return requestedQuantity <= availableQuantity;
+    }
+    return false;
+  }
 
   void incrementQuantity(int index, int amount) async {
     try {
@@ -253,20 +180,58 @@ class CartController extends GetxController {
       final data = document.data() as Map<String, dynamic>;
 
       int currentQuantity = data['quantity'] ?? 0;
-      currentQuantity += amount;
+      int newQuantity = currentQuantity + amount;
 
-      await firebaseFirestore
-          .collection('Cart')
-          .doc(firebaseAuth.currentUser!.uid)
-          .collection('items')
-          .doc(cartItemId)
-          .update({'quantity': currentQuantity});
+      bool isAvailable = await checkAvailableQuantity(cartItemId, newQuantity);
+      if (isAvailable) {
+        await firebaseFirestore
+            .collection('Cart')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('items')
+            .doc(cartItemId)
+            .update({'quantity': newQuantity});
 
-      fetchCartItems();
+        fetchCartItems();
+      } else {
+        int availableQuantity = await getProductQuantity(cartItemId);
+        Get.snackbar(
+          'Error',
+          'Only $availableQuantity item(s) available in stock',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
     } catch (e) {
       print('Error incrementing quantity: $e');
     }
   }
+  // void incrementQuantity(int index, int amount) async {
+  //   try {
+  //     final document = cartItems[index];
+  //     final cartItemId = document.id;
+  //     final data = document.data() as Map<String, dynamic>;
+
+  //     int currentQuantity = data['quantity'] ?? 0;
+  //   int quantity=  currentQuantity += amount;
+
+  //       bool isAvailable = await checkAvailableQuantity(cartItemId, newQuantity);
+  //       if () {
+
+  //       }
+
+  //     await firebaseFirestore
+  //         .collection('Cart')
+  //         .doc(firebaseAuth.currentUser!.uid)
+  //         .collection('items')
+  //         .doc(cartItemId)
+  //         .update({'quantity': currentQuantity});
+
+  //     fetchCartItems();
+  //   } catch (e) {
+  //     print('Error incrementing quantity: $e');
+  //   }
+  // }
 
   void decrementQuantity(int index, int amount) async {
     try {
@@ -323,9 +288,6 @@ class CartController extends GetxController {
         Cart cart = Cart(
           cid: uid,
           productImage: itemModel.imageUrls[0],
-          // productImage: itemModel.imageUrls.isNotEmpty == true
-          //     ? itemModel.imageUrls[0]
-          //     : '',
           productName: itemModel.itemName,
           cost: itemModel.cost,
           productId: itemModel.uid,

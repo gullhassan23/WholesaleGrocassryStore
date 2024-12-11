@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
   String weight;
+  String volume;
   String uid;
   String type;
   String itemName;
@@ -13,6 +14,7 @@ class ItemModel {
 
   ItemModel({
     this.weight = '',
+    this.volume = '',
     this.uid = '',
     this.type = '',
     this.itemName = '',
@@ -35,8 +37,9 @@ class ItemModel {
     }
 
     return ItemModel(
-      uid: data['uid'] ?? '',
       weight: data['weight'] ?? '',
+      uid: data['uid'] ?? '',
+      volume: data['volume'] ?? '',
       type: data['type'] ?? '',
       itemName: data['itemName'] ?? '',
       cost: (data['cost'] ?? 0).toDouble(),
@@ -49,9 +52,10 @@ class ItemModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'weight': weight,
       'uid': uid,
       'type': type,
-      'weight': weight,
+      'volume': volume,
       'itemName': itemName,
       'cost': cost,
       'description': description,

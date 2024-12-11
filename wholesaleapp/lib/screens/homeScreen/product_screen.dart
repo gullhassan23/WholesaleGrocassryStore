@@ -1,12 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/CartController.dart';
+import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
-
-import 'cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   final ItemModel itemModel;
@@ -22,6 +20,7 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   CartController cartController = Get.put(CartController());
+  ItemController itemController = Get.put(ItemController());
   int quantity = 0;
   bool isLoad = false;
 
@@ -70,14 +69,16 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
+                    color: widget.itemModel.quantity > 0
+                        ? Colors.blue
+                        : Colors.red,
                   ),
                   child: Row(
                     children: <Widget>[
                       Text(
-                        widget.itemModel.quantity == 0
+                        widget.itemModel.quantity > 0
                             ? 'Available in stock'
-                            : "ccdsdc",
+                            : 'Out of stock',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -96,7 +97,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '${widget.itemModel.quantity} ${widget.itemModel.weight}',
+              '${widget.itemModel.quantity} ${widget.itemModel.volume}',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -137,9 +138,13 @@ class _ProductScreenState extends State<ProductScreen> {
                     Get.snackbar(
                       "Sucess",
                       "Your item added to cart",
+                      backgroundColor: Colors.green,
+                      snackPosition: SnackPosition.BOTTOM,
+                      colorText: Colors.white,
+                      duration: Duration(seconds: 3),
                     );
 
-                    Get.to(() => CartScreen());
+                    // Get.to(() => CartScreen());
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -149,7 +154,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   }
                 },
                 child: isLoad
-                    ? CircularProgressIndicator()
+                    ? CircularProgressIndicator(
+                        color: Colors.blue,
+                      )
                     : Text(
                         'Add to cart',
                         style: TextStyle(

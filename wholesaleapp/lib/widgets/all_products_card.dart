@@ -71,7 +71,7 @@ class AllProductsCard extends StatelessWidget {
                   const SizedBox(height: 8.0),
                   Text('${itemModel.itemName}'),
                   const SizedBox(height: 8.0),
-                  Text('${itemModel.quantity}  ${itemModel.weight}'),
+                  Text('${itemModel.quantity}  ${itemModel.volume}'),
                 ],
               ),
             ),
