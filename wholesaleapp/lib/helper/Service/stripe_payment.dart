@@ -12,7 +12,7 @@ import '../../screens/homeScreen/cart_success.dart';
 
 class PaymentMethod {
   final CartController cartController = Get.find();
-  final OrderController orderController = Get.find();
+  final OrderController orderController = Get.put(OrderController());
   final UserController userController = Get.find<UserController>();
   Map<String, dynamic>? paymentIntent;
 

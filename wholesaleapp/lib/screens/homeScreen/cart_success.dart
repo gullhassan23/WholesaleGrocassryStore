@@ -18,36 +18,36 @@ class _CartSuccessScreenState extends State<CartSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding:
-              EdgeInsets.only(top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+      body: Padding(
+        padding: EdgeInsets.all(16.0.w),
+        child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Aligns content vertically
             children: [
-              SizedBox(
-                height: 180.h,
-              ),
               Text(
                 'Payment Successful',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   color: Colors.blueGrey,
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              SizedBox(height: 20.h), // Adds spacing
               Lottie.asset(
                 ImagesResource.success,
-                height: 300.h,
-                width: 300.w,
+                height: 250.h,
+                width: 250.w,
+                fit: BoxFit.contain,
               ),
+              SizedBox(height: 30.h), // Adds spacing
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  fixedSize: Size(200.w, 20.h),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 32.w),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
                     side: BorderSide(color: ColorsResource.PRIMARY_COLOR),
@@ -64,10 +64,10 @@ class _CartSuccessScreenState extends State<CartSuccessScreen> {
                 child: Text(
                   'Continue Shopping',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     color: Colors.white,
                   ),
-                ), // Optional content
+                ),
               ),
             ],
           ),
