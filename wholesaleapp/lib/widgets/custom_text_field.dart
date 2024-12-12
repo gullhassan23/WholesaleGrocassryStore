@@ -10,6 +10,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool? obscureText;
   final int lines;
+  final TextInputType textInputType;
 
   const CustomTextFormField(
       {super.key,
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
       this.hint = "",
       this.validator,
       this.lines = 1,
+      this.textInputType = TextInputType.text,
       this.suffixIcon,
       this.obscureText});
 
@@ -25,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: lines,
+      keyboardType: textInputType,
       controller: controller,
       obscureText: obscureText ?? false,
       validator: validator,
