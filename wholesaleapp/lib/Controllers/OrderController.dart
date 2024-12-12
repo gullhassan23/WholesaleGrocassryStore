@@ -10,8 +10,8 @@ class OrderController extends GetxController {
   var orders = <OrderModel>[].obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  CartController cartController = Get.find();
-  UserController distributerController = Get.find();
+  CartController cartController = Get.put(CartController());
+  UserController distributerController = Get.put(UserController());
 
   var isAdmin = false.obs;
 
@@ -20,6 +20,7 @@ class OrderController extends GetxController {
   @override
   void onInit() {
     fetchOrdersData();
+    adminfetchOrdersData();
     checkAdminStatus();
     super.onInit();
   }
@@ -33,7 +34,7 @@ class OrderController extends GetxController {
       }
 
       DocumentSnapshot userDoc =
-          await firestore.collection('Admin').doc(currentUser.uid).get();
+          await firestore.collection('WholeSaler').doc(currentUser.uid).get();
 
       if (userDoc.exists) {
         isAdmin.value = userDoc['isAdmin'] ?? false;
@@ -73,7 +74,7 @@ class OrderController extends GetxController {
                 ? "payment_with_card"
                 : "cash_on_delivery",
             pid: productUID,
-            dispatchstatus: "pending",
+            dispatchstatus: "processing",
             totalBIll: cartController.totalPrice.value,
             userid: currentUser.uid,
             userName: distributerController.distributer.value.name,
@@ -99,12 +100,42 @@ class OrderController extends GetxController {
     }
   }
 
+  // Future<void> adminfetchOrdersData() async {
+  //   try {
+  //     orders.clear();
+
+  //     // Fetch all orders from the 'orders' collection
+  //     QuerySnapshot snapshot =
+  //         await firestore.collectionGroup('productx').get();
+
+  //     if (snapshot.docs.isNotEmpty) {
+  //       for (var doc in snapshot.docs) {
+  //         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  //         OrderModel order = OrderModel.fromMap(data);
+
+  //         if (!orders.any((o) => o.pid == order.pid)) {
+  //           orders.add(order);
+  //         }
+
+  //         print("Order added: ${order}");
+  //       }
+  //       print("Orders fetched successfully: ${orders.length}");
+  //     } else {
+  //       print("No orders found in the database.");
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', e.toString());
+  //     print("Error fetching orders data: $e");
+  //   }
+  // }
+
   Future<void> adminfetchOrdersData() async {
     try {
-      orders.clear();
+      // orders.clear();
 
       // Fetch all orders from the 'orders' collection
-      QuerySnapshot snapshot = await firestore.collectionGroup('Items').get();
+      QuerySnapshot snapshot =
+          await firestore.collectionGroup('productx').get();
 
       if (snapshot.docs.isNotEmpty) {
         for (var doc in snapshot.docs) {
@@ -136,7 +167,7 @@ class OrderController extends GetxController {
         CollectionReference userOrdersCollection = firestore
             .collection('orders')
             .doc(currentUser.uid)
-            .collection('items');
+            .collection('productx');
 
         QuerySnapshot snapshot = await userOrdersCollection.get();
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:wholesaleapp/helper/constant/images_resource.dart';
 import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
 import 'package:wholesaleapp/screens/Admin/InventoryScreen.dart';
 import 'package:wholesaleapp/screens/Admin/ProfileScreen.dart';
@@ -37,14 +39,21 @@ class _AdminHomeState extends State<AdminHome> {
                   Obx(() {
                     return CircleAvatar(
                       radius: 30.r,
-                      backgroundImage: adminController
-                                  .wholesaler.value.photoUrl.isNotEmpty &&
-                              adminController
-                                  .wholesaler.value.photoUrl.isNotEmpty
-                          ? NetworkImage(
-                              adminController.wholesaler.value.photoUrl)
-                          : AssetImage('assets/images/default_avatar.png'),
-                      backgroundColor: Colors.grey.shade200,
+                      backgroundImage:
+                          adminController.wholesaler.value.photoUrl.isNotEmpty
+                              ? NetworkImage(
+                                  adminController.wholesaler.value.photoUrl)
+                              : null, // Use null if no valid image
+                      backgroundColor: Colors
+                          .grey.shade200, // Background color when no image
+                      child: adminController.wholesaler.value.photoUrl.isEmpty
+                          ? SvgPicture.asset(
+                              ImagesResource.PROFILE_ICON,
+                              fit: BoxFit.contain,
+                              width: 30.r,
+                              height: 30.r,
+                            )
+                          : null, // Display SVG only if no image is available
                     );
                   }),
                   GestureDetector(
