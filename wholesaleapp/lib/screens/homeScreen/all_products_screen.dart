@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
@@ -17,7 +18,8 @@ class _AllProductScreenState extends State<AllProductScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ItemController itemController = Get.find<ItemController>();
   List<ItemModel> filteredList = [];
-
+  int currentPage = 1;
+  final int productsPerPage = 5;
   @override
   void initState() {
     super.initState();
@@ -38,6 +40,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                 (product.itemName.toLowerCase()).contains(query.toLowerCase()))
             .toList();
       }
+      currentPage = 1;
     });
   }
 
@@ -46,70 +49,13 @@ class _AllProductScreenState extends State<AllProductScreen> {
     _searchController.dispose();
     super.dispose();
   }
-  // List<ProductModel> majorList = [
-  //   ProductModel(
-  //       image: "https://i.imgur.com/CGCyp1d.png",
-  //       price: 650.62,
-  //       productName: 'Orange',
-  //       qty: '10 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/AkzWQuJ.png",
-  //       price: 1264,
-  //       productName: 'Chicken',
-  //       qty: '25 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/J7mGZ12.png",
-  //       price: 650.62,
-  //       productName: 'Orange',
-  //       qty: '11 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/q9oF9Yq.png",
-  //       price: 1264,
-  //       productName: 'Chicken',
-  //       qty: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/CGCyp1d.png",
-  //       price: 650.62,
-  //       productName: 'Orange',
-  //       qty: '10 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/AkzWQuJ.png",
-  //       price: 1264,
-  //       productName: 'Chicken',
-  //       qty: '25 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/J7mGZ12.png",
-  //       price: 650.62,
-  //       productName: 'Orange',
-  //       qty: '11 pieces',
-  //       weight: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  //   ProductModel(
-  //       image: "https://i.imgur.com/q9oF9Yq.png",
-  //       price: 1264,
-  //       productName: 'Chicken',
-  //       qty: '100lb',
-  //       description:
-  //           'This product is crafted with premium quality materials, offering durability and elegance. Perfect for everyday use or special occasions, it combines functionality with style to enhance your experience effortlessly.'),
-  // ];
+
+  List<ItemModel> getPaginatedList() {
+    final startIndex = (currentPage - 1) * productsPerPage;
+    final endIndex = startIndex + productsPerPage;
+    return filteredList.sublist(startIndex,
+        endIndex > filteredList.length ? filteredList.length : endIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +74,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
           if (itemController.allItems.isEmpty) {
             return Center(child: Text("NO products"));
           } else {
+            final paginatedList = getPaginatedList();
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -164,7 +111,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                     height: 10,
                   ),
                   Expanded(
-                    child: filteredList.isEmpty
+                    child: paginatedList.isEmpty
                         ? Center(
                             child: Text(
                               "No products found",
@@ -173,9 +120,9 @@ class _AllProductScreenState extends State<AllProductScreen> {
                             ),
                           )
                         : ListView.builder(
-                            itemCount: filteredList.length,
+                            itemCount: paginatedList.length,
                             itemBuilder: (context, index) {
-                              final item = filteredList[index];
+                              final item = paginatedList[index];
                               // final product = filteredList[index];
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -216,6 +163,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                                                 return Center(
                                                   child:
                                                       CircularProgressIndicator(
+                                                    strokeWidth: 100.w,
                                                     value: loadingProgress
                                                                 .expectedTotalBytes !=
                                                             null
@@ -277,7 +225,10 @@ class _AllProductScreenState extends State<AllProductScreen> {
                                           ),
                                           IconButton(
                                             icon: Icon(Icons.arrow_forward_ios),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Get.to(() => ProductScreen(
+                                                  itemModel: item));
+                                            },
                                           ),
                                         ],
                                       ),
@@ -288,6 +239,33 @@ class _AllProductScreenState extends State<AllProductScreen> {
                             },
                           ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: currentPage > 1
+                            ? () {
+                                setState(() {
+                                  currentPage--;
+                                });
+                              }
+                            : null,
+                      ),
+                      Text("Page $currentPage"),
+                      IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed:
+                            currentPage * productsPerPage < filteredList.length
+                                ? () {
+                                    setState(() {
+                                      currentPage++;
+                                    });
+                                  }
+                                : null,
+                      ),
+                    ],
+                  )
                 ],
               ),
             );

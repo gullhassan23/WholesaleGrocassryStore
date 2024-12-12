@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Admin/AdminHome.dart';
+import 'package:wholesaleapp/screens/Auth/otp_screen.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -132,7 +133,7 @@ class _SignInState extends State<SignIn> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ForgotPassword()),
+                                builder: (context) => OtpScreen()),
                           );
                         },
                         child: const Text(
@@ -183,7 +184,7 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>  AdminHome()),
+                                      builder: (context) => AdminHome()),
                                   (route) => false,
                                 );
                                 // Navigator.push(

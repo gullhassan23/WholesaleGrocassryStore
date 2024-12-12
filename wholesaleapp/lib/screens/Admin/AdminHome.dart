@@ -37,13 +37,13 @@ class _AdminHomeState extends State<AdminHome> {
                   Obx(() {
                     return CircleAvatar(
                       radius: 30.r,
-                      backgroundImage:
-                          adminController.wholesaler.value.photoUrl != null &&
-                                  adminController
-                                      .wholesaler.value.photoUrl.isNotEmpty
-                              ? NetworkImage(
-                                  adminController.wholesaler.value.photoUrl)
-                              : AssetImage('assets/images/default_avatar.png'),
+                      backgroundImage: adminController
+                                  .wholesaler.value.photoUrl.isNotEmpty &&
+                              adminController
+                                  .wholesaler.value.photoUrl.isNotEmpty
+                          ? NetworkImage(
+                              adminController.wholesaler.value.photoUrl)
+                          : AssetImage('assets/images/default_avatar.png'),
                       backgroundColor: Colors.grey.shade200,
                     );
                   }),
