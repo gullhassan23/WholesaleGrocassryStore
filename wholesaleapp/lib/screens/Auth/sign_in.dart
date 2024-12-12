@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Admin/AdminHome.dart';
-import 'package:wholesaleapp/screens/Auth/otp_screen.dart';
 import 'package:wholesaleapp/screens/Auth/sign_up.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -90,6 +89,7 @@ class _SignInState extends State<SignIn> {
                     CustomTextFormField(
                       controller: emailController,
                       text: 'Email',
+                      textInputType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter Email";
@@ -109,6 +109,7 @@ class _SignInState extends State<SignIn> {
                       },
                       controller: passwordController,
                       text: 'Password',
+                      textInputType: TextInputType.visiblePassword,
                       suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -133,7 +134,7 @@ class _SignInState extends State<SignIn> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OtpScreen()),
+                                builder: (context) => ForgotPassword()),
                           );
                         },
                         child: const Text(
