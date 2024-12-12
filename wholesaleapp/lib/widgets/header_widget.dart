@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wholesaleapp/Controllers/CartController.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 import 'package:wholesaleapp/screens/homeScreen/cart_screen.dart';
 import 'package:wholesaleapp/widgets/all_products_card.dart';
@@ -18,6 +19,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   final search = TextEditingController();
   final ItemController itemController = Get.put(ItemController());
+  final CartController cartController = Get.put(CartController());
 
   void searchProductt(String value) {
     itemController.searchProduct(value.obs);
@@ -59,14 +61,39 @@ class _HeaderState extends State<Header> {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CartScreen()),
-                );
-              },
-              icon: Icon(Icons.shopping_cart),
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartScreen()),
+                    );
+                  },
+                  icon: Icon(Icons.shopping_cart),
+                ),
+                if (cartController.cartItems.isNotEmpty)
+                  Obx(() {
+                    return Positioned(
+                      right: 4,
+                      top: 4,
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          '${cartController.cartItems.length}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    );
+                  })
+              ],
             )
           ],
         ),
