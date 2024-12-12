@@ -38,13 +38,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         // Navigate to OTP screen with the verificationId
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => OtpScreen(verificationId: verificationId),
-          ),
+          MaterialPageRoute(builder: (context) => OtpScreen()),
         );
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
-      
     );
   }
 

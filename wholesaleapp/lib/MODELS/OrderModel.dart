@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {
   final String pid;
-
   final String cartIID;
   final String productName;
   final String productImage;
