@@ -150,7 +150,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 width: 120.w,
                                                 height: 40.h,
                                                 child: Text(
-                                                  "item['description']  cjkcnd cnalnc cnalncas nvlakdn",
+                                                  item['productDes'],
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,

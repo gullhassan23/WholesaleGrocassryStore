@@ -6,6 +6,7 @@ class Cart {
   final String cid;
   final String productImage;
   final String productName;
+  final String productDes;
   final double cost;
   final String productId;
   final int quantity;
@@ -13,6 +14,7 @@ class Cart {
   final String uSerid;
   Cart({
     this.cid = '',
+    this.productDes = '',
     this.productImage = '',
     this.productName = '',
     this.cost = 0.0,
@@ -25,6 +27,7 @@ class Cart {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'cid': cid,
+      'productDes': productDes,
       'productImage': productImage,
       'productName': productName,
       'cost': cost,
@@ -37,6 +40,7 @@ class Cart {
 
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
+      productDes: map['productDes'] ?? '',
       cid: map['cid'] ?? '',
       productImage: map['productImage'] ?? '',
       productName: map['productName'] ?? '',

@@ -7,6 +7,7 @@ import 'package:wholesaleapp/MODELS/OrderModel.dart';
 
 class OrderController extends GetxController {
   var orders = <OrderModel>[].obs;
+  RxList<OrderModel> specificorder = <OrderModel>[].obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   CartController cartController = Get.put(CartController());
@@ -159,7 +160,7 @@ class OrderController extends GetxController {
 
   Future<void> fetchOrdersData() async {
     try {
-      orders.clear();
+      specificorder.clear();
       User? currentUser = firebaseAuth.currentUser;
 
       if (currentUser != null) {
@@ -175,8 +176,8 @@ class OrderController extends GetxController {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             OrderModel order = OrderModel.fromMap(data);
 
-            if (!orders.any((o) => o.pid == order.pid)) {
-              orders.add(order);
+            if (!specificorder.any((o) => o.cartIID == order.cartIID)) {
+              specificorder.add(order);
             }
 
             print("Order added: ${order}");

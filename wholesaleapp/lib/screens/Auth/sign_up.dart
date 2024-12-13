@@ -36,7 +36,22 @@ class _SignUpState extends State<SignUP> {
     setState(() {
       isLoad = true;
     });
+    // Check if the email ends with '@gmail.com'
+    if (!email.text.endsWith('@gmail.com')) {
+      setState(() {
+        isLoad = false;
+      });
 
+      Get.snackbar(
+        "Invalid Email", // Title
+        "Your account has not been created. Please use a @gmail.com email.", // Message
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+      );
+      return; // Exit the function
+    }
     if (email.text == Authenticationclass().adminEmail &&
         passcode.text != "" &&
         phone.text != "" &&
