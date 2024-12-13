@@ -9,7 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
-/lib/helper/Service/Serverkey.dart
+wholesaleapp/lib/helper/Service/ServiceKey.dart
 # IntelliJ related
 *.iml
 *.ipr
