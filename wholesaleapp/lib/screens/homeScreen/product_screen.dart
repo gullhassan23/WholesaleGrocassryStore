@@ -155,7 +155,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 },
                 child: isLoad
                     ? CircularProgressIndicator(
-                        color: Colors.blue,
+                        color: Colors.white,
                       )
                     : Text(
                         'Add to cart',
