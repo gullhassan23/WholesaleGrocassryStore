@@ -65,6 +65,7 @@ class _HeaderState extends State<Header> {
               children: [
                 IconButton(
                   onPressed: () {
+                    print("Navigating to CartScreen");
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => CartScreen()),
@@ -75,10 +76,10 @@ class _HeaderState extends State<Header> {
                 if (cartController.cartItems.isNotEmpty)
                   Obx(() {
                     return Positioned(
-                      right: 4,
+                      right: 1,
                       top: 4,
                       child: Container(
-                        padding: EdgeInsets.all(6),
+                        padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           shape: BoxShape.circle,

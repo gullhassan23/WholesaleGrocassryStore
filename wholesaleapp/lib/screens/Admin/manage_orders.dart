@@ -29,8 +29,6 @@ class _ManageOrdersState extends State<ManageOrders> {
 
   @override
   Widget build(BuildContext context) {
-    print('111111111111111111111');
-    print(orderController.orders);
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -58,8 +56,7 @@ class _ManageOrdersState extends State<ManageOrders> {
                   itemCount: orderController.orders.length,
                   itemBuilder: (context, index) {
                     final order = orderController.orders[index];
-                    print('111111111111111111111');
-                    print(order);
+
                     return Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
@@ -160,15 +157,16 @@ class _ManageOrdersState extends State<ManageOrders> {
                                               .collection('orders')
                                               .doc(order.userid)
                                               .collection("productx")
-                                              .doc(order.pid)
+                                              .doc(order.cartIID)
                                               .update(
                                                   {'dispatchstatus': 'cancel'});
                                           await orderController
                                               .adminfetchOrdersData();
+                                          setState(() {
+                                            order.dispatchstatus = 'cancel';
+                                          });
                                           Get.snackbar(
                                               "Success", "Order is canceled");
-                                          print(
-                                              "Order canceled ${order.productName}");
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
@@ -185,16 +183,18 @@ class _ManageOrdersState extends State<ManageOrders> {
                                               .collection('orders')
                                               .doc(order.userid)
                                               .collection("productx")
-                                              .doc(order.pid)
+                                              .doc(order.cartIID)
                                               .update({
                                             'dispatchstatus': 'Dispatched'
                                           });
+                                          setState(() {
+                                            order.dispatchstatus = 'Dispatched';
+                                          });
                                           await orderController
                                               .adminfetchOrdersData();
+
                                           Get.snackbar("Success",
                                               "Your product is dispatched");
-                                          print(
-                                              "Product dispatched ${order.productName}");
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:

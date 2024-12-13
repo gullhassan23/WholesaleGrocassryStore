@@ -12,7 +12,6 @@ import 'package:wholesaleapp/widgets/categories_text.dart';
 import 'package:wholesaleapp/widgets/courasal_Widget.dart';
 import 'package:wholesaleapp/widgets/header_widget.dart';
 
-import '../../helper/constant/colors_resource.dart';
 import 'all_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -274,8 +273,8 @@ class _HomeScreenState extends State<HomeScreen>
                   constraints: BoxConstraints(maxHeight: 300),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: ColorsResource.PRIMARY_COLOR),
+                    // borderRadius: BorderRadius.circular(10),
+                    // border: Border.all(color: ColorsResource.PRIMARY_COLOR),
                   ),
                   child: ListView.builder(
                     itemCount: itemController.itemsSearch.length,
