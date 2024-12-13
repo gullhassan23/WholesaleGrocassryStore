@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/AdminModel.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
+import 'package:wholesaleapp/helper/Service/ServiceKey.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 class Admincontroller extends GetxController {
@@ -28,6 +32,7 @@ class Admincontroller extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       fetchWholeSaleData();
       fetchWholeSalerProfile();
+      saveUserToken();
     });
     // Listen to FirebaseAuth state changes
     FirebaseAuth.instance.authStateChanges().listen((User? currentUser) {
@@ -79,67 +84,67 @@ class Admincontroller extends GetxController {
   }
 
 // Fetch the current FCM token and save it to Firestore
-  // Future<void> saveUserToken() async {
-  //   try {
-  //     // Get FCM token
-  //     String? token = await FirebaseMessaging.instance.getToken();
+  Future<void> saveUserToken() async {
+    try {
+      // Get FCM token
+      String? token = await FirebaseMessaging.instance.getToken();
 
-  //     // Get the currently logged-in user
-  //     User? currentUser = FirebaseAuth.instance.currentUser;
+      // Get the currently logged-in user
+      User? currentUser = FirebaseAuth.instance.currentUser;
 
-  //     if (currentUser != null && token != null) {
-  //       // Update the user's Firestore document with the FCM token
-  //       await FirebaseFirestore.instance
-  //           .collection('users')
-  //           .doc(currentUser.uid)
-  //           .update({
-  //         'FcmToken': token, // Save token to 'FcmToken' field
-  //       });
-  //       print('FCM token saved successfully for user: ${currentUser.uid}');
-  //     } else {
-  //       print('User not logged in or FCM token is null');
-  //     }
-  //   } catch (e) {
-  //     print('Error saving FCM token: $e');
-  //   }
-  // }
+      if (currentUser != null && token != null) {
+        // Update the user's Firestore document with the FCM token
+        await FirebaseFirestore.instance
+            .collection('WholeSaler')
+            .doc(currentUser.uid)
+            .update({
+          'FcmToken': token, // Save token to 'FcmToken' field
+        });
+        print('FCM token saved successfully for user: ${currentUser.uid}');
+      } else {
+        print('User not logged in or FCM token is null');
+      }
+    } catch (e) {
+      print('Error saving FCM token: $e');
+    }
+  }
 
-  // Future<void> sendnotificationUsingApi({
-  //   required String? token,
-  //   required String? title,
-  //   required String? body,
-  //   required Map<String, dynamic>? data,
-  // }) async {
-  //   String serverkey = await GetServiceKey().getServerKeyToken();
-  //   print("notification server key =======> ${serverkey}");
-  //   String url =
-  //       "https://fcm.googleapis.com/v1/projects/medvisit-41b08/messages:send";
-  //   var headers = <String, String>{
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $serverkey',
-  //   };
+  Future<void> sendnotificationUsingApi({
+    required String? token,
+    required String? title,
+    required String? body,
+    required Map<String, dynamic>? data,
+  }) async {
+    String serverkey = await GetServiceKey().getServerKeyToken();
+    print("notification server key =======> ${serverkey}");
+    String url =
+        "https://fcm.googleapis.com/v1/projects/wholesalestore-8a534/messages:send";
+    var headers = <String, String>{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $serverkey',
+    };
 
-  //   Map<String, dynamic> message = {
-  //     "message": {
-  //       "token": token,
-  //       "notification": {
-  //         "body": body,
-  //         "title": title,
-  //       },
-  //       "data": data,
-  //     }
-  //   };
+    Map<String, dynamic> message = {
+      "message": {
+        "token": token,
+        "notification": {
+          "body": body,
+          "title": title,
+        },
+        "data": data,
+      }
+    };
 
-  //   // http api
-  //   final http.Response response = await http.post(Uri.parse(url),
-  //       headers: headers, body: jsonEncode(message));
+    // http api
+    final http.Response response = await http.post(Uri.parse(url),
+        headers: headers, body: jsonEncode(message));
 
-  //   if (response.statusCode == 200) {
-  //     print("Notification send Successfully");
-  //   } else {
-  //     print("Notification not send");
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      print("Notification send Successfully");
+    } else {
+      print("Notification not send");
+    }
+  }
 
   Future<void> fetchWholeSalerProfile() async {
     try {

@@ -1,12 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
 import '../constant/images_resource.dart';
 
 class DialogUtils {
+  String formatDate(dynamic date) {
+    try {
+      DateTime parsedDate;
+
+      if (date is String) {
+        // Adjust the input format as per your date string
+        parsedDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse(date);
+      } else if (date is Timestamp) {
+        // If it's a Firebase Timestamp
+        parsedDate = date.toDate();
+      } else if (date is DateTime) {
+        // If it's already a DateTime object
+        parsedDate = date;
+      } else {
+        throw 'Invalid date type';
+      }
+
+      // Format the date to the desired output
+      return DateFormat('d MMMM yyyy').format(parsedDate);
+    } catch (e) {
+      // Handle errors if the date format is invalid
+      return 'Invalid date';
+    }
+  }
+
   String stID =
       "pk_test_51LYvOaG5oJVKdCdohaq2PoZRQfiMsxnFxdMXEKRRejxqi3J47f9ayTmrPHIWEelgADGiL9ZrysBM5TsMeUJg4LPS00urKX4NBZ";
   static Future<bool?> showLogoutDialog(

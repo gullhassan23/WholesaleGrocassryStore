@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -7,11 +8,18 @@ import 'package:wholesaleapp/Controllers/CartController.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/Controllers/OrderController.dart';
 import 'package:wholesaleapp/Controllers/distribController.dart';
+import 'package:wholesaleapp/helper/Service/NotificationService.dart';
+import 'package:wholesaleapp/helper/Service/ServiceKey.dart';
 import 'package:wholesaleapp/helper/utils/dialog_utils.dart';
 import 'package:wholesaleapp/screens/splashScreen/splash_screen.dart';
-
 import 'helper/constant/colors_resource.dart';
 import 'helper/utils/svg_utils.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +27,11 @@ void main() async {
   //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Stripe.publishableKey = DialogUtils().stID;
   await Firebase.initializeApp();
+  await NotificationService().requestNotificationPermission();
+  await NotificationService().getUserToken(collect: "Distributors");
+  GetServiceKey getServiceKey = GetServiceKey();
+  await getServiceKey.getServerKeyToken();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   SvgUtils.preCacheSVGs();
   Get.lazyPut<ItemController>(() => ItemController());
   Get.lazyPut<CartController>(() => CartController());

@@ -290,6 +290,7 @@ class CartController extends GetxController {
           productImage: itemModel.imageUrls[0],
           productName: itemModel.itemName,
           cost: itemModel.cost,
+          productDes: itemModel.description,
           productId: itemModel.uid,
           quantity: 1,
           orderedAt: DateTime.now(),

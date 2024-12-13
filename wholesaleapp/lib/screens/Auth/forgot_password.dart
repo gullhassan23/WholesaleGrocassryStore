@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:wholesaleapp/screens/Auth/ResetPassword.dart';
+import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../../widgets/custom_text_field.dart';
-import 'otp_screen.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -14,7 +18,30 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  final TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  Future<bool> checkEmailExists(String email) async {
+    try {
+      // Check in Firebase Authentication
+      final List<String> signInMethods =
+          await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+      if (signInMethods.isNotEmpty) {
+        return true;
+      }
+
+      // Check in Firestore (adjust the collection and field names as per your database)
+      final snapshot = await FirebaseFirestore.instance
+          .collection('Distributors') // Replace with your collection name
+          .where('email', isEqualTo: email)
+          .get();
+
+      return snapshot.docs.isNotEmpty;
+    } catch (e) {
+      debugPrint("Error checking email: $e");
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +95,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 40,
                 ),
-                const CustomTextFormField(
+                CustomTextFormField(
+                  controller: emailController,
                   text: 'Email',
                   textInputType: TextInputType.emailAddress,
                 ),
@@ -88,49 +116,94 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                         backgroundColor: WidgetStateProperty.all<Color>(
                             ColorsResource.PRIMARY_COLOR)),
-                    onPressed: () {
-                      showDialog(
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          backgroundColor: ColorsResource.WHITE,
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(ImagesResource.ALERT_ICON),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const Text(
-                                'Check your phone',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: ColorsResource.BLACK,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Text(
-                                'We have send password recovery OTP to your mobile',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorsResource.GREY,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ).then((_) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const OtpScreen()),
-                        );
-                      });
+                    onPressed: () async {
+                      // showDialog(
+                      //   barrierDismissible: true,
+                      //   context: context,
+                      //   builder: (ctx) => AlertDialog(
+                      //     backgroundColor: ColorsResource.WHITE,
+                      //     content: Column(
+                      //       mainAxisSize: MainAxisSize.min,
+                      //       children: [
+                      //         SvgPicture.asset(ImagesResource.ALERT_ICON),
+                      //         const SizedBox(
+                      //           height: 20,
+                      //         ),
+                      //         const Text(
+                      //           'Check your phone',
+                      //           style: TextStyle(
+                      //             fontSize: 18,
+                      //             fontWeight: FontWeight.w900,
+                      //             color: ColorsResource.BLACK,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(
+                      //           height: 8,
+                      //         ),
+                      //         const Text(
+                      //           'We have send password recovery OTP to your mobile',
+                      //           textAlign: TextAlign.center,
+                      //           style: TextStyle(
+                      //             fontSize: 16,
+                      //             fontWeight: FontWeight.w400,
+                      //             color: ColorsResource.GREY,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ).then((_) {
+                      //   Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const OtpScreen()),
+                      //   );
+                      // });
+
+                      if (_formKey.currentState!.validate()) {
+                        final email = emailController.text.trim();
+                        bool emailExists = await checkEmailExists(email);
+
+                        if (emailExists) {
+                          FirebaseAuth.instance
+                              .sendPasswordResetEmail(email: email)
+                              .then((val) {
+                            Get.snackbar(
+                              "Success", // Title
+                              "We have sent you email to recover password, please check your email",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          }).onError((err, stackTrace) {
+                            Get.snackbar(
+                              "Forgot password Error", // Title
+                              err.toString(),
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                          });
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignIn(),
+                            ),
+                          );
+                        } else {
+                          Get.snackbar(
+                            "Not Available", // Title
+                            "your account is not available in database",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                            duration: Duration(seconds: 3),
+                          );
+                        }
+                      }
                     },
                     child: const Text(
                       'Reset Password',

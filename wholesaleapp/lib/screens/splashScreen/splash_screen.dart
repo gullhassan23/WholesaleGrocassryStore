@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../helper/constant/colors_resource.dart';
 import '../../helper/constant/images_resource.dart';
 import '../Admin/AdminHome.dart';
@@ -56,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (userRole == "admin") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>  AdminHome()),
+            MaterialPageRoute(builder: (context) => AdminHome()),
           );
         } else if (userRole == "distributor") {
           Navigator.pushReplacement(

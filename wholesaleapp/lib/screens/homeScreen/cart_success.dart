@@ -20,57 +20,53 @@ class _CartSuccessScreenState extends State<CartSuccessScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(16.0.w),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment:
-                MainAxisAlignment.center, // Aligns content vertically
-            children: [
-              Text(
-                'Payment Successful',
-                textAlign: TextAlign.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Aligns content vertically
+          children: [
+            Text(
+              'Payment Successful',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24.sp,
+                color: Colors.blueGrey,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(height: 20.h), // Adds spacing
+            Lottie.asset(
+              ImagesResource.success,
+              height: 250.h,
+              width: 250.w,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 30.h), // Adds spacing
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 32.w),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r),
+                  side: BorderSide(color: ColorsResource.PRIMARY_COLOR),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeContentScreen()),
+                  (route) => false,
+                );
+              },
+              child: Text(
+                'Continue Shopping',
                 style: TextStyle(
-                  fontSize: 24.sp,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 16.sp,
+                  color: Colors.white,
                 ),
               ),
-              SizedBox(height: 20.h), // Adds spacing
-              Lottie.asset(
-                ImagesResource.success,
-                height: 250.h,
-                width: 250.w,
-                fit: BoxFit.contain,
-              ),
-              SizedBox(height: 30.h), // Adds spacing
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 32.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                    side: BorderSide(color: ColorsResource.PRIMARY_COLOR),
-                  ),
-                ),
-                onPressed: () async {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeContentScreen()),
-                    (route) => false,
-                  );
-                },
-                child: Text(
-                  'Continue Shopping',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
