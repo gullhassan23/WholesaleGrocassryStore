@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/CartController.dart';
@@ -86,7 +85,7 @@ class OrderController extends GetxController {
           await orderCollection
               .doc(orderModel.userid)
               .collection("productx")
-              .doc(orderModel.pid)
+              .doc(orderModel.cartIID)
               .set(orderModel.toMap());
           print(orderModel);
         }
@@ -142,7 +141,7 @@ class OrderController extends GetxController {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           OrderModel order = OrderModel.fromMap(data);
 
-          if (!orders.any((o) => o.pid == order.pid)) {
+          if (!orders.any((o) => o.cartIID == order.cartIID)) {
             orders.add(order);
           }
 

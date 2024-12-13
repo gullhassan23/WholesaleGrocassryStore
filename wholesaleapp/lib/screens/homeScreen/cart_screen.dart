@@ -123,8 +123,9 @@ class _CartScreenState extends State<CartScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             child: CachedNetworkImage(
-                                              placeholder: (context, url) =>
-                                                  CircularProgressIndicator(),
+                                              placeholder: (context, url) => Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
                                               errorWidget:
                                                   (context, url, error) => Icon(
                                                 Icons.error,
@@ -145,16 +146,17 @@ class _CartScreenState extends State<CartScreen> {
                                                 item['productName'],
                                               ),
                                               SizedBox(height: 10.0),
-                                              // SizedBox(
-                                              //   width: 200.w,
-                                              //   height: 40.h,
-                                              //   child: Text(
-                                              //     item['productDescription'],
-                                              //     maxLines: 2,
-                                              //     overflow: TextOverflow.ellipsis,
-                                              //     softWrap: true,
-                                              //   ),
-                                              // ),
+                                              SizedBox(
+                                                width: 140.w,
+                                                height: 40.h,
+                                                child: Text(
+                                                  "item['description']  cjkcnd cnalnc cnalncas nvlakdn",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                ),
+                                              ),
                                               SizedBox(height: 10.0),
                                               incDecWidget(
                                                 cartController: cartController,

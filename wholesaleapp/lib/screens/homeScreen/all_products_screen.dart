@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/ItemController.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
@@ -20,6 +19,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
   List<ItemModel> filteredList = [];
   int currentPage = 1;
   final int productsPerPage = 5;
+
   @override
   void initState() {
     super.initState();
@@ -163,7 +163,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                                                 return Center(
                                                   child:
                                                       CircularProgressIndicator(
-                                                    strokeWidth: 100.w,
+                                                    strokeWidth: 80,
                                                     value: loadingProgress
                                                                 .expectedTotalBytes !=
                                                             null

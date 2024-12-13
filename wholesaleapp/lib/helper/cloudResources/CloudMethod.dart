@@ -91,6 +91,9 @@ class cloud {
         // Parse the raw cost to a double
         double cost = double.parse(rawCost);
         int quan = int.parse(quantity);
+        print('111111111111111111111');
+        print(quantity);
+        print(quan);
         // Create the item model
         ItemModel item = ItemModel(
           weight: weight,
