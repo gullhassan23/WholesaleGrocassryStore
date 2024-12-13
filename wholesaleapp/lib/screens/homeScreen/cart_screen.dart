@@ -147,7 +147,7 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                               SizedBox(height: 10.0),
                                               SizedBox(
-                                                width: 140.w,
+                                                width: 120.w,
                                                 height: 40.h,
                                                 child: Text(
                                                   "item['description']  cjkcnd cnalnc cnalncas nvlakdn",
