@@ -19,6 +19,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
   List<ItemModel> filteredList = [];
   int currentPage = 1;
   final int productsPerPage = 5;
+
   @override
   void initState() {
     super.initState();
