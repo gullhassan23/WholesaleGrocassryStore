@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:wholesaleapp/screens/Auth/ResetPassword.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
 
 import '../../helper/constant/colors_resource.dart';
