@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/CartController.dart';
+
+import '../Controllers/distribController.dart';
 
 class cartScreenBorderContainer extends StatefulWidget {
   const cartScreenBorderContainer({
@@ -23,6 +25,8 @@ class cartScreenBorderContainer extends StatefulWidget {
 }
 
 class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
+  final UserController userController = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -107,7 +111,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                     ),
                   ),
                   Obx(
-                    () => Text(
+                        () => Text(
                       '\$ ${widget.cartController.totalPriceGst.value.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -167,7 +171,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                 height: 10.h,
               ),
               Text(
-                'Faizan',
+                userController.distributer.value.name,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -183,7 +187,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                     width: 5.w,
                   ),
                   Text(
-                    '03244985570',
+                    userController.distributer.value.phone,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,

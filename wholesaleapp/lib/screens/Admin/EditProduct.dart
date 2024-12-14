@@ -7,6 +7,8 @@ import 'package:wholesaleapp/MODELS/ItemModel.dart';
 import 'package:wholesaleapp/helper/constant/images_resource.dart';
 import 'package:wholesaleapp/widgets/customButton.dart';
 
+import '../../widgets/custom_text_field.dart';
+
 class EditProductScreen extends StatefulWidget {
   final ItemModel product;
 
@@ -75,11 +77,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Future<void> saveChanges() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        isLoad = true; // Show the loading indicator
+        isLoad = true;
       });
-      int parsedQuantity = int.tryParse(quantityController.text) ?? 0;
+      int? parsedQuantity = int.tryParse(quantityController.text);
 
-      if (parsedQuantity == 0 && quantityController.text.isNotEmpty) {
+      if (quantityController.text.isEmpty) {
         // If the quantity is invalid (i.e., not a valid number and not empty), show an error
         Get.snackbar('Error', 'Please enter a valid quantity.');
         return;
@@ -95,11 +97,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
         description: descriptionController.text,
         images: images.isEmpty ? null : images,
       );
-      setState(() {
-        isLoad = false; // Hide the loading indicator
-      });
+
       if (status == "success") {
         Get.back();
+        setState(() {
+          isLoad = false; // Hide the loading indicator
+        });
         Get.snackbar(
           "Success", // Title
           "Item updated successfully", // Message
@@ -117,6 +120,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
+        setState(() {
+          isLoad = false; // Hide the loading indicator
+        });
       }
     }
   }
@@ -130,24 +136,47 @@ class _EditProductScreenState extends State<EditProductScreen> {
           centerTitle: true,
           title: Text('Edit Product')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextFormField(
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextFormField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Product Name'),
+                  text: "Product Name",
+                  obscureText: false,
                   validator: (value) =>
                       value!.isEmpty ? 'Product Name cannot be empty' : null,
                 ),
-                TextFormField(
+                SizedBox(
+                  height: 10,
+                ),
+                // TextFormField(
+                //   controller: nameController,
+                //   decoration: InputDecoration(labelText: 'Product Name'),
+                //   validator: (value) =>
+                //       value!.isEmpty ? 'Product Name cannot be empty' : null,
+                // ),
+                CustomTextFormField(
                   controller: weightController,
-                  decoration: InputDecoration(labelText: 'Product weight'),
+                  text: "Product weight",
+                  obscureText: false,
                   validator: (value) =>
                       value!.isEmpty ? 'Product weight cannot be empty' : null,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                // TextFormField(
+                //   controller: weightController,
+                //   decoration: InputDecoration(labelText: 'Product weight'),
+                //   validator: (value) =>
+                //       value!.isEmpty ? 'Product weight cannot be empty' : null,
+                // ),
                 DropdownButtonFormField<String>(
                   value: selectedType,
                   items: productCategories.map((String category) {
@@ -161,14 +190,56 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       selectedType = newValue!;
                     });
                   },
-                  decoration: InputDecoration(labelText: 'Type'),
+                  decoration: InputDecoration(
+                    labelText: 'Type',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16, // Font size for label
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    // Padding inside the field
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      // Rounded corners
+                      borderSide: BorderSide(
+                          color: Colors.blueAccent,
+                          width: 2), // Border color and width
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2), // Border color when focused
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2), // Border color when not focused
+                    ),
+                  ),
                 ),
-                TextFormField(
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
                   controller: costController,
-                  decoration: InputDecoration(labelText: 'Cost'),
-                  keyboardType: TextInputType.number,
+                  text: "Cost ",
+                  obscureText: false,
+                  textInputType: TextInputType.number,
                   validator: (value) =>
                       value!.isEmpty ? 'Cost cannot be empty' : null,
+                ),
+                // TextFormField(
+                //   controller: costController,
+                //   decoration: InputDecoration(labelText: 'Cost'),
+                //   keyboardType: TextInputType.number,
+                //   validator: (value) =>
+                //       value!.isEmpty ? 'Cost cannot be empty' : null,
+                // ),
+                SizedBox(
+                  height: 10,
                 ),
                 // Weight dropdown
                 DropdownButtonFormField<String>(
@@ -188,21 +259,72 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           newValue!; // Update the selectedWeight variable
                     });
                   },
-                  decoration: InputDecoration(labelText: 'Volume'),
+                  decoration: InputDecoration(
+                    labelText: 'Volume',
+                    labelStyle: TextStyle(
+                      color: Colors.blue, // Custom label color
+                      fontSize: 16, // Font size for label
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    // Padding inside the field
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      // Rounded corners
+                      borderSide: BorderSide(
+                          color: Colors.blueAccent,
+                          width: 2), // Border color and width
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2), // Border color when focused
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2), // Border color when not focused
+                    ),
+                  ),
                 ),
-
-                TextFormField(
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
                   controller: quantityController,
-                  decoration: InputDecoration(labelText: 'Quantity'),
-                  keyboardType: TextInputType.number,
+                  text: "Quantity ",
+                  obscureText: false,
+                  textInputType: TextInputType.number,
                   validator: (value) =>
                       value!.isEmpty ? 'Quantity cannot be empty' : null,
                 ),
-                TextFormField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
-                  maxLines: 3,
+                // TextFormField(
+                //   controller: quantityController,
+                //   decoration: InputDecoration(labelText: 'Quantity'),
+                //   keyboardType: TextInputType.number,
+                //   validator: (value) =>
+                //       value!.isEmpty ? 'Quantity cannot be empty' : null,
+                // ),
+                SizedBox(
+                  height: 10,
                 ),
+                CustomTextFormField(
+                  controller: descriptionController,
+                  text: "Description ",
+                  obscureText: false,
+                  lines: 7,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Quantity cannot be empty' : null,
+                ),
+                // TextFormField(
+                //   controller: descriptionController,
+                //   decoration: InputDecoration(labelText: 'Description'),
+                //   maxLines: 3,
+                //   validator: (value) =>
+                //       value!.isEmpty ? 'description cannot be empty' : null,
+                // ),
                 SizedBox(height: 20),
                 images.isNotEmpty
                     ? Wrap(

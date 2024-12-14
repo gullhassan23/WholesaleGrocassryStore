@@ -12,7 +12,12 @@ class Cart {
   final int quantity;
   final DateTime orderedAt;
   final String uSerid;
+  final String volume;
+  final String weight;
+
   Cart({
+    this.weight = '',
+    this.volume = '',
     this.cid = '',
     this.productDes = '',
     this.productImage = '',
@@ -35,6 +40,8 @@ class Cart {
       'quantity': quantity,
       'orderedAt': orderedAt,
       'uSerid': uSerid,
+      'weight': weight,
+      'volume': volume,
     };
   }
 
@@ -51,6 +58,8 @@ class Cart {
           ? (map['orderedAt'] as Timestamp).toDate()
           : DateTime.now(),
       uSerid: map['uSerid'] ?? '',
+      volume: map['volume'] ?? '',
+      weight: map['weight'] ?? '',
     );
   }
 

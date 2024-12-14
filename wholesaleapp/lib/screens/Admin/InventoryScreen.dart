@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
 import "package:dotted_border/dotted_border.dart";
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
@@ -13,6 +14,7 @@ import 'package:wholesaleapp/widgets/custom_text_field.dart';
 
 class InventoryScreen extends StatefulWidget {
   static const String routeName = "/add-product";
+
   const InventoryScreen({super.key});
 
   @override
@@ -28,6 +30,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   final TextEditingController quantityController = TextEditingController();
   final Admincontroller adminController = Get.put(Admincontroller());
   bool isLoad = false;
+
   // Change to store a single image
   List<Uint8List> image = [];
 
@@ -172,35 +175,42 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   obscureText: false,
                 ),
                 SizedBox(height: 10.h),
-                SizedBox(
-                    width: double.infinity,
-                    child: DropdownButton(
-                      isExpanded: true,
-                      dropdownColor: Colors.white,
-                      value: category,
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      items: productCategories.map((String item) {
-                        return DropdownMenuItem(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 5.w),
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey, width: 2),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: DropdownButton(
+                    isExpanded: true,
+                    dropdownColor: Colors.white,
+                    value: category,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    items: productCategories.map((String item) {
+                      return DropdownMenuItem(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5.w),
+                          child: Text(
+                            item,
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
                           ),
-                          value: item,
-                        );
-                      }).toList(),
-                      onChanged: (String? newVal) {
-                        if (newVal != null) {
-                          setState(() {
-                            category = newVal;
-                          });
-                        }
-                      },
-                    )),
+                        ),
+                        value: item,
+                      );
+                    }).toList(),
+                    onChanged: (String? newVal) {
+                      if (newVal != null) {
+                        setState(() {
+                          category = newVal;
+                        });
+                      }
+                    },
+                  ),
+                ),
                 CustomTextFormField(
                   controller: weight,
                   text: "weight",
@@ -208,12 +218,18 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
                 SizedBox(height: 10.h),
                 SizedBox(height: 10.h),
-                SizedBox(
+                Container(
                   width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey, width: 2),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: DropdownButton(
                     isExpanded: true,
                     dropdownColor: Colors.white,
-                    value: volume, // Correctly linked to the 'weight' variable
+                    value: volume,
                     icon: Icon(Icons.keyboard_arrow_down),
                     items: productWeight.map((String item) {
                       return DropdownMenuItem(

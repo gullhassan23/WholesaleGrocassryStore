@@ -7,8 +7,13 @@ import 'package:wholesaleapp/screens/homeScreen/cart_screen.dart';
 import '../Controllers/ItemController.dart';
 
 class Header extends StatefulWidget {
+  final FocusNode focusNode;
+  final TextEditingController textEditingController;
+
   const Header({
     super.key,
+    required this.focusNode,
+    required this.textEditingController,
   });
 
   @override
@@ -16,12 +21,20 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  final search = TextEditingController();
   final ItemController itemController = Get.put(ItemController());
   final CartController cartController = Get.put(CartController());
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void searchProductt(String value) {
     itemController.searchProduct(value.obs);
+  }
+
+  void clearSearchField() {
+    itemController.itemsSearch.clear();
   }
 
   @override
@@ -33,7 +46,8 @@ class _HeaderState extends State<Header> {
             SizedBox(
               width: MediaQuery.of(context).size.width * .82,
               child: TextFormField(
-                controller: search,
+                focusNode: widget.focusNode,
+                controller: widget.textEditingController,
                 onChanged: (value) {
                   searchProductt(value);
                 },
@@ -43,6 +57,10 @@ class _HeaderState extends State<Header> {
                   prefixIcon: Icon(
                     Icons.search,
                     color: ColorsResource.PRIMARY_COLOR,
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: clearSearchField, // Clear the field manually
+                    icon: Icon(Icons.clear),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
