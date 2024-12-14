@@ -35,7 +35,7 @@ class Admin {
       Aname: map['Aname'] ?? "",
       isAdmin: map['isAdmin'] as bool,
       Auid: map['Auid'] ?? "",
-      Aemail: map['Aemail'] ?? "",
+      Aemail: map['email'] ?? "",
       Apassword: map['Apassword'] ?? "",
       AlastActive: map['AlastActive'] != null
           ? (map['AlastActive'] as Timestamp).toDate()
@@ -51,7 +51,7 @@ class Admin {
       'isAdmin': isAdmin,
       'Auid': Auid,
       'photoUrl': photoUrl,
-      'Aemail': Aemail,
+      'email': Aemail,
       'Apassword': Apassword,
       'AlastActive': AlastActive,
       'Aphone': Aphone,

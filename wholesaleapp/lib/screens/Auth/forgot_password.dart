@@ -28,7 +28,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       if (signInMethods.isNotEmpty) return true;
 
       // Check in multiple Firestore collections
-      final collections = ['Distributors', 'WholeSaler']; // Add more if needed
+      final collections = ['Distributors', 'WholeSaler'];
+      // Add more if needed
       for (final collection in collections) {
         final snapshot = await FirebaseFirestore.instance
             .collection(collection)

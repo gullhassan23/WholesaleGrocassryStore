@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/MODELS/AdminModel.dart';
@@ -208,10 +209,50 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit Phone number"),
-          content: TextField(
-            controller: phoneController,
-            decoration: InputDecoration(hintText: "Enter new Phone"),
+          title: Text("Edit Phone Number"),
+          content: IntlPhoneField(
+            showCountryFlag: true,
+            dropdownIcon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.grey,
+            ),
+            decoration: InputDecoration(
+              hintText: "Phone Number",
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorsResource.PRIMARY_COLOR,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              fillColor: ColorsResource.LIGHT_WHITE,
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorsResource.LIGHT_WHITE,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            initialCountryCode: "QA",
+            onChanged: (phone) {
+              phoneController.text = phone.completeNumber;
+            },
           ),
           actions: [
             TextButton(
