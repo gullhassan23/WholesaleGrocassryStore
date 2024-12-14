@@ -132,8 +132,14 @@ class _StockScreenState extends State<StockScreen> {
                           .doc(item.uid)
                           .delete();
 
-                      // Update local list
-                      itemController.items.removeAt(index);
+                      setState(() {
+                        // Update the local filtered list
+                        filteredList.removeAt(index);
+
+                        // Optionally update the main list
+                        itemController.items
+                            .removeWhere((i) => i.uid == item.uid);
+                      });
 
                       // Show a snackbar or any feedback
                       Get.snackbar(
@@ -142,6 +148,23 @@ class _StockScreenState extends State<StockScreen> {
                         snackPosition: SnackPosition.BOTTOM,
                       );
                     },
+                    // onDismissed: (direction) async {
+                    //   // Remove from Firestore
+                    //   await FirebaseFirestore.instance
+                    //       .collection('Items')
+                    //       .doc(item.uid)
+                    //       .delete();
+
+                    //   // Update local list
+                    //   itemController.items.removeAt(index);
+
+                    //   // Show a snackbar or any feedback
+                    //   Get.snackbar(
+                    //     'Deleted',
+                    //     'Product deleted successfully',
+                    //     snackPosition: SnackPosition.BOTTOM,
+                    //   );
+                    // },
                     child: Card(
                       elevation: 5.0, // Adds shadow
                       shape: RoundedRectangleBorder(
