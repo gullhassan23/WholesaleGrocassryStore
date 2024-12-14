@@ -25,20 +25,45 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       // Check in Firebase Authentication
       final List<String> signInMethods =
           await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
-      if (signInMethods.isNotEmpty) {
-        return true;
+      if (signInMethods.isNotEmpty) return true;
+
+      // Check in multiple Firestore collections
+      final collections = ['Distributors', 'WholeSaler']; // Add more if needed
+      for (final collection in collections) {
+        final snapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('email', isEqualTo: email)
+            .get();
+        if (snapshot.docs.isNotEmpty) return true;
       }
-
-      // Check in Firestore (adjust the collection and field names as per your database)
-      final snapshot = await FirebaseFirestore.instance
-          .collection('Distributors') // Replace with your collection name
-          .where('email', isEqualTo: email)
-          .get();
-
-      return snapshot.docs.isNotEmpty;
     } catch (e) {
       debugPrint("Error checking email: $e");
-      return false;
+    }
+    return false;
+  }
+
+  /// Sends a password reset email using Firebase Auth
+  Future<void> sendResetEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Get.snackbar(
+        "Success",
+        "Password recovery email sent. Please check your inbox.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+      Navigator.pushReplacementNamed(context, '/sign_in'); // Adjust as needed
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
     }
   }
 
