@@ -69,7 +69,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                     ),
                   ),
                   Obx(
-                        () => Text(
+                    () => Text(
                       '\$ ${widget.cartController.totalPrice.value.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
