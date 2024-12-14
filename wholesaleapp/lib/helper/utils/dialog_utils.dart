@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+
 import 'package:intl/intl.dart';
 import 'package:wholesaleapp/helper/constant/colors_resource.dart';
 
@@ -126,38 +126,40 @@ class DialogUtils {
     );
   }
 
-  static Future<dynamic> showEditPhoneDialog(
-    BuildContext context,
-    VoidCallback? onPressed,
-  ) {
-    TextEditingController phoneController = TextEditingController();
+  // static Future<dynamic> showEditPhoneDialog(
+  //   BuildContext context,
+  //   VoidCallback? onPressed,
+  // ) {
+  //   TextEditingController phoneController = TextEditingController();
 
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Edit Phone number"),
-          content: TextField(
-            controller: phoneController,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(hintText: "Enter new Phone"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: onPressed,
-              child: Text("Save"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text("Edit Phone number"),
+  //         content: TextField(
+  //           controller: phoneController,
+  //           keyboardType: TextInputType.phone,
+  //           decoration: InputDecoration(hintText: "Enter new Phone"),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Get.back();
+  //             },
+  //             child: Text("Cancel"),
+  //           ),
+  //           TextButton(
+  //             onPressed: onPressed,
+  //             child: Text("Save"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+ 
 
   static Future<dynamic> showImageOptionsBottomSheet({
     required BuildContext context,

@@ -237,7 +237,7 @@ class _SignUpState extends State<SignUP> {
                             Icons.person,
                             color: Color(0xfffd6f3e),
                           )),
-                      initialCountryCode: "+92",
+                      initialCountryCode: "QA",
                       onChanged: (text) => setState(() {
                         phone.text = text.completeNumber;
                       }),

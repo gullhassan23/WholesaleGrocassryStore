@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +32,6 @@ class UserController extends GetxController {
       }
     });
   }
-
-  
 
   /// Fetch user data from Firestore based on FirebaseAuth UID
   Future<void> fetchDistributorData() async {
@@ -78,13 +75,27 @@ class UserController extends GetxController {
   }
 
   Future<void> updateUserPhone(String newPhone) async {
-    User currentUser = FirebaseAuth.instance.currentUser!;
-    await FirebaseFirestore.instance
-        .collection('Distributors')
-        .doc(currentUser.uid)
-        .update({'phone': newPhone});
-    distributer.update((val) {
-      val?.phone = newPhone;
-    });
+    try {
+      User currentUser = FirebaseAuth.instance.currentUser!;
+      await FirebaseFirestore.instance
+          .collection('Distributors')
+          .doc(currentUser.uid)
+          .update({'phone': newPhone});
+      print("User UID: ${currentUser.uid}");
+      print(newPhone);
+      distributer.update((val) {
+        val?.phone = newPhone;
+      });
+      print("Phone number updated successfully.");
+    } catch (e) {
+      print("Error updating phone number: $e");
+      Get.snackbar(
+        "Error",
+        "Failed to update phone number",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 }

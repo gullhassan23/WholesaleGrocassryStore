@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wholesaleapp/Controllers/AdminController.dart';
 import 'package:wholesaleapp/MODELS/distributModel.dart';
@@ -42,6 +43,80 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     _fetchProfileImageFromFirebase();
+  }
+
+  void showEditPhoneDialog() {
+    TextEditingController phoneController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit Phone Number"),
+          content: IntlPhoneField(
+            showCountryFlag: true,
+            dropdownIcon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.grey,
+            ),
+            decoration: InputDecoration(
+              hintText: "Phone Number",
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorsResource.PRIMARY_COLOR,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              fillColor: ColorsResource.LIGHT_WHITE,
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: ColorsResource.LIGHT_WHITE,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            initialCountryCode: "QA",
+            onChanged: (phone) {
+              phoneController.text = phone.completeNumber;
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (phoneController.text.isNotEmpty) {
+                  await userController.updateUserPhone(phoneController.text);
+                  Get.back();
+                }
+              },
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _fetchProfileImageFromFirebase() async {
@@ -173,14 +248,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 text: userController.distributer.value.phone,
                 icondata: Icons.arrow_forward_ios,
                 onPressed: () {
-                  DialogUtils.showEditPhoneDialog(context, () async {
-                    if (phoneController.text.isNotEmpty) {
-                      await userController
-                          .updateUserPhone(phoneController.text);
-                      Get.back();
-                    }
-                  });
+                  showEditPhoneDialog();
                 },
+                // onPressed: () {
+                //   // // phoneController.text =
+                //   //     userController.distributer.value.phone;
+                //  showEditPhoneDialog(context, () async {
+                //     String newPhone = phoneController.text;
+                //     print("user ${newPhone}");
+                //     if (newPhone.isNotEmpty) {
+                //       await userController.updateUserPhone(newPhone);
+                //     }
+                //   });
+                // },
               ),
               ProfileListItem(
                 text: 'Order History',
