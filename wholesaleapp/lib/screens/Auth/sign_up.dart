@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wholesaleapp/helper/cloudResources/AuthMethod.dart';
 import 'package:wholesaleapp/screens/Auth/sign_in.dart';
+
 import '../../helper/constant/colors_resource.dart';
 import '../../widgets/custom_text_field.dart';
 
@@ -44,13 +45,14 @@ class _SignUpState extends State<SignUP> {
 
       Get.snackbar(
         "Invalid Email", // Title
-        "Your account has not been created. Please use a @gmail.com email.", // Message
+        "Your account has not been created. Please use a @gmail.com email.",
+        // Message
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: Duration(seconds: 3),
       );
-      return; // Exit the function
+      return;
     }
     if (email.text == Authenticationclass().adminEmail &&
         passcode.text != "" &&
@@ -65,7 +67,14 @@ class _SignUpState extends State<SignUP> {
         isLoad = false;
       });
       if (output == "success") {
-        print("All good happening");
+        Get.snackbar(
+          "Congratulations",
+          "Your account has been created. Please signIn to continue",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const SignIn()));
       } else {
@@ -237,7 +246,7 @@ class _SignUpState extends State<SignUP> {
                             Icons.person,
                             color: Color(0xfffd6f3e),
                           )),
-                      initialCountryCode: "+92",
+                      initialCountryCode: "QA",
                       onChanged: (text) => setState(() {
                         phone.text = text.completeNumber;
                       }),

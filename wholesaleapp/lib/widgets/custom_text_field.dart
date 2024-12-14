@@ -27,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: lines,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: textInputType,
       controller: controller,
       obscureText: obscureText ?? false,

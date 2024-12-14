@@ -74,7 +74,7 @@ class _CartScreenState extends State<CartScreen> {
             ));
           } else {
             return GestureDetector(
-              onTap: unfocusTextField, // Unfocus when tapping outside
+              onTap: unfocusTextField,
               behavior: HitTestBehavior.opaque,
               child: Column(
                 children: [
@@ -173,12 +173,19 @@ class _CartScreenState extends State<CartScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
+                                                '${item['weight']} ${item['volume']}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              Text(
                                                 '\$ ${totalPriceForItem.toStringAsFixed(2)}',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
-                                              SizedBox(height: 50.h),
+                                              SizedBox(height: 30.h),
                                               InkWell(
                                                 onTap: () => cartController
                                                     .removeFromCart(

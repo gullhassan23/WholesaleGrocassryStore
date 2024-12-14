@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,11 +8,13 @@ import 'package:wholesaleapp/helper/constant/images_resource.dart';
 
 class CartController extends GetxController {
   var cartItems = <QueryDocumentSnapshot>[].obs;
+
   // RxList cartItems = <Cart>[].obs;
   var totalPrice = 0.0.obs;
   var totalPriceGst = 0.0.obs;
   var shippingAddress = ''.obs;
   RxString addTocartStatus = ''.obs;
+
   // CommonFunctions cMethod = CommonFunctions();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -206,6 +207,7 @@ class CartController extends GetxController {
       print('Error incrementing quantity: $e');
     }
   }
+
   // void incrementQuantity(int index, int amount) async {
   //   try {
   //     final document = cartItems[index];
@@ -295,6 +297,8 @@ class CartController extends GetxController {
           quantity: 1,
           orderedAt: DateTime.now(),
           uSerid: currentUser.uid,
+          weight: itemModel.weight,
+          volume: itemModel.volume,
         );
 
         await cartCollection.doc(itemModel.uid).set(cart.toMap());

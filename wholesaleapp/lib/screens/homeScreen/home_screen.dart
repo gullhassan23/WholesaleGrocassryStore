@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final ItemController itemController = Get.put(ItemController());
-  final search = TextEditingController();
+  TextEditingController search = TextEditingController();
   final List<Map<String, dynamic>> imageList = [
     {"id": 1, "image_path": 'assets/images/image1.png'},
     {"id": 2, "image_path": 'assets/images/1.png'},
@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
   late Animation<Color?> _colorAnimation;
+  final FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -89,7 +90,14 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void dispose() {
     _controller.dispose();
+    focusNode.dispose();
+    search.clear();
+    itemController.itemsSearch.clear();
     super.dispose();
+  }
+
+  void unfocusTextField() {
+    focusNode.unfocus();
   }
 
   @override
@@ -115,57 +123,64 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Header(),
-                        CarouselStack(
-                          currentIndex: currentIndex,
-                          imageList: imageList,
-                          carouselController: carouselController,
-                          onPageChanged: (index) {
-                            setState(() {
-                              currentIndex = index;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CategoriesText(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          color: Colors.grey.shade100,
-                          height: 100.h,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: categories.length,
+                    child: GestureDetector(
+                      onTap: unfocusTextField,
+                      behavior: HitTestBehavior.opaque,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Header(
+                            focusNode: focusNode,
+                            textEditingController: search,
+                          ),
+                          CarouselStack(
+                            currentIndex: currentIndex,
+                            imageList: imageList,
+                            carouselController: carouselController,
+                            onPageChanged: (index) {
+                              setState(() {
+                                currentIndex = index;
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CategoriesText(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            color: Colors.grey.shade100,
+                            height: 100.h,
+                            child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) {
-                                return Row(
-                                  children: [
-                                    HorizontalIconList(
-                                      image: categories[index],
-                                      cat: categoryName[index],
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                  ],
-                                );
-                              },
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: categories.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (ctx, index) {
+                                  return Row(
+                                    children: [
+                                      HorizontalIconList(
+                                        image: categories[index],
+                                        cat: categoryName[index],
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        AllProductText(),
-                      ],
+                          SizedBox(
+                            height: 20,
+                          ),
+                          AllProductText(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -265,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen>
               if (itemController.itemsSearch.isEmpty) {
                 return SizedBox.shrink();
               }
+
               return Positioned(
                 top: 60,
                 left: 8,
@@ -308,8 +324,12 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         title: Text(product.itemName),
-                        trailing: Text(" \$/${product.cost.toString()}"),
+                        trailing: Text(" \$${product.cost.toString()}"),
                         onTap: () {
+                          search.clear();
+                          focusNode.unfocus();
+                          itemController.itemsSearch.clear();
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -317,7 +337,11 @@ class _HomeScreenState extends State<HomeScreen>
                                 itemModel: product,
                               ),
                             ),
-                          );
+                          ).then((_) {
+                            // focusNode.unfocus();
+                            // search.clear();
+                            // itemController.itemsSearch.clear();
+                          });
                         },
                       );
                     },

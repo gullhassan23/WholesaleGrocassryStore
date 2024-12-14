@@ -195,7 +195,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         } else {
                           Get.snackbar(
                             "Not Available", // Title
-                            "your account is not available in database",
+                            "your account does not exist",
                             snackPosition: SnackPosition.BOTTOM,
                             backgroundColor: Colors.red,
                             colorText: Colors.white,

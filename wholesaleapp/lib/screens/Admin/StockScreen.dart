@@ -60,20 +60,25 @@ class _StockScreenState extends State<StockScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: Text("Stock Screen")),
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        centerTitle: true,
+        title: Text("Stock Screen"),
+      ),
       body: Column(
         children: [
-          TextForm(
-            onChanged: _filterProducts,
-            icon: Icon(
-              Icons.search,
-              size: 23.sp,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: TextForm(
+              onChanged: _filterProducts,
+              icon: Icon(
+                Icons.search,
+                size: 23.sp,
+              ),
+              textEditingController: search,
+              hintText: "Search Product",
+              textInputType: TextInputType.name,
             ),
-            textEditingController: search,
-            hintText: "Search Product",
-            textInputType: TextInputType.name,
           ),
           SizedBox(height: 20.h),
           // GetBuilder<ItemController>(
