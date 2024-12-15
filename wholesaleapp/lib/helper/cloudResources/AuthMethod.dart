@@ -12,11 +12,7 @@ import 'package:wholesaleapp/helper/cloudResources/CloudMethod.dart';
 class Authenticationclass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String adminEmail = 'admin@gmail.com';
-
-  // final String adminPassword = 'admin123';
-  // final String adminName = "Wholesaler";
-  // final String adminPhone = "+923351764911";
+  final String adminEmail = 'maletec133@gmail.com';
 
   Future<Distributor> getUsersDetails() async {
     User currentUser = auth.currentUser!;

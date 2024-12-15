@@ -35,7 +35,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'Beverages',
     'Grocery',
     'Meat',
-    'Clean',
+    'Dairy-products',
     'Frozen',
     'Dry-Fruits'
   ];

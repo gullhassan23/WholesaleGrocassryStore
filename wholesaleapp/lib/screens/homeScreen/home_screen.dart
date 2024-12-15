@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen>
     'Beverages',
     'Grocery',
     'Meat',
-    'Clean',
+    'Dairy-products',
     'Frozen',
     'Dry-Fruits'
   ];
