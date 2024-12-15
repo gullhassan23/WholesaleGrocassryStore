@@ -216,7 +216,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 SizedBox(height: 10.h),
                 CustomTextFormField(
                   controller: weight,
-                  text: "weight",
+                  text: "volume",
                   obscureText: false,
                   textInputType: TextInputType.number,
                 ),
