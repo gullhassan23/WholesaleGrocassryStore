@@ -41,7 +41,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
     'Beverages',
     'Grocery',
     'Meat',
-    'Clean',
+    'Dairy-products',
     'Frozen',
     'Dry-Fruits'
   ];

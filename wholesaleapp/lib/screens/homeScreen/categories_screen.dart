@@ -22,7 +22,7 @@ class CategoriesScreen extends StatelessWidget {
     {"image": "assets/images/drinks.png", "text": "Beverages"},
     {"image": "assets/images/grocery.png", "text": "Grocery"},
     {"image": "assets/images/meat.png", "text": "Meat"},
-    {"image": "assets/images/clean.png", "text": "Clean"},
+    {"image": "assets/images/clean.png", "text": "Dairy-products"},
     {"image": "assets/images/frozen.png", "text": "Frozen"},
     {"image": "assets/images/dry.png", "text": "Dry-Fruits"},
   ];
