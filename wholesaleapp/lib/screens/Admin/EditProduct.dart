@@ -23,6 +23,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController nameController;
   late TextEditingController weightController;
+  List<Uint8List> image = [];
   late TextEditingController costController;
   late TextEditingController quantityController;
   bool isLoad = false;
@@ -62,7 +63,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       var res = await ImagesResource().pickproducts();
       if (res.isNotEmpty) {
         setState(() {
-          images = res;
+          images = res; // Update the images state variable
         });
       } else {
         Get.snackbar('No Image Selected', 'Please select an image to proceed.',
@@ -326,6 +327,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 //       value!.isEmpty ? 'description cannot be empty' : null,
                 // ),
                 SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: selectImage, child: const Text('Select Image')),
                 images.isNotEmpty
                     ? Wrap(
                         spacing: 8,
@@ -338,12 +341,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           );
                         }).toList(),
                       )
-                    : SizedBox(),
-                TextButton.icon(
-                  onPressed: selectImage,
-                  icon: Icon(Icons.add_photo_alternate),
-                  label: Text('Pick Images'),
-                ),
+                    : widget.product.imageUrls.isNotEmpty
+                        ? Image.network(
+                            widget.product.imageUrls[0],
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          )
+                        : SizedBox(),
+                const SizedBox(height: 20),
                 SizedBox(height: 20),
                 isLoad
                     ? CircularProgressIndicator()
