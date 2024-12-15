@@ -39,7 +39,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'Frozen',
     'Dry-Fruits'
   ];
-  List<String> productWeight = ['kg', 'litre', 'dozen'];
+  List<String> productWeight = ['kg', 'litre', 'dozen', 'pc'];
   List<Uint8List> images = [];
 
   @override
@@ -50,7 +50,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     costController =
         TextEditingController(text: widget.product.cost.toString());
     quantityController =
-        TextEditingController(text: widget.product.quantity.toString());
+        TextEditingController(text: '${widget.product.quantity}');
     descriptionController =
         TextEditingController(text: widget.product.description);
     selectedType = widget.product.type;
@@ -93,7 +93,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         type: selectedType,
         volume: selectedWeight,
         rawCost: costController.text,
-        quantity: parsedQuantity.toString(),
+        quantity: parsedQuantity ?? 0,
         description: descriptionController.text,
         images: images.isEmpty ? null : images,
       );

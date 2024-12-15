@@ -34,7 +34,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   // Change to store a single image
   List<Uint8List> image = [];
 
-  String category = 'Fruits';
+  String category = 'Vegetables';
   List<String> productCategories = [
     'Vegetables',
     'Fruits',
@@ -47,7 +47,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   ];
 
   String volume = 'kg';
-  List<String> productWeight = ['kg', 'litre', 'dozen'];
+  List<String> productWeight = ['kg', 'litre', 'dozen', 'pc'];
 
   @override
   void dispose() {
@@ -167,12 +167,14 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   controller: priceController,
                   text: "Price",
                   obscureText: false,
+                  textInputType: TextInputType.number,
                 ),
                 SizedBox(height: 10.h),
                 CustomTextFormField(
                   controller: quantityController,
                   text: "Quantity",
                   obscureText: false,
+                  textInputType: TextInputType.number,
                 ),
                 SizedBox(height: 10.h),
                 Container(
@@ -211,10 +213,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     },
                   ),
                 ),
+                SizedBox(height: 10.h),
                 CustomTextFormField(
                   controller: weight,
                   text: "weight",
                   obscureText: false,
+                  textInputType: TextInputType.number,
                 ),
                 SizedBox(height: 10.h),
                 SizedBox(height: 10.h),

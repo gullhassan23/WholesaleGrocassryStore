@@ -60,36 +60,40 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     widget.itemModel.itemName,
                     // product.productName ?? '',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                  Container(
-                    height: 40.h,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: widget.itemModel.quantity > 0
-                          ? Colors.blue
-                          : Colors.red,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          widget.itemModel.quantity > 0
-                              ? 'Available in stock'
-                              : 'Out of stock',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Spacer(),
                 ],
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  height: 40.h,
+                  width: 200.w,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: widget.itemModel.quantity > 0
+                        ? Colors.blue
+                        : Colors.red,
+                  ),
+                  child: Center(
+                    child: Text(
+                      widget.itemModel.quantity > 0
+                          ? 'Available in stock'
+                          : 'Out of stock',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               Text(

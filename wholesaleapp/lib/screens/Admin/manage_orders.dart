@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:wholesaleapp/Controllers/OrderController.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -51,7 +50,6 @@ class _ManageOrdersState extends State<ManageOrders> {
             return RefreshIndicator(
                 onRefresh: () async {
                   await orderController.adminfetchOrdersData();
-                  setState(() {});
                 },
                 child: ListView.builder(
                   itemCount: orderController.orders.length,
@@ -138,16 +136,18 @@ class _ManageOrdersState extends State<ManageOrders> {
                                         ),
                                       ),
                                       Icon(order.status == "cash_on_delivery"
-                                          ? Icons.payment
-                                          : Icons.money_outlined)
+                                          ? Icons.attach_money_sharp
+                                          : Icons.credit_card)
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 16),
-                            order.dispatchstatus != 'Dispatched' &&
-                                    order.dispatchstatus != 'cancel'
+                            order.dispatchstatus !=
+                                        'DISPATCH_STATUS_DISPATCHED' &&
+                                    order.dispatchstatus !=
+                                        'DISPATCH_STATUS_CANCELED'
                                 ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -213,9 +213,11 @@ class _ManageOrdersState extends State<ManageOrders> {
                                   )
                                 : Center(
                                     child: Text(
-                                      order.dispatchstatus == 'Dispatched'
+                                      order.dispatchstatus ==
+                                              'DISPATCH_STATUS_DISPATCHED'
                                           ? "Product is dispatched"
-                                          : order.dispatchstatus == 'cancel'
+                                          : order.dispatchstatus ==
+                                                  'DISPATCH_STATUS_CANCELED'
                                               ? "Order canceled"
                                               : "",
                                       style: TextStyle(
