@@ -100,34 +100,43 @@ class OrderController extends GetxController {
     }
   }
 
-  // Future<void> adminfetchOrdersData() async {
-  //   try {
-  //     orders.clear();
+  Future<void> updateOrderStatus(
+      String userId, String cartId, String status) async {
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(userId)
+        .collection("productx")
+        .doc(cartId)
+        .update({'dispatchstatus': status});
+  }
 
-  //     // Fetch all orders from the 'orders' collection
-  //     QuerySnapshot snapshot =
-  //         await firestore.collectionGroup('productx').get();
+  Future<bool> dispatchOrder(OrderModel order) async {
+    try {
+      final productRef =
+          FirebaseFirestore.instance.collection('Items').doc(order.pid);
+      final productSnapshot = await productRef.get();
 
-  //     if (snapshot.docs.isNotEmpty) {
-  //       for (var doc in snapshot.docs) {
-  //         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-  //         OrderModel order = OrderModel.fromMap(data);
+      if (productSnapshot.exists) {
+        final currentQuantity = productSnapshot['quantity'];
+        final newQuantity = currentQuantity - order.quantity;
 
-  //         if (!orders.any((o) => o.pid == order.pid)) {
-  //           orders.add(order);
-  //         }
+        if (newQuantity < 0) {
+          Get.snackbar("Error", "Not enough stock available to dispatch.");
+          return false;
+        }
 
-  //         print("Order added: ${order}");
-  //       }
-  //       print("Orders fetched successfully: ${orders.length}");
-  //     } else {
-  //       print("No orders found in the database.");
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar('Error', e.toString());
-  //     print("Error fetching orders data: $e");
-  //   }
-  // }
+        await productRef.update({'quantity': newQuantity});
+        await updateOrderStatus(
+            order.userid, order.cartIID, " DISPATCH_STATUS_DISPATCHED");
+        return true;
+      } else {
+        Get.snackbar("Error", "Product not found.");
+        return false;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
 
   Future<void> adminfetchOrdersData() async {
     try {

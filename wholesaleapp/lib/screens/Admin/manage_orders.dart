@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:wholesaleapp/Controllers/OrderController.dart';
 
 import '../../helper/constant/colors_resource.dart';
@@ -26,7 +27,6 @@ class _ManageOrdersState extends State<ManageOrders> {
     });
     orderController.checkAdminStatus();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +51,7 @@ class _ManageOrdersState extends State<ManageOrders> {
             return RefreshIndicator(
                 onRefresh: () async {
                   await orderController.adminfetchOrdersData();
+                  setState(() {});
                 },
                 child: ListView.builder(
                   itemCount: orderController.orders.length,
@@ -153,20 +154,23 @@ class _ManageOrdersState extends State<ManageOrders> {
                                     children: [
                                       ElevatedButton(
                                         onPressed: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection('orders')
-                                              .doc(order.userid)
-                                              .collection("productx")
-                                              .doc(order.cartIID)
-                                              .update(
-                                                  {'dispatchstatus': 'cancel'});
-                                          await orderController
-                                              .adminfetchOrdersData();
-                                          setState(() {
-                                            order.dispatchstatus = 'cancel';
-                                          });
-                                          Get.snackbar(
-                                              "Success", "Order is canceled");
+                                          try {
+                                            await orderController
+                                                .updateOrderStatus(
+                                                    order.userid,
+                                                    order.cartIID,
+                                                    "DISPATCH_STATUS_CANCELED");
+                                            setState(() {
+                                              order.dispatchstatus =
+                                                  "DISPATCH_STATUS_CANCELED";
+                                            });
+                                            Get.snackbar(
+                                                "Success", "Order is canceled");
+                                          } catch (e) {
+                                            Get.snackbar("Error",
+                                                "Failed to cancel order: $e");
+                                          }
+
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
@@ -179,22 +183,22 @@ class _ManageOrdersState extends State<ManageOrders> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection('orders')
-                                              .doc(order.userid)
-                                              .collection("productx")
-                                              .doc(order.cartIID)
-                                              .update({
-                                            'dispatchstatus': 'Dispatched'
-                                          });
-                                          setState(() {
-                                            order.dispatchstatus = 'Dispatched';
-                                          });
-                                          await orderController
-                                              .adminfetchOrdersData();
-
-                                          Get.snackbar("Success",
-                                              "Your product is dispatched");
+                                          try {
+                                            final isSuccess =
+                                                await orderController
+                                                    .dispatchOrder(order);
+                                            if (isSuccess) {
+                                              setState(() {
+                                                order.dispatchstatus =
+                                                    "DISPATCH_STATUS_DISPATCHED";
+                                              });
+                                              Get.snackbar("Success",
+                                                  "Product dispatched and stock updated.");
+                                            }
+                                          } catch (e) {
+                                            Get.snackbar("Error",
+                                                "Failed to dispatch order: $e");
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
@@ -218,125 +222,7 @@ class _ManageOrdersState extends State<ManageOrders> {
                                           color: Colors.blue, fontSize: 17.sp),
                                     ),
                                   ),
-                            // order.dispatchstatus != 'Dispatched'
-                            //     ? Row(
-                            //         mainAxisAlignment:
-                            //             MainAxisAlignment.spaceEvenly,
-                            //         children: [
-                            //           ElevatedButton(
-                            //             onPressed: () async {
-                            //               await FirebaseFirestore.instance
-                            //                   .collection('orders')
-                            //                   .doc(order.userid)
-                            //                   .collection("productx")
-                            //                   .doc(order.pid)
-                            //                   .update({'dispatchstatus': 'cancel'});
-                            //             },
-                            //             style: ElevatedButton.styleFrom(
-                            //               backgroundColor: Colors.blueGrey.shade200,
-                            //             ),
-                            //             child: Text(
-                            //               'Cancel',
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //           ),
-                            //           ElevatedButton(
-                            //             onPressed: () async {
-                            //               await FirebaseFirestore.instance
-                            //                   .collection('orders')
-                            //                   .doc(order.userid)
-                            //                   .collection("productx")
-                            //                   .doc(order.pid)
-                            //                   .update(
-                            //                       {'dispatchstatus': 'Dispatched'});
-                            //               Get.snackbar("Success",
-                            //                   "Your product is dispatched");
-                            //               print(
-                            //                   "product dispatched  ${order.productName}");
-                            //               orderController.adminfetchOrdersData();
-                            //             },
-                            //             style: ElevatedButton.styleFrom(
-                            //               backgroundColor:
-                            //                   ColorsResource.PRIMARY_COLOR,
-                            //             ),
-                            //             child: Text(
-                            //               'Dispatch order',
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       )
-                            //     : Center(
-                            //         child: Text(
-                            //           order.dispatchstatus == 'Dispatched'
-                            //               ? "Product is dispatched"
-                            //               : "Order canceled",
-                            //           style: TextStyle(
-                            //               color: Colors.blue, fontSize: 17.sp),
-                            //         ),
-                            //       ),
-                            // order.dispatchstatus != 'Dispatched'
-                            //     ? Row(
-                            //         mainAxisAlignment:
-                            //             MainAxisAlignment.spaceEvenly,
-                            //         children: [
-                            //           ElevatedButton(
-                            //             onPressed: () async {
-                            //               await FirebaseFirestore.instance
-                            //                   .collection('orders')
-                            //                   .doc(order.userid)
-                            //                   .collection("productx")
-                            //                   .doc(order.pid)
-                            //                   .update({
-                            //                 'dispatchstatus': 'Cancelled',
-                            //               });
-                            //               Get.snackbar("Order Cancelled",
-                            //                   "Product is cancelled");
-                            //               orderController.adminfetchOrdersData();
-                            //             },
-                            //             style: ElevatedButton.styleFrom(
-                            //               backgroundColor: Colors.blueGrey.shade200,
-                            //             ),
-                            //             child: Text(
-                            //               'Cancel',
-                            //               style: TextStyle(color: Colors.white),
-                            //             ),
-                            //           ),
-                            //           // : SizedBox(),
-
-                            //           ElevatedButton(
-                            //               onPressed: () async {
-                            //                 await FirebaseFirestore.instance
-                            //                     .collection('orders')
-                            //                     .doc(order.userid)
-                            //                     .collection("productx")
-                            //                     .doc(order.pid)
-                            //                     .update({
-                            //                   'dispatchstatus': 'Dispatched'
-                            //                 });
-                            //                 Get.snackbar("Success",
-                            //                     "Your product is dispatched");
-                            //                 print(
-                            //                     "product dispatched  ${order.productName}");
-                            //                 orderController.adminfetchOrdersData();
-                            //               },
-                            //               style: ElevatedButton.styleFrom(
-                            //                 backgroundColor:
-                            //                     ColorsResource.PRIMARY_COLOR,
-                            //               ),
-                            //               child: Text(
-                            //                 'Dispatch order',
-                            //                 style: TextStyle(color: Colors.white),
-                            //               ))
-                            //         ],
-                            //       )
-                            //     : Center(
-                            //         child: Text(
-                            //           "Product is dispatched",
-                            //           style: TextStyle(
-                            //               color: Colors.blue, fontSize: 17.sp),
-                            //         ),
-                            //       ),
+                
                           ],
                         ),
                       ),
