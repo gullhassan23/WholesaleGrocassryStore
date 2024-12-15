@@ -202,7 +202,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "\$${item.cost.toStringAsFixed(2)}",
+                                                      "QR ${item.cost.toString()}",
                                                       style: TextStyle(
                                                         color: ColorsResource
                                                             .PRIMARY_COLOR,

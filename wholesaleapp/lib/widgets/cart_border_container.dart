@@ -70,7 +70,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                   ),
                   Obx(
                     () => Text(
-                      '\$ ${widget.cartController.totalPrice.value.toStringAsFixed(2)}',
+                      'QR ${widget.cartController.totalPrice.value.toString()}',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
@@ -91,7 +91,7 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                     ),
                   ),
                   Text(
-                    '\$10',
+                    'QR 10',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
@@ -111,8 +111,8 @@ class _cartScreenBorderContainerState extends State<cartScreenBorderContainer> {
                     ),
                   ),
                   Obx(
-                        () => Text(
-                      '\$ ${widget.cartController.totalPriceGst.value.toStringAsFixed(2)}',
+                    () => Text(
+                      'QR ${widget.cartController.totalPriceGst.value.toString()}',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                       ),

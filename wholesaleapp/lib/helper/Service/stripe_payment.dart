@@ -32,7 +32,7 @@ class PaymentMethod {
       // Create the payment intent
       paymentIntent = await createPaymentIntent(amount);
       var gpay = const PaymentSheetGooglePay(
-          merchantCountryCode: "US", currencyCode: "USD", testEnv: true);
+          merchantCountryCode: "QA", currencyCode: "QAR", testEnv: true);
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: paymentIntent!["client_secret"],
@@ -105,7 +105,7 @@ class PaymentMethod {
       Map<String, dynamic> body = {
         "amount":
             calculateAmount(amount), // Consider adjusting the amount as needed
-        "currency": "USD",
+        "currency": "QAR",
         "payment_method_types[]": "card",
       };
 

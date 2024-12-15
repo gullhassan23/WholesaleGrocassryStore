@@ -48,8 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.initState();
     weightController = TextEditingController(text: widget.product.weight);
     nameController = TextEditingController(text: widget.product.itemName);
-    costController =
-        TextEditingController(text: widget.product.cost.toString());
+    costController = TextEditingController(text: '${widget.product.cost}');
     quantityController =
         TextEditingController(text: '${widget.product.quantity}');
     descriptionController =
@@ -226,7 +225,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 CustomTextFormField(
                   controller: costController,
-                  text: "Cost ",
+                  text: "Cost",
                   obscureText: false,
                   textInputType: TextInputType.number,
                   validator: (value) =>
