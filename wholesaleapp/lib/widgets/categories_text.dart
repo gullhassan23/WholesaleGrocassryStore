@@ -10,39 +10,32 @@ class CategoriesText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CategoriesScreen()),
-              );
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey.shade400,
-                    thickness: 1,
-                  ),
+        Row(
+          children: [
+            Expanded(
+              child: Divider(
+                color: Colors.grey.shade400,
+                thickness: 1,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Shop by categories',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Shop by categories',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey.shade400,
-                    thickness: 1,
-                  ),
-                ),
-              ],
-            )),
+              ),
+            ),
+            Expanded(
+              child: Divider(
+                color: Colors.grey.shade400,
+                thickness: 1,
+              ),
+            ),
+          ],
+        ),
         SizedBox(
           height: 5,
         ),

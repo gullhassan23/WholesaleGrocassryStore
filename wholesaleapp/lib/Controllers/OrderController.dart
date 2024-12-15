@@ -140,11 +140,10 @@ class OrderController extends GetxController {
 
   Future<void> adminfetchOrdersData() async {
     try {
-      // orders.clear();
-
-      // Fetch all orders from the 'orders' collection
-      QuerySnapshot snapshot =
-          await firestore.collectionGroup('productx').get();
+      QuerySnapshot snapshot = await firestore
+          .collectionGroup('productx')
+          .orderBy('orderDate', descending: true)
+          .get();
 
       if (snapshot.docs.isNotEmpty) {
         for (var doc in snapshot.docs) {
@@ -178,7 +177,9 @@ class OrderController extends GetxController {
             .doc(currentUser.uid)
             .collection('productx');
 
-        QuerySnapshot snapshot = await userOrdersCollection.get();
+        QuerySnapshot snapshot = await userOrdersCollection
+            .orderBy('orderDate', descending: true)
+            .get();
 
         if (snapshot.docs.isNotEmpty) {
           for (var doc in snapshot.docs) {
