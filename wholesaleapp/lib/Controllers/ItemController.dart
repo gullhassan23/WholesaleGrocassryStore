@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wholesaleapp/MODELS/ItemModel.dart';
@@ -155,37 +156,49 @@ class ItemController extends GetxController {
     required String uid,
     required String productName,
     required String type,
+    required String volume,
     required String rawCost,
     required int quantity,
     required String description,
-    required String volume,
     required String weight,
     List<Uint8List>? images,
   }) async {
     try {
+      final docRef = FirebaseFirestore.instance.collection('Items').doc(uid);
+
       Map<String, dynamic> updateData = {
-        'weight': weight,
         'itemName': productName,
-        'volume': volume,
         'type': type,
+        'volume': volume,
         'cost': double.parse(rawCost),
-        'quantity': quantity,
+        'quantity': int.parse(quantity),
         'description': description,
+        'weight': weight,
       };
 
-      // if (images != null && images.isNotEmpty) {
-      //   List<String> imageUrls = await cloud().uploadImage(images);
-      //   updateData['imageUrls'] = imageUrls;
-      // }
+      if (images != null && images.isNotEmpty) {
+        List<String> imageUrls = await uploadImages(images);
+        updateData['imageUrls'] = imageUrls;
+      }
 
-      await FirebaseFirestore.instance
-          .collection('Items')
-          .doc(uid)
-          .update(updateData);
-      fetchProductData(); // Refresh items
+      await docRef.update(updateData);
       return "success";
     } catch (e) {
-      return "Error: ${e.toString()}";
+      return e.toString();
     }
+  }
+
+  Future<List<String>> uploadImages(List<Uint8List> images) async {
+    List<String> imageUrls = [];
+    for (var image in images) {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref =
+          FirebaseStorage.instance.ref().child('product_images/$fileName');
+      UploadTask uploadTask = ref.putData(image);
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      imageUrls.add(downloadUrl);
+    }
+    return imageUrls;
   }
 }
