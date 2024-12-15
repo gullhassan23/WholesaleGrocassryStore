@@ -180,7 +180,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                '\$ ${totalPriceForItem.toStringAsFixed(2)}',
+                                                'QR ${totalPriceForItem.toStringAsFixed(2)}',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                 ),
@@ -254,7 +254,7 @@ class _CartScreenState extends State<CartScreen> {
                         },
                         child: Center(
                           child: Text(
-                            'Checkout: \$ ${cartController.totalPriceGst.toStringAsFixed(2)}',
+                            'Checkout: QR ${cartController.totalPriceGst.toStringAsFixed(2)}',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 16.0),
                             textAlign: TextAlign.center,

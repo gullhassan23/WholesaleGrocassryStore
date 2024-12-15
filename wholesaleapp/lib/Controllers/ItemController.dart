@@ -171,7 +171,7 @@ class ItemController extends GetxController {
         'type': type,
         'volume': volume,
         'cost': double.parse(rawCost),
-        'quantity': int.parse(quantity),
+        'quantity': quantity,
         'description': description,
         'weight': weight,
       };

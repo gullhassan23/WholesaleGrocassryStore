@@ -63,7 +63,7 @@ class AllProductsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    '\$ ${itemModel.cost.toStringAsFixed(2)}',
+                    'QR ${itemModel.cost.toString()}',
                     style: TextStyle(
                       color: ColorsResource.PRIMARY_COLOR,
                     ),

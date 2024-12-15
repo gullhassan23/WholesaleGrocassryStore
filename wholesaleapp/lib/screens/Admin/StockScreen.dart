@@ -113,7 +113,7 @@ class _StockScreenState extends State<StockScreen> {
             return Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  await itemController.items();
+                  await itemController.fetchProductData();
                   // setState(() {});
                 },
                 child: ListView.builder(
@@ -194,7 +194,7 @@ class _StockScreenState extends State<StockScreen> {
                                   : Icon(Icons.image_not_supported),
                               title: Text(item.itemName),
                               subtitle: Text(
-                                  'Type: ${item.type}\nCost: \$${item.cost}'),
+                                  'Type: ${item.type}\nCost: QR ${item.cost}'),
                               trailing: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

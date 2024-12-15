@@ -59,7 +59,6 @@ class _ProductScreenState extends State<ProductScreen> {
                 children: [
                   Text(
                     widget.itemModel.itemName,
-                    // product.productName ?? '',
                     style:
                         TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                   ),
@@ -97,7 +96,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                '\$ ${widget.itemModel.cost.toStringAsFixed(2)}',
+                'QR ${widget.itemModel.cost.toString()}',
                 style: TextStyle(fontSize: 20, color: Colors.green),
               ),
               const SizedBox(height: 8),

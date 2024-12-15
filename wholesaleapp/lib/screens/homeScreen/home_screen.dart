@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         title: Text(product.itemName),
-                        trailing: Text(" \$${product.cost.toString()}"),
+                        trailing: Text("QR ${product.cost.toString()}"),
                         onTap: () {
                           search.clear();
                           focusNode.unfocus();
