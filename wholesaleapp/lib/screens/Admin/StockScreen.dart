@@ -111,106 +111,114 @@ class _StockScreenState extends State<StockScreen> {
             }
 
             return Expanded(
-              child: ListView.builder(
-                itemCount: filteredList.length,
-                itemBuilder: (context, index) {
-                  final item = filteredList[index];
-                  return Dismissible(
-                    key: Key(item.uid),
-                    direction: DismissDirection.endToStart,
-                    // Swipe right to left
-                    background: Container(
-                      color: Colors.red, // Background color when swiping
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
-                    ),
-                    onDismissed: (direction) async {
-                      // Remove from Firestore
-                      await FirebaseFirestore.instance
-                          .collection('Items')
-                          .doc(item.uid)
-                          .delete();
-
-                      setState(() {
-                        // Update the local filtered list
-                        filteredList.removeAt(index);
-
-                        // Optionally update the main list
-                        itemController.items
-                            .removeWhere((i) => i.uid == item.uid);
-                      });
-
-                      // Show a snackbar or any feedback
-                      Get.snackbar(
-                        'Deleted',
-                        'Product deleted successfully',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    },
-                    // onDismissed: (direction) async {
-                    //   // Remove from Firestore
-                    //   await FirebaseFirestore.instance
-                    //       .collection('Items')
-                    //       .doc(item.uid)
-                    //       .delete();
-
-                    //   // Update local list
-                    //   itemController.items.removeAt(index);
-
-                    //   // Show a snackbar or any feedback
-                    //   Get.snackbar(
-                    //     'Deleted',
-                    //     'Product deleted successfully',
-                    //     snackPosition: SnackPosition.BOTTOM,
-                    //   );
-                    // },
-                    child: Card(
-                      elevation: 5.0, // Adds shadow
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      margin: EdgeInsets.all(8.0),
-                      child: Stack(
-                        children: [
-                          ListTile(
-                            leading: item.imageUrls.isNotEmpty
-                                ? Image.network(
-                                    item.imageUrls[
-                                        0], // Use single image URL here
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(Icons.image_not_supported);
-                                    },
-                                  )
-                                : Icon(Icons.image_not_supported),
-                            title: Text(item.itemName),
-                            subtitle: Text(
-                                'Type: ${item.type}\nCost: \$${item.cost}'),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                        () => EditProductScreen(product: item));
-                                  },
-                                  child: Icon(
-                                    Icons.edit,
-                                    size: 15.sp,
-                                  ),
-                                ),
-                                Text('Qty: ${item.quantity}'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await itemController.items();
+                  // setState(() {});
                 },
+                child: ListView.builder(
+                  itemCount: filteredList.length,
+                  itemBuilder: (context, index) {
+                    final item = filteredList[index];
+                    return Dismissible(
+                      key: Key(item.uid),
+                      direction: DismissDirection.endToStart,
+                      // Swipe right to left
+                      background: Container(
+                        color: Colors.red, // Background color when swiping
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                      onDismissed: (direction) async {
+                        // Remove from Firestore
+                        await FirebaseFirestore.instance
+                            .collection('Items')
+                            .doc(item.uid)
+                            .delete();
+
+                        setState(() {
+                          // Update the local filtered list
+                          filteredList.removeAt(index);
+
+                          // Optionally update the main list
+                          itemController.items
+                              .removeWhere((i) => i.uid == item.uid);
+                        });
+
+                        // Show a snackbar or any feedback
+                        Get.snackbar(
+                          'Deleted',
+                          'Product deleted successfully',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      },
+                      // onDismissed: (direction) async {
+                      //   // Remove from Firestore
+                      //   await FirebaseFirestore.instance
+                      //       .collection('Items')
+                      //       .doc(item.uid)
+                      //       .delete();
+
+                      //   // Update local list
+                      //   itemController.items.removeAt(index);
+
+                      //   // Show a snackbar or any feedback
+                      //   Get.snackbar(
+                      //     'Deleted',
+                      //     'Product deleted successfully',
+                      //     snackPosition: SnackPosition.BOTTOM,
+                      //   );
+                      // },
+                      child: Card(
+                        elevation: 5.0, // Adds shadow
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        margin: EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: [
+                            ListTile(
+                              leading: item.imageUrls.isNotEmpty
+                                  ? Image.network(
+                                      item.imageUrls[
+                                          0], // Use single image URL here
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Icon(Icons.image_not_supported);
+                                      },
+                                    )
+                                  : Icon(Icons.image_not_supported),
+                              title: Text(item.itemName),
+                              subtitle: Text(
+                                  'Type: ${item.type}\nCost: \$${item.cost}'),
+                              trailing: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() =>
+                                          EditProductScreen(product: item));
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 15.sp,
+                                    ),
+                                  ),
+                                  Text('Qty: ${item.quantity}'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           }),

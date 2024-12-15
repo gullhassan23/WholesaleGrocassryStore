@@ -156,7 +156,7 @@ class ItemController extends GetxController {
     required String productName,
     required String type,
     required String rawCost,
-    required String quantity,
+    required int quantity,
     required String description,
     required String volume,
     required String weight,
